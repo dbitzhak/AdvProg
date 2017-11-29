@@ -39,8 +39,8 @@ void StandardLogic::startGame(Player *p1, Player *p2) {
 }
 
 bool StandardLogic::gameEnded(void) {
-	return ((getValidPositions(player1, this->myBoard)).empty()
-			&& (getValidPositions(player2, this->myBoard)).empty());
+	return (((getValidPositions(player1, this->myBoard)).empty())
+			&& ((getValidPositions(player2, this->myBoard)).empty()));
 }
 
 Player* StandardLogic::getWinner(void) {
@@ -60,8 +60,12 @@ Player* StandardLogic::getWinner(void) {
 			}
 		}
 	}
-
-	if (winner == player1->getPlayerIdChar()) {
+	//If tie
+	if (pointsPerPlayer[player1->getPlayerIdChar()] == pointsPerPlayer[player2->getPlayerIdChar()]) {
+		return 0;
+	}
+	//No tie
+	else if (winner == player1->getPlayerIdChar()) {
 		return player1;
 	} else {
 		return player2;

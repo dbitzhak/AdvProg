@@ -58,8 +58,11 @@ void ConsoleGraphics::displayMessage(std::string message) const {
 }
 
 void ConsoleGraphics::displayPlayer(Player *player) const {
-
-	cout << "Player(" << player->getPlayerIdChar() << ") ";
+	if (player == 0) {
+		cout << "Congratulations to both players!\n" << "It was a tie." << endl;
+	} else {
+		cout << "Player(" << player->getPlayerIdChar() << ") " << endl;
+	}
 }
 
 void ConsoleGraphics::displayCoordinate(int a, int b) const {

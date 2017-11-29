@@ -54,7 +54,6 @@ int MachinePlayer::countEnemyCells(Board b, Player *enemy) {
 				}
 			}
 	}
-	cout << enemy->getPlayerIdChar() << counter << endl;
 	return counter;
 }
 
