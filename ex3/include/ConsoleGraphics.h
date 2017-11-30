@@ -1,9 +1,3 @@
-/*
- * ConsoleGraṕhics.h
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
 #ifndef CONSOLEGRAPHICS_H_
 #define CONSOLEGRAPHICS_H_
 

@@ -1,10 +1,3 @@
-/*
- * Board.h
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
-
 #ifndef BOARD_H_
 #define BOARD_H_
 

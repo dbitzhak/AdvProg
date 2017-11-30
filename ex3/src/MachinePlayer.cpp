@@ -1,10 +1,3 @@
-/*
- * MachinePlayer.cpp
- *
- *  Created on: Nov 18, 2017
- *      Author: dan
- */
-
 #include "MachinePlayer.h"
 #include <vector>
 #include <utility>

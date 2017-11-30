@@ -1,9 +1,3 @@
-/*
- * ConsoleGraphics.cpp
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
 #include "Board.h"
 #include "ConsoleGraphics.h"
 #include "Player.h"

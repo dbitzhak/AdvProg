@@ -1,9 +1,3 @@
-/*
- * GraphicInterface.h
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
 #ifndef GRAPHICINTERFACE_H_
 #define GRAPHICINTERFACE_H_
 

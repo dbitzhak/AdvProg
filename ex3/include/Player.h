@@ -1,9 +1,3 @@
-/*
- * Player.h
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
 #ifndef PLAYER_H_
 #define PLAYER_H_
 

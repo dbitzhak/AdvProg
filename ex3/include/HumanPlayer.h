@@ -1,9 +1,3 @@
-/*
- * HumanPlayer.h
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
 #ifndef HUMANPLAYER_H_
 #define HUMANPLAYER_H_
 

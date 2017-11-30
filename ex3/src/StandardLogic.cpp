@@ -1,9 +1,3 @@
-/*
- * StandardLogic.cpp
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
 #include "StandardLogic.h"
 #include "Board.h"
 #include "Cell.h"

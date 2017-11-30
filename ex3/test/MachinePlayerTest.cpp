@@ -1,10 +1,3 @@
-/*
- * MachinePlayerTest.cpp
- *
- *  Created on: Nov 26, 2017
- *      Author: dan
- */
-
 #include "MachinePlayerTest.h"
 #include "gtest/gtest.h"
 #include "Player.h"
@@ -20,6 +13,7 @@
 
 using namespace std;
 
+//Tests player ID
 TEST_F(MachinePlayerTest, ReturnCorrectIDChar) {
 	ConsoleGraphics cg;
 	GraphicInterface *gi = (GraphicInterface*) &cg;
@@ -31,6 +25,7 @@ TEST_F(MachinePlayerTest, ReturnCorrectIDChar) {
 	ASSERT_EQ(mp->getPlayerIdChar(), x);
 }
 
+//Tests AI move
 TEST_F(MachinePlayerTest, CorrectMakeMove) {
 	ConsoleGraphics cg;
 	GraphicInterface *gi = (GraphicInterface*) &cg;

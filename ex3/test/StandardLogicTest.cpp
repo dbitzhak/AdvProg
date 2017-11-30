@@ -1,12 +1,3 @@
-/*
- * test_standardLogic.cpp
- *
- *  Created on: Nov 26, 2017
- *      Author: dan
- */
-
-
-
 #include "gtest/gtest.h"
 #include "StandardLogic.h"
 #include "GraphicInterface.h"
@@ -18,7 +9,7 @@
 #include <vector>
 #include "Player.h"
 
-
+//Tests starting condition of the board
 TEST_F(StandardLogicTest, StartsBoardProperly) {
 	//Starts the Game
 	Player *mp1 = (Player*) p1;
@@ -39,6 +30,8 @@ TEST_F(StandardLogicTest, StartsBoardProperly) {
 	}
 	standardLogic->endGame();
 }
+
+//Tests end of game
 TEST_F(StandardLogicTest, GameEndsCorrectly) {
 		//Starts the Board
 		Player *mp1 = p1;
@@ -63,6 +56,8 @@ TEST_F(StandardLogicTest, GameEndsCorrectly) {
 		ASSERT_EQ(mp1moves.empty() && mp2moves.empty(), true);
 		standardLogic->endGame(); //frees memory
 }
+
+//Tests winner
 TEST_F(StandardLogicTest, GetCorrectWinner) {
 	//Starts the Board
 	Player *mp1 = p1;
@@ -92,6 +87,7 @@ TEST_F(StandardLogicTest, GetCorrectWinner) {
 	}
 }
 
+//Tests valid moves
 TEST_F(StandardLogicTest, ValidPositionsAreCorrect) {
 	//Starts the Board
 	GameLogic *gl = standardLogic;

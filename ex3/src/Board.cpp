@@ -1,10 +1,3 @@
-/*
- * Board.cpp
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
-
 #include <iostream>
 #include <vector>
 

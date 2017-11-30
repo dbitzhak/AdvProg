@@ -1,10 +1,3 @@
-/*
- * GameLogic.h
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
-
 #ifndef GAMELOGIC_H_
 #define GAMELOGIC_H_
 

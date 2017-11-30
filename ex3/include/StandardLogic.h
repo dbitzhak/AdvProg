@@ -1,9 +1,3 @@
-/*
- * StandardLogic.h
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
 #ifndef STANDARDLOGIC_H_
 #define STANDARDLOGIC_H_
 

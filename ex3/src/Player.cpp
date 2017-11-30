@@ -1,8 +1,3 @@
-/*
- * Player.cpp
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
 #include "Player.h"
 
 bool Player::operator ==(const Player& comparePlayer) const {
