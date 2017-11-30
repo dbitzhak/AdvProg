@@ -35,18 +35,18 @@ void Game::start() {
 			case 1: { //Regular Game
 					StandardLogic sl(graphicProvider);
 					GameLogic *gl = &sl;
-					HumanPlayer p1(graphicProvider, 'X');
+					HumanPlayer p1(graphicProvider, 'O');
 					Player *hp1 = &p1;
-					HumanPlayer p2(graphicProvider,'O');
+					HumanPlayer p2(graphicProvider,'X');
 					Player *hp2 = &p2;
 					this->playOneMatch(gl,hp1, hp2);
 			}break;
 			case 2:{
 				StandardLogic sl(graphicProvider);
 				GameLogic *gl = &sl;
-				HumanPlayer p1(graphicProvider, 'X');
+				HumanPlayer p1(graphicProvider, 'O');
 				Player *hp1 = &p1;
-				MachinePlayer p2(gl,graphicProvider,'O');
+				MachinePlayer p2(gl,graphicProvider,'X');
 				Player *mp2 = &p2;
 				this->playOneMatch(gl,hp1, mp2);
 			}break;

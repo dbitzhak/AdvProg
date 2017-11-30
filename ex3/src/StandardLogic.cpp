@@ -120,10 +120,10 @@ void StandardLogic::playNextTurn(void) {
 
 Board StandardLogic::setBoard() {
 		this->myBoard = new Board(this->numRows, this->numCol);
-		this->myBoard->getCell(myBoard->getNumRows()/2 -1, myBoard->getNumRows()/2 - 1)->setValue('X');
-		myBoard->getCell(myBoard->getNumRows()/2, myBoard->getNumCol()/2)->setValue('X');
-		myBoard->getCell(myBoard->getNumRows()/2 -1, myBoard->getNumCol()/2)->setValue('O');
-		myBoard->getCell(myBoard->getNumRows()/2, myBoard->getNumRows()/2 - 1)->setValue('O');
+		this->myBoard->getCell(myBoard->getNumRows()/2 -1, myBoard->getNumRows()/2 - 1)->setValue('O');
+		myBoard->getCell(myBoard->getNumRows()/2, myBoard->getNumCol()/2)->setValue('O');
+		myBoard->getCell(myBoard->getNumRows()/2 -1, myBoard->getNumCol()/2)->setValue('X');
+		myBoard->getCell(myBoard->getNumRows()/2, myBoard->getNumRows()/2 - 1)->setValue('X');
 		return *(this->myBoard);
 }
 
