@@ -1,3 +1,9 @@
+/*
+ * HumanPlayer.cpp
+ *  Author: Daniel Ben Itzhak
+ *      338017437
+ */
+
 #include "HumanPlayer.h"
 #include <iostream>
 #include <limits>
@@ -8,29 +14,25 @@ using namespace std;
 HumanPlayer::HumanPlayer(const GraphicInterface *gi, char value) :graphicProvider(gi) {
 		setPlayerId(value);
 }
-
+HumanPlayer::HumanPlayer(): graphicProvider(NULL) {
+	setPlayerId('X');
+}
 
 pair<int, int> HumanPlayer::receivePlayerInput() {
-	 this->graphicProvider->displayMessage("Enter a number\n");
-	 this->graphicProvider->displayMessage("Row:");
-	 int num1 = getNumberFromUser();
-	 this->graphicProvider->displayMessage("Column:");
-	 this->graphicProvider->displayMessage("\n");
-
-	 int num2 = getNumberFromUser();
-	 return make_pair(num1, num2);
+	 this->graphicProvider->displayMessage("Enter a number(row,column):");
+	 return getNumberFromUser();
 }
 
 
-int HumanPlayer::getNumberFromUser() {
-    int num;
+pair<int, int> HumanPlayer::getNumberFromUser() {
+    int num1;
+    int num2;
+    char dummy;
     while (true) {
-
-        cin >> num;
-
+        cin >> num1 >> dummy >> num2;
         if (!cin.fail()) {
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //skip bad input
-            return num;
+            return make_pair(num1,num2);
         }
 
         // user didn't input a number

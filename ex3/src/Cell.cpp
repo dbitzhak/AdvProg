@@ -1,3 +1,9 @@
+/*
+ * Cell.cpp
+ *  Author: Daniel Ben Itzhak
+ *      338017437
+ */
+
 #include "Cell.h"
 #include <iostream>
 

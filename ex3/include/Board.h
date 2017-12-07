@@ -1,13 +1,24 @@
+/*
+ * Board.h
+ *  Author: Daniel Ben Itzhak
+ *      338017437
+ */
+
+
 #ifndef BOARD_H_
 #define BOARD_H_
 
 #include "Cell.h"
 #include <vector>
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/vector.hpp> //For the Cell  vector
 
+#include <iostream>
 
 class Board {
 
 	public:
+	Board();
 		/******************************************************
 		*Function name: Board()
 		*The input: row and column size, 8x8 is default
@@ -67,12 +78,19 @@ class Board {
 	private:
 		//Members
 		int numRows;
-		int numCol;
+		int numCols;
 		std::vector<Cell> _boardCells; //A vector of Cells
 		//Maps x&y coordinates to a single index
 		inline int index(int a, int b) {
-			return (a * (this->numCol) + b);
+			return (a * (this->numCols) + b);
 		};
+
+		// Allow serialization to access non-public data members
+		 friend class boost::serialization::access;
+		 template<class Archive>
+		 void serialize(Archive &ar, unsigned int version) {
+		 ar & _boardCells & numRows & numCols; // Serialize the data members of Board
+		 }
 
 };
 

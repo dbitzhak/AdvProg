@@ -1,3 +1,9 @@
+/*
+ * ConsoleGraphics.cpp
+ *  Author: Daniel Ben Itzhak
+ *      338017437
+ */
+
 #include "Board.h"
 #include "ConsoleGraphics.h"
 #include "Player.h"
@@ -55,7 +61,7 @@ void ConsoleGraphics::displayPlayer(Player *player) const {
 	if (player == 0) {
 		cout << "Congratulations to both players!\n" << "It was a tie." << endl;
 	} else {
-		cout << "Player(" << player->getPlayerIdChar() << ") " << endl;
+		cout << "Player(" << player->getPlayerIdChar() << ") ";
 	}
 }
 

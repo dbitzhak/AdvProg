@@ -1,9 +1,18 @@
+/*
+ * ConsoleGraṕhics.h
+ *  Author: Daniel Ben Itzhak
+ *      338017437
+ */
+
 #ifndef CONSOLEGRAPHICS_H_
 #define CONSOLEGRAPHICS_H_
 
 #include "GraphicInterface.h"
 #include "Player.h"
 #include <vector>
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/vector.hpp>
+#include <iostream>
 
 /******************************************************
  *
@@ -67,6 +76,13 @@ public:
 	*The function operation: Prints the number in a determined coordinate format
 	********************************************************/
 	virtual void displayCoordinate(int a, int b) const;
+
+	// Allow serialization to access non-public data members
+	 friend class boost::serialization::access;
+	 template<class Archive>
+	 void serialize(Archive &ar, unsigned int version) {
+			ar & boost::serialization::base_object<GraphicInterface>(*this); // Serialize the data members of HumanPlayer
+	 };
 };
 
 #endif /* CONSOLEGRAPHICS_H_ */

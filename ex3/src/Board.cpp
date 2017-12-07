@@ -1,3 +1,10 @@
+/*
+ * Board.cpp
+ *  Author: Daniel Ben Itzhak
+ *      338017437
+ */
+
+
 #include <iostream>
 #include <vector>
 
@@ -7,11 +14,11 @@
 using namespace std;
 
 
-Board::Board(int rows, int columns) : numRows(rows), numCol(columns) {
+Board::Board(int rows, int columns) : numRows(rows), numCols(columns) {
 	// Using a unary vector for safety/ inline practice
 	this->_boardCells = vector<Cell>();
 	for (int i = 0; i < this->numRows; i++ ) {
-			for (int j = 0; j < this->numCol; j++ ) { //Fills it with spaces
+			for (int j = 0; j < this->numCols; j++ ) { //Fills it with spaces
 				Cell c(i,j,' ');
 				this->_boardCells.push_back(c);
 			}
@@ -21,10 +28,10 @@ Board::Board(int rows, int columns) : numRows(rows), numCol(columns) {
 Board::Board(Board& oldBoard) {
 	char copyValue;
 	this->numRows = oldBoard.getNumRows();
-	this->numCol = oldBoard.getNumCol();
+	this->numCols = oldBoard.getNumCol();
 	this->_boardCells = vector<Cell>();
 		for (int i = 0; i < this->numRows; i++ ) {
-				for (int j = 0; j < this->numCol; j++ ) { //Fills it with spaces
+				for (int j = 0; j < this->numCols; j++ ) { //Fills it with spaces
 					copyValue =  oldBoard.getCellValue(i,j);
 					Cell c(i,j,copyValue);
 					this->_boardCells.push_back(c);
@@ -37,7 +44,7 @@ Board::Board(Board& oldBoard) {
 Cell *Board::getCell(int r, int c) {
 	//Checks if Cell inside the rowxcolumn space
 	if ((r >= 0) && (r < this->numRows) &&
-			(c >= 0) && (c < this->numCol)) {
+			(c >= 0) && (c < this->numCols)) {
 			return &this->_boardCells.at(index(r,c));
 	} else {
 		return 0;
@@ -46,7 +53,7 @@ Cell *Board::getCell(int r, int c) {
 
 
 int Board::getNumCol() const {
-	return this->numCol;
+	return this->numCols;
 }
 
 /*******************************************************************************************************************
@@ -62,7 +69,7 @@ int Board::getNumRows() const {
 
 char Board:: getCellValue(int r, int c) {
 	if ((r >= 0) && (r < this->numRows) &&
-				(c >= 0) && (c < this->numCol)) {
+				(c >= 0) && (c < this->numCols)) {
 				Cell temp = this->_boardCells.at(index(r,c));
 				return temp.getValue();
 		} else {

@@ -1,3 +1,9 @@
+/*
+ * Game.cpp
+ *  Author: Daniel Ben Itzhak
+ *      338017437
+ */
+
 #include "Game.h"
 #include "GraphicInterface.h"
 #include "ConsoleGraphics.h"

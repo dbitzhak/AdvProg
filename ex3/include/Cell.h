@@ -1,15 +1,25 @@
+/*
+ * Cell.h
+ *  Author: Daniel Ben Itzhak
+ *      338017437
+ */
+
 #ifndef CELL_H_
 #define CELL_H_
 
+#include <boost/serialization/access.hpp>
+#include <iostream>
+
 class Cell {
 	public:
+	Cell(): xCord(0), yCord(0), value(0) {}
 		/********************************************************************
 		*Function name: Cell()
 		*The input: row and column coordinates, the cell's character value.
 		*The output: Cell object
 		*The function operation: Cell Constructor
 		*********************************************************************/
-		Cell( int x, int y, char v = ' ');
+		Cell(int x, int y, char v = ' ');
 
 		/***********************************************************************
 		*Function name: isSameValue()
@@ -85,7 +95,17 @@ class Cell {
 		*******************************************************************************/
 		bool operator <(const Cell &compareCell) const;
 
+
+
 	private:
+
+		// Allow serialization to access non-public data members
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive &ar, unsigned int version) {
+			ar & value & xCord & yCord;
+		};
+
 		//Members
 		char value;
 		int xCord;

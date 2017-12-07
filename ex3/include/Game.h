@@ -1,3 +1,9 @@
+/*
+ * Game.h
+ *  Author: Daniel Ben Itzhak
+ *      338017437
+ */
+
 #ifndef GAME_H_
 #define GAME_H_
 

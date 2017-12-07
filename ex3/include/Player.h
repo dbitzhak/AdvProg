@@ -1,8 +1,15 @@
+/*
+ * Player.h
+ *  Author: Daniel Ben Itzhak
+ *      338017437
+ */
+
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
 #include "GraphicInterface.h"
 #include <utility>
+#include <boost/serialization/access.hpp>
 
 class GraphicInterface; //Necessary forward declaration due to cyclic nature
 
@@ -57,8 +64,15 @@ public:
 	void setPlayerId(char value);
 
 private:
+	// Allow serialization to access non-public data members
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive &ar, unsigned int version) {
+	ar & playerIdChar; // Serialize the data members of Player
+	};
 	//Members
 	char playerIdChar;
+
 };
 
 #endif /* PLAYER_H_ */
