@@ -14,25 +14,32 @@ using namespace std;
 HumanPlayer::HumanPlayer(const GraphicInterface *gi, char value) :graphicProvider(gi) {
 		setPlayerId(value);
 }
-HumanPlayer::HumanPlayer(): graphicProvider(NULL) {
+
+HumanPlayer::HumanPlayer() :graphicProvider(NULL) {
 	setPlayerId('X');
 }
 
 pair<int, int> HumanPlayer::receivePlayerInput() {
-	 this->graphicProvider->displayMessage("Enter a number(row,column):");
-	 return getNumberFromUser();
+	 this->graphicProvider->displayMessage("Enter a number\n");
+	 this->graphicProvider->displayMessage("Row:");
+	 int num1 = getNumberFromUser();
+	 this->graphicProvider->displayMessage("Column:");
+	 this->graphicProvider->displayMessage("\n");
+
+	 int num2 = getNumberFromUser();
+	 return make_pair(num1, num2);
 }
 
 
-pair<int, int> HumanPlayer::getNumberFromUser() {
-    int num1;
-    int num2;
-    char dummy;
+int HumanPlayer::getNumberFromUser() {
+    int num;
     while (true) {
-        cin >> num1 >> dummy >> num2;
+
+        cin >> num;
+
         if (!cin.fail()) {
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //skip bad input
-            return make_pair(num1,num2);
+            return num;
         }
 
         // user didn't input a number

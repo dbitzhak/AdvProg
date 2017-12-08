@@ -3,7 +3,7 @@
 #include <stdlib.h>
 using namespace std;
 
-int main() {
+int main_Server() {
 	Server server(8000);
 	try {
 		server.start();
@@ -11,4 +11,5 @@ int main() {
 		cout << "Cannot start server. Reason: " << msg << endl;
 		exit(-1);
 	}
+	return 0;
 }

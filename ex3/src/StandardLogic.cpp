@@ -96,7 +96,7 @@ void StandardLogic::playNextTurn(void) {
 			Cell dummy = Cell(playerChoice.first, playerChoice.second, ' ');
 			this->convertAndSpread(this->myBoard, dummy, currentPlayer);
 			this->graphicProvider->displayPlayer(currentPlayer);
-			this->graphicProvider->displayMessage("played: ");
+			this->graphicProvider->displayMessage(", played:\n");
 			this->graphicProvider->displayCoordinate(playerChoice.first, playerChoice.second);
 			this->graphicProvider->displayMessage("\n");
 			if (this->currentPlayer == this->player1) {
@@ -120,10 +120,10 @@ void StandardLogic::playNextTurn(void) {
 
 Board StandardLogic::setBoard() {
 		this->myBoard = new Board(this->numRows, this->numCol);
-		this->myBoard->getCell(myBoard->getNumRows()/2 -1, myBoard->getNumRows()/2 - 1)->setValue('X');
-		myBoard->getCell(myBoard->getNumRows()/2, myBoard->getNumCol()/2)->setValue('X');
-		myBoard->getCell(myBoard->getNumRows()/2 -1, myBoard->getNumCol()/2)->setValue('O');
-		myBoard->getCell(myBoard->getNumRows()/2, myBoard->getNumRows()/2 - 1)->setValue('O');
+		this->myBoard->getCell(myBoard->getNumRows()/2 -1, myBoard->getNumRows()/2 - 1)->setValue('O');
+		myBoard->getCell(myBoard->getNumRows()/2, myBoard->getNumCol()/2)->setValue('O');
+		myBoard->getCell(myBoard->getNumRows()/2 -1, myBoard->getNumCol()/2)->setValue('X');
+		myBoard->getCell(myBoard->getNumRows()/2, myBoard->getNumRows()/2 - 1)->setValue('X');
 		return *(this->myBoard);
 }
 
@@ -289,5 +289,7 @@ void StandardLogic::convertPath(vector<Cell> path, char value, Board *gameBoard)
 Board* StandardLogic::getBoard() const {
 	return this->myBoard;
 }
+
+
 
 

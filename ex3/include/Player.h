@@ -9,6 +9,7 @@
 
 #include "GraphicInterface.h"
 #include <utility>
+#include <utility>
 #include <boost/serialization/access.hpp>
 
 class GraphicInterface; //Necessary forward declaration due to cyclic nature
@@ -72,7 +73,6 @@ private:
 	};
 	//Members
 	char playerIdChar;
-
 };
 
 #endif /* PLAYER_H_ */

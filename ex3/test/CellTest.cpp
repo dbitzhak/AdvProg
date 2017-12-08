@@ -10,6 +10,7 @@
 #include "Cell.h"
 #include "gtest/gtest.h"
 
+//Tests coordinates
 TEST(CellTest, ReturnsCorrectCoordinatesAndSymbol) {
 	int x = 10;
 	int y = 5;
@@ -20,6 +21,7 @@ TEST(CellTest, ReturnsCorrectCoordinatesAndSymbol) {
 	ASSERT_EQ(symbol,c.getValue());
 }
 
+//Tests isSameValue
 TEST(CellTest, CorrectIsSameValue) {
 	int x = 10;
 	int y = 5;
@@ -29,6 +31,7 @@ TEST(CellTest, CorrectIsSameValue) {
 	ASSERT_EQ(c.isSameValue('U'), true);
 }
 
+//Tests sameCoord
 TEST(CellTest, CorrectSameCoord) {
 	int x = 10;
 	int y = 5;
@@ -40,7 +43,7 @@ TEST(CellTest, CorrectSameCoord) {
 	ASSERT_EQ(a.sameCoord(a), true);
 }
 
-
+//Tests < > and == for Cells
 TEST(CellTest, EqualMinorOperatorsWorking) {
 	int x = 10;
 	int y = 5;

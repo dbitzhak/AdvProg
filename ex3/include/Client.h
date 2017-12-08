@@ -13,19 +13,19 @@
 
 class Client {
 	public:
-		Client(const char *serverIP, int serverPort);
-		void connectToServer();
-		void chooseMenuOption();
-		void playMatch();
-		int sendExercise(int arg1, char op, int arg2);
+	 	 Client(const char *serverIP, int serverPort);
+	 	 void connectToServer();
+	 	 void chooseMenuOption();
+	 	 void playMatch();
+	int sendExercise(int arg1, char op, int arg2);
 	private:
-		bool makePlay();
-		void getOpponentPlay();
-		const char *serverIP;
-		int serverPort;
-		int clientSocket;
-		GraphicInterface *display;
-		Player *humanPlayer; //The Player
+	 	 bool makePlay();
+	 	 void getOpponentPlay();
+	 	 const char *serverIP;
+	 	 int serverPort;
+	 	 int clientSocket;
+	 	 GraphicInterface *display;
+	 	 Player *humanPlayer; //The Player
 
 };
 

@@ -3,7 +3,7 @@
 #include<stdlib.h>
 using namespace std;
 
-int main() {
+int main_Client() {
 	Client client("127.0.0.1", 8000);
 	try {
 		client.connectToServer();

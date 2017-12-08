@@ -79,13 +79,11 @@ int Client::sendExercise(int arg1, char op, int arg2) {
 }
 
 void Client::chooseMenuOption() {
-
-char *menuText;
-long n = read(clientSocket, &menuText, sizeof(menuText));
-if (n == -1) {
-		 throw "Error reading from menu";
-	 }
-
+	char *menuText;
+	long n = read(clientSocket, &menuText, sizeof(menuText));
+	if (n == -1) {
+			 throw "Error reading from menu";
+		 }
 }
 
 void Client::playMatch() {

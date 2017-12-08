@@ -77,11 +77,12 @@ public:
 	********************************************************/
 	virtual void displayCoordinate(int a, int b) const;
 
+private:
 	// Allow serialization to access non-public data members
 	 friend class boost::serialization::access;
 	 template<class Archive>
 	 void serialize(Archive &ar, unsigned int version) {
-			ar & boost::serialization::base_object<GraphicInterface>(*this); // Serialize the data members of HumanPlayer
+			ar & boost::serialization::base_object<GraphicInterface>(*this);; // Serialize the data members of HumanPlayer
 	 };
 };
 

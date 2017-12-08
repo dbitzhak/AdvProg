@@ -49,21 +49,20 @@ private:
 	/******************************************************
 	*Function name: getNumberFromUser()
 	*The input: None (Receives user input)
-	*The output: The received user's input (int pair)
+	*The output: The received user's input (int)
 	*The function operation: Roy's function
 	********************************************************/
-	std::pair<int, int> getNumberFromUser();
-
-
-	//Members
-	const GraphicInterface *graphicProvider;
-
+	int getNumberFromUser();
+	
 	// Allow serialization to access non-public data members
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive &ar, unsigned int version) {
-	ar & graphicProvider & boost::serialization::base_object<Player>(*this);; // Serialize the data members of HumanPlayer
-	}
+	ar & graphicProvider & boost::serialization::base_object<Player>(*this);// Serialize the data members of HumanPlayer
+	};
+	//Members
+	const GraphicInterface *graphicProvider;
+	
 };
 
 #endif /* HUMANPLAYER_H_ */

@@ -21,11 +21,11 @@ BOOST_CLASS_EXPORT(HumanPlayer);
 using namespace std;
 
 void serializePlayer(const Player &player, const char *fileName) {
- // Create an output archive
- ofstream out(fileName);
- boost::archive::text_oarchive outArchive(out);
- // Write object
- outArchive & player;
+	// Create an output archive
+	ofstream out(fileName);
+	boost::archive::text_oarchive outArchive(out);
+	// Write object
+	outArchive & player;
 }
 
 void serializePlayer(const HumanPlayer& player, const char* fileName) {
@@ -43,7 +43,7 @@ HumanPlayer deserializePlayer(const char *fileName) {
  // Load object
  HumanPlayer *hp;
  inArchive & hp;
- return hp;
+ return *hp;
 }
 
 void serializeBoard(const Board& b, const char* fileName) {
@@ -59,9 +59,9 @@ Board deserializeBoard(const char* fileName) {
 	 std::ifstream in(fileName);
 	 boost::archive::text_iarchive inArchive(in);
 	 // Load object
-	 HumanPlayer *hp;
-	 inArchive & hp;
-	 return hp;
+	 Board b;
+	 inArchive & b;
+	 return b;
 }
 
 void serializeConsoleGraphics(const ConsoleGraphics& cg, const char* fileName) {
@@ -79,5 +79,5 @@ ConsoleGraphics deserializeConsoleGraphics(const char* fileName) {
 	 // Load object
 	 ConsoleGraphics *cg;
 	 inArchive & cg;
-	 return cg;
+	 return *cg;
 }
