@@ -10,7 +10,6 @@
 
 #include "Player.h"
 #include "GraphicInterface.h"
-#include "Serialization.h"
 #include "GameLogic.h"
 #include "Board.h"
 #include <utility>
@@ -19,24 +18,13 @@ class Client {
 	public:
 	 	 Client(const char *serverIP, int serverPort);
 	 	 void connectToServer();
-	 	 void playMatch();
-	 	 int sendExercise(int arg1, char op, int arg2);
+	 	 void sendMove(char* buffer);
+	 	 string receiveMove();
 	private:
-
-	 	 void chooseMenuOption();
-	 	 void printCurrentBoard();
-	 	 void getPlayerMove();
-	 	 void makePlay(int xCoord, int yCoord, Player *p);
-	 	 void getOpponentMove();
 	 	 //Members
 	 	 const char *serverIP;
-	 	 Player* myPlayer;
-	 	 Player* opponentPlayer;
 	 	 int serverPort;
 	 	 int clientSocket;
-	 	 GraphicInterface *display;
-	 	 GameLogic* gameLogic;
-	 	 pair<int,int> convertInputToCoord(char *buffer);
 };
 
 #endif /* INCLUDE_CLIENT_H_ */

@@ -1,30 +1,34 @@
 /*
- * RemotePlayer.h
+ * LocalPlayer.h
  *
  *  Created on: Dec 10, 2017
  *      Author: dan
  */
 
-#ifndef INCLUDE_REMOTEPLAYER_H_
-#define INCLUDE_REMOTEPLAYER_H_
+#ifndef INCLUDE_LOCALPLAYER_H_
+#define INCLUDE_LOCALPLAYER_H_
 
 #include "Player.h"
-#include "GameLogic.h"
 #include "GraphicInterface.h"
 #include "Client.h"
-#include <iostream>
-#include <limits>
-#include <utility>
+#include "GameLogic.h"
 
-class RemotePlayer: public Player {
+#include <utility>
+#include <iostream>
+
+/******************************************************
+Implements/Inherits the Player abstract class
+********************************************************/
+class LocalPlayer: public Player {
+
 public:
 	/******************************************************
 	*Function name: LocalPlayer()
-	*The input: GameLogic gl, GraphicInterface gi, Client client, char to be used to identify the Player
-	*The output: RemotePlayer()
+	*The input: Client client,GameLogic gl and GraphicInterface derived classes, char to be used to identify the Player
+	*The output: LocalPlayer object
 	*The function operation: Constructor
 	********************************************************/
-	RemotePlayer(GameLogic *gl, Client network, const GraphicInterface *gi, char value);
+	LocalPlayer(GameLogic *gl, Client client, const GraphicInterface *gi, char value);
 
 	/******************************************************
 	*Function name: makeMove()
@@ -48,7 +52,9 @@ private:
 	//Members
 	const GraphicInterface *display;
 	Client client;
-	GameLogic* gameLogic;
+	GameLogic *gameLogic;
 };
 
-#endif /* INCLUDE_REMOTEPLAYER_H_ */
+
+
+#endif /* INCLUDE_LOCALPLAYER_H_ */

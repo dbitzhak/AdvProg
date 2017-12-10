@@ -11,7 +11,9 @@
 #include "Player.h"
 #include "HumanPlayer.h"
 #include "MachinePlayer.h"
-
+#include "LocalPlayer.h"
+#include "RemotePlayer.h"
+#include "Client.h"
 #include <iostream>
 #include <string>
 #include "StandardLogic.h"
@@ -26,9 +28,10 @@ void Game::start() {
 		while(gameLoop) {
 			//Prints the greetings for the menu
 			this->graphicProvider->displayMessage("Would you like to play:\n");
-			this->graphicProvider->displayMessage("Standard Game(1)\n");
-			this->graphicProvider->displayMessage("Special Rules(2)\n");
-			this->graphicProvider->displayMessage("Quit(3)\n");
+			this->graphicProvider->displayMessage("Against a friend(1)\n");
+			this->graphicProvider->displayMessage("Beat the Computer(2)\n");
+			this->graphicProvider->displayMessage("Face an Online Player(3)\n");
+			this->graphicProvider->displayMessage("Quit(4)\n");
 			int option;
 			cin >> option;
 			switch(option) {
@@ -50,15 +53,40 @@ void Game::start() {
 				Player *mp2 = &p2;
 				this->playOneMatch(gl,hp1, mp2);
 			}break;
-			case 3:{ //Breaks the game loop
+			case 3:{
+				StandardLogic sl(graphicProvider);
+				GameLogic *gl = &sl;
+				Player *p1;
+				Player *p2;
+				const char *serverIP;
+				int serverPort;
+				Client localClient(serverIP,serverPort);
+				localClient.connectToServer();
+				//Gets the Player order
+				string order = localClient.receiveMove();
+				if (order[0] == '1') {
+					LocalPlayer lp(gl, localClient, graphicProvider, 'X');
+					RemotePlayer rp(gl, localClient, graphicProvider, 'O');
+					Player *p1 = &lp;
+					Player *p2 = &rp;
+				} else {
+					LocalPlayer lp(gl, localClient, graphicProvider, 'O');
+					RemotePlayer rp(gl, localClient, graphicProvider, 'X');
+					Player *p1 = &rp;
+					Player *p2 = &lp;
+				}
+				this->playOneMatch(gl,p1, p2);
+				//Informs server game Ended
+				char gameOver[] = "End";
+				localClient.sendMove(gameOver);
+			}break;
+			case 4:{ //Breaks the game loop
 				gameLoop = false;
 			}break;
 			default:{
 					this->graphicProvider->displayMessage("Invalid option\n");
 			}break;
-
 		}
-
 	}
 }
 
@@ -70,7 +98,7 @@ void Game::playOneMatch(GameLogic* gl, Player* p1, Player* p2) {
 	Player *winner = gl->getWinner();
 	this->graphicProvider->displayMessage("Congratulations ");
 	this->graphicProvider->displayPlayer(winner);
-	this->graphicProvider->displayMessage("!\nYou are the winner!!!\n");
+	this->graphicProvider->displayMessage("!\nIs the winner!!!\n");
 	gl->endGame();
 }
 
