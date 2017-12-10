@@ -20,3 +20,5 @@ bool Player::operator <(const Player &comparePlayer) const {
 void Player::setPlayerId(char value) {
 	this->playerIdChar = value;
 }
+
+

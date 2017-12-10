@@ -33,7 +33,7 @@ void Server::start() {
 	 //Converts the unsigned short integer hostshort f/ host byte order to network byte order.
 	 serverAddress.sin_port = htons(port);
 	 //If binding fails throws exception
-	 if (bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
+	if (::bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
 		 throw "Error on binding";
 	 }
 	 // Start listening to incoming connections
@@ -41,27 +41,41 @@ void Server::start() {
 	 // Define the client socket's structures
 	 struct sockaddr_in clientAddress;
 	 socklen_t clientAddressLen = sizeof(clientAddress);
-
+	 //Accepting clients loop
 	 while (true) {
 		 cout << "Waiting for client connections..." << endl;
 		 // Accept a new client connection
-		 int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLen);
-		 cout << "Client connected" << endl;
-		 if (clientSocket == -1) {
+		 int clientSocket1 = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLen);
+		 cout << "First Client connected" << endl;
+		 if (clientSocket1 == -1) {
 			 throw "Error on accept";
 		 }
-		 handleClient(clientSocket);
+		 int clientSocket2 = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLen);
+		 cout << "First Client connected" << endl;
+		 if (clientSocket2 == -1) {
+					throw "Error on accept";
+		}
+		 handleClients(clientSocket1, clientSocket2);
 	  // Close communication with the client
-		 close(clientSocket);
+		 close(clientSocket1);
+		 close(clientSocket2);
+
 	}
 }
 // Handle requests from a specific client
+
+void Server::handleClients(int clientSocket1, int clientSocket2) {
+	while(true) {
+		handleClient(clientSocket1);
+		handleClient(clientSocket2);
+	}
+}
 void Server::handleClient(int clientSocket) {
   int arg1, arg2;
   char op;
   while (true) {
 	  // Read new exercise arguments
-	  int n = read(clientSocket, &arg1, sizeof(arg1));
+	  long n = read(clientSocket, &arg1, sizeof(arg1));
 	  if (n == -1) {
 		  cout << "Error reading arg1" << endl;
 		  return;

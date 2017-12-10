@@ -8,6 +8,8 @@
 #ifndef INCLUDE_SERVER_H_
 #define INCLUDE_SERVER_H_
 
+#include "Board.h"
+
 class Server {
 public:
  Server(int port);
@@ -16,6 +18,7 @@ public:
 private:
  int port;
  int serverSocket; // the socket's file descriptor
+ void handleClients(int clientSocket1, int clientSocket2);
  void handleClient(int clientSocket);
  int calc(int arg1, const char op, int arg2) const;
 };

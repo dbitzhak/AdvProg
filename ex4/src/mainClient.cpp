@@ -3,7 +3,7 @@
 #include<stdlib.h>
 using namespace std;
 
-int main_Client() {
+int mainClient() {
 	Client client("127.0.0.1", 8000);
 	try {
 		client.connectToServer();
@@ -18,12 +18,13 @@ int main_Client() {
 		cin >> num1 >> op >> num2;
 		cout << "Sending exercise: " << num1 << op << num2 << endl;
 		try {
-			int result = client.sendExercise(num1, op, num2);
-			cout << "Result: " << result << endl;
+//			int result = client.sendExercise(num1, op, num2);
+//			cout << "Result: " << result << endl;
 		} catch(const char* msg) {
 			cout << "Failed to send exercise to server. Reason: " << msg << endl;
 		}
 	}
+	return 0;
 }
 
 

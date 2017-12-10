@@ -11,7 +11,9 @@
 #include "Player.h"
 #include "HumanPlayer.h"
 #include "MachinePlayer.h"
-
+#include "LocalPlayer.h"
+#include "RemotePlayer.h"
+#include "Client.h"
 #include <iostream>
 #include <string>
 #include "StandardLogic.h"
@@ -25,10 +27,11 @@ void Game::start() {
 		this->graphicProvider->displayMessage("Welcome to Reversi!\n");
 		while(gameLoop) {
 			//Prints the greetings for the menu
-			this->graphicProvider->displayMessage("Would you like to play:\n");
-			this->graphicProvider->displayMessage("Standard Game(1)\n");
-			this->graphicProvider->displayMessage("Special Rules(2)\n");
-			this->graphicProvider->displayMessage("Quit(3)\n");
+			this->graphicProvider->displayMessage("Would you like to:\n");
+			this->graphicProvider->displayMessage("(1)Play against a friend\n");
+			this->graphicProvider->displayMessage("(2)Beat the Computer\n");
+			this->graphicProvider->displayMessage("(3)Face an Online Player\n");
+			this->graphicProvider->displayMessage("(4)Quit\n");
 			int option;
 			cin >> option;
 			switch(option) {
@@ -50,15 +53,44 @@ void Game::start() {
 				Player *mp2 = &p2;
 				this->playOneMatch(gl,hp1, mp2);
 			}break;
-			case 3:{ //Breaks the game loop
+			case 3:{
+				StandardLogic sl(graphicProvider);
+				GameLogic *gl = &sl;
+				Player *p1;
+				Player *p2;
+				const char *serverIP = "127.0.0.1";
+				int serverPort = 8000;
+				Client localClient(serverIP,serverPort);
+				
+				localClient.connectToServer();
+//				graphicProvider->displayMessage("Waiting for other player to join...\n");
+				//Gets the Player order
+				int order = localClient.receiveOrder();
+				cout << "received order " << order << "!" << endl;
+
+				if (order == '1') {
+					LocalPlayer lp(gl, localClient, graphicProvider, 'X');
+					RemotePlayer rp(gl, localClient, graphicProvider, 'O');
+					p1 = &lp;
+					p2 = &rp;
+				} else {
+					LocalPlayer lp(gl, localClient, graphicProvider, 'O');
+					RemotePlayer rp(gl, localClient, graphicProvider, 'X');
+					p1 = &rp;
+					p2 = &lp;
+				}
+				this->playOneMatch(gl,p1, p2);
+				//Informs server game Ended
+				char gameOver[] = "End";
+				localClient.sendMove(gameOver);
+			}break;
+			case 4:{ //Breaks the game loop
 				gameLoop = false;
 			}break;
 			default:{
 					this->graphicProvider->displayMessage("Invalid option\n");
 			}break;
-
 		}
-
 	}
 }
 

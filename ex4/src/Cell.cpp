@@ -29,7 +29,7 @@ bool Cell::isSameValue(char c) {
 
 
 void Cell::printCell() {
-	cout << "(" << this->xCord << ", " << this->yCord << ")";
+	cout << "(" << this->xCord << "," << this->yCord << ")";
 }
 
 

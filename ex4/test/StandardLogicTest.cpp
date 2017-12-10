@@ -24,14 +24,15 @@ TEST_F(StandardLogicTest, StartsBoardProperly) {
 	Player *mp1 = (Player*) p1;
 	Player *mp2 = (Player*) p2;
 	standardLogic->startGame(mp1, mp2);
+	ConsoleGraphics cg;
 	//Check if the board was filled correctly
 	Board dummyBoard(*(standardLogic->getBoard()));
 	for (int i = 0; i < dummyBoard.getNumRows(); i++) {
 			for (int j = 0; j < dummyBoard.getNumCol(); j++) {
 				if ((i == 3 && j == 4) || (i == 4 && j == 3)) {
-					ASSERT_EQ(dummyBoard.getCellValue(i,j), 'X');
-				} else if ((i == 3 && j == 3) || (i == 4 && j == 4)) {
 					ASSERT_EQ(dummyBoard.getCellValue(i,j), 'O');
+				} else if ((i == 3 && j == 3) || (i == 4 && j == 4)) {
+					ASSERT_EQ(dummyBoard.getCellValue(i,j), 'X');
 				} else {
 					ASSERT_EQ(dummyBoard.getCellValue(i,j), ' ');
 				}
@@ -76,37 +77,41 @@ TEST_F(StandardLogicTest, GetCorrectWinner) {
 	Board dummyBoard(*(standardLogic->getBoard()));
 		for (int i = 0; i < dummyBoard.getNumRows(); i++) {
 				for (int j = 0; j < dummyBoard.getNumCol(); j++) {
-					if (dummyBoard.getCellValue(i,j) == 'X') {
+					if (dummyBoard.getCellValue(i,j) == p1->getPlayerIdChar()) {
 						counterP1++;
-					} else if(dummyBoard.getCellValue(i,j) == 'O') {
+					} else if(dummyBoard.getCellValue(i,j) == p2->getPlayerIdChar()) {
 						counterP2++;
 					}
 				}
 		}
+	Player *winner;
+	winner = standardLogic->getWinner();
 	if(counterP2 > counterP1) {
-		EXPECT_EQ(p2,standardLogic->getWinner());
+		EXPECT_EQ(p2->getPlayerIdChar() == winner->getPlayerIdChar(),true);
 	} else if(counterP2 < counterP1) {
-		EXPECT_EQ(p1,standardLogic->getWinner());
+		EXPECT_EQ(p1->getPlayerIdChar() == winner->getPlayerIdChar(),true);
 	} else {
-		EXPECT_EQ(0,standardLogic->getWinner());
+		EXPECT_EQ(winner == 0,true);
 	}
+	standardLogic->endGame();
 }
 
 TEST_F(StandardLogicTest, ValidPositionsAreCorrect) {
 	//Starts the Board
-	GameLogic *gl = standardLogic;
 	Player *mp1 = p1;
 	Player *mp2 = p2;
 	standardLogic->startGame(mp1,mp2);
 	vector<Cell> positionsP1 = standardLogic->getValidPositions(mp1,standardLogic->getBoard());
 	vector<Cell> positionsP2 = standardLogic->getValidPositions(mp2,standardLogic->getBoard());
-	EXPECT_EQ((positionsP1[0].getXCord() == 2) && (positionsP1[1].getXCord() == 3), true);
-	EXPECT_EQ((positionsP1[0].getXCord() == 3) && (positionsP1[1].getXCord() == 2), true);
-	EXPECT_EQ((positionsP1[0].getXCord() == 4) && (positionsP1[1].getXCord() == 5), true);
-	EXPECT_EQ((positionsP1[0].getXCord() == 5) && (positionsP1[1].getXCord() == 4), true);
+
+	EXPECT_EQ((positionsP1[0].getXCord() == 2) && (positionsP1[0].getYCord() == 3), true);
+	EXPECT_EQ((positionsP1[1].getXCord() == 3) && (positionsP1[1].getYCord() == 2), true);
+	EXPECT_EQ((positionsP1[2].getXCord() == 4) && (positionsP1[2].getYCord() == 5), true);
+	EXPECT_EQ((positionsP1[3].getXCord() == 5) && (positionsP1[3].getYCord() == 4), true);
 	///For player2 now
-	EXPECT_EQ((positionsP2[0].getXCord() == 2) && (positionsP2[1].getXCord() == 4), true);
-	EXPECT_EQ((positionsP2[0].getXCord() == 3) && (positionsP2[1].getXCord() == 5), true);
-	EXPECT_EQ((positionsP2[0].getXCord() == 4) && (positionsP2[1].getXCord() == 2), true);
-	EXPECT_EQ((positionsP2[0].getXCord() == 5) && (positionsP2[1].getXCord() == 3), true);
+	EXPECT_EQ((positionsP2[0].getXCord() == 2) && (positionsP2[0].getYCord() == 4), true);
+	EXPECT_EQ((positionsP2[1].getXCord() == 3) && (positionsP2[1].getYCord() == 5), true);
+	EXPECT_EQ((positionsP2[2].getXCord() == 4) && (positionsP2[2].getYCord() == 2), true);
+	EXPECT_EQ((positionsP2[3].getXCord() == 5) && (positionsP2[3].getYCord() == 3), true);
+	standardLogic->endGame();
 	}

@@ -28,6 +28,7 @@ StandardLogic:: StandardLogic(const GraphicInterface* gi) {
 	this->player2 = 0;
 	this->myBoard = 0;
 	this->currentPlayer = 0;
+	this->lastPlay = make_pair(-1,-1);
 };
 StandardLogic:: ~StandardLogic() {
 }
@@ -73,12 +74,12 @@ Player* StandardLogic::getWinner(void) {
 }
 
 void StandardLogic::playNextTurn(void) {
+	this->graphicProvider->displayMessage("Current board:\n");
 	this->graphicProvider->displayBoard(*myBoard);
 	vector<Cell> validPositions = this->getValidPositions(this->currentPlayer, this->myBoard);
 	if(!validPositions.empty()) {
-		this->graphicProvider->displayMessage("It's ");
 		this->graphicProvider->displayPlayer(currentPlayer);
-		this->graphicProvider->displayMessage("turn, the available positions are:  ");
+		this->graphicProvider->displayMessage(": it's your move. \nYour possible moves: ");
 		this->graphicProvider->displayMoves(validPositions);
 		pair<int,int> playerChoice = currentPlayer->makeMove();
 		//Check for valid input
@@ -93,10 +94,11 @@ void StandardLogic::playNextTurn(void) {
 			this->graphicProvider->displayMessage("Invalid choice, try again!\n");
 			this->playNextTurn();
 		} else { //Valid choice
+			lastPlay = make_pair(playerChoice.first, playerChoice.second); //Saves the valid play
 			Cell dummy = Cell(playerChoice.first, playerChoice.second, ' ');
 			this->convertAndSpread(this->myBoard, dummy, currentPlayer);
 			this->graphicProvider->displayPlayer(currentPlayer);
-			this->graphicProvider->displayMessage(", played:\n");
+			this->graphicProvider->displayMessage(" played:\n");
 			this->graphicProvider->displayCoordinate(playerChoice.first, playerChoice.second);
 			this->graphicProvider->displayMessage("\n");
 			if (this->currentPlayer == this->player1) {
@@ -106,9 +108,7 @@ void StandardLogic::playNextTurn(void) {
 			}
 		}
 	} else {
-		this->graphicProvider->displayPlayer(currentPlayer);
-		this->graphicProvider->displayMessage("\n");
-		this->graphicProvider->displayMessage("You are out of plays!\n");
+		currentPlayer->outOfPlays();
 		if (this->currentPlayer == this->player1) {
 			this->currentPlayer = player2;
 		} else {
@@ -120,10 +120,10 @@ void StandardLogic::playNextTurn(void) {
 
 Board StandardLogic::setBoard() {
 		this->myBoard = new Board(this->numRows, this->numCol);
-		this->myBoard->getCell(myBoard->getNumRows()/2 -1, myBoard->getNumRows()/2 - 1)->setValue('O');
-		myBoard->getCell(myBoard->getNumRows()/2, myBoard->getNumCol()/2)->setValue('O');
-		myBoard->getCell(myBoard->getNumRows()/2 -1, myBoard->getNumCol()/2)->setValue('X');
-		myBoard->getCell(myBoard->getNumRows()/2, myBoard->getNumRows()/2 - 1)->setValue('X');
+		this->myBoard->getCell(myBoard->getNumRows()/2 -1, myBoard->getNumRows()/2 - 1)->setValue('X');
+		myBoard->getCell(myBoard->getNumRows()/2, myBoard->getNumCol()/2)->setValue('X');
+		myBoard->getCell(myBoard->getNumRows()/2 -1, myBoard->getNumCol()/2)->setValue('O');
+		myBoard->getCell(myBoard->getNumRows()/2, myBoard->getNumRows()/2 - 1)->setValue('O');
 		return *(this->myBoard);
 }
 
@@ -290,6 +290,11 @@ Board* StandardLogic::getBoard() const {
 	return this->myBoard;
 }
 
+pair<int,int> StandardLogic::getLastPlay(void) {
+	return this->lastPlay;
+}
 
 
-
+char StandardLogic::getCurrentPlayerId() {
+	return this->currentPlayer->getPlayerIdChar();
+}

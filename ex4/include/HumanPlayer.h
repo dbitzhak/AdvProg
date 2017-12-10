@@ -10,7 +10,6 @@
 #include "Player.h"
 #include "GraphicInterface.h"
 #include <utility>
-#include <boost/serialization/access.hpp>
 #include <iostream>
 
 /******************************************************
@@ -18,7 +17,7 @@ Implements/Inherits the Player abstract class
 ********************************************************/
 class HumanPlayer: public Player {
 public:
-
+	HumanPlayer();
 	/******************************************************
 	*Function name: HumanPlayer()
 	*The input: GraphicInterface derived class, char to be used to identify the Player
@@ -54,12 +53,15 @@ private:
 	********************************************************/
 	int getNumberFromUser();
 	
-	// Allow serialization to access non-public data members
-	friend class boost::serialization::access;
-	template<class Archive>
-	void serialize(Archive &ar, unsigned int version) {
-	ar & graphicProvider & boost::serialization::base_object<Player>(*this);// Serialize the data members of HumanPlayer
-	};
+	/******************************************************
+	*Function name: outOfPlays()
+	*The input: None
+	*The output: None
+	*The function operation: informs the player it is out of plays
+	********************************************************/
+	virtual void outOfPlays();
+
+
 	//Members
 	const GraphicInterface *graphicProvider;
 	

@@ -10,7 +10,7 @@
 #include "GraphicInterface.h"
 #include <utility>
 #include <utility>
-#include <boost/serialization/access.hpp>
+
 
 class GraphicInterface; //Necessary forward declaration due to cyclic nature
 
@@ -64,13 +64,16 @@ public:
 	********************************************************/
 	void setPlayerId(char value);
 
+	/******************************************************
+	*Function name: outOfPlays()
+	*The input: None
+	*The output: None
+	*The function operation: informs the player it is out of plays
+	********************************************************/
+	virtual void outOfPlays() = 0;
+
 private:
-	// Allow serialization to access non-public data members
-	friend class boost::serialization::access;
-	template<class Archive>
-	void serialize(Archive &ar, unsigned int version) {
-	ar & playerIdChar; // Serialize the data members of Player
-	};
+
 	//Members
 	char playerIdChar;
 };

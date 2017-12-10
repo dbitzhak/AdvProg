@@ -6,6 +6,9 @@
  */
 
 #include "Client.h"
+#include "Board.h"
+#include "Cell.h"
+#include <stdio.h>
 #include <iostream>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -13,12 +16,13 @@
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>
+#include <utility>
+#include <string>
+
 using namespace std;
 
 Client::Client(const char *serverIP, int serverPort): serverIP(serverIP), serverPort(serverPort), clientSocket(0) {
 	 cout << "Client" << endl;
-	 humanPlayer  = 0;
-	 display = 0;
 	}
 
 void Client::connectToServer() {
@@ -54,45 +58,36 @@ void Client::connectToServer() {
 	  cout << "Connected to server" << endl;
 	 }
 
-
-int Client::sendExercise(int arg1, char op, int arg2) {
-	 // Write the exercise arguments to the socket
-	 int n = write(clientSocket, &arg1, sizeof(arg1));
-	 if (n == -1) {
-		 throw "Error writing arg1 to socket";
-	 }
-	 n = write(clientSocket, &op, sizeof(op));
-	 if (n == -1) {
-		 throw "Error writing op to socket";
-	 }
-	 n = write(clientSocket, &arg2, sizeof(arg2));
-	 if (n == -1) {
-		 throw "Error writing arg2 to socket";
-	 }
-	 // Read the result from the server
-	 int result;
-	 n = read(clientSocket, &result, sizeof(result));
-	 if (n == -1) {
-		 throw "Error reading result from socket";
-	 }
-	 return result;
+void Client::sendMove(char* buffer) {
+	//Sends input to Server
+	long n = write(clientSocket, &buffer, sizeof(buffer));
+	if (n == -1) {
+		throw "Error sending player's move";
+	}
 }
 
-void Client::chooseMenuOption() {
-
-char *menuText;
-int n = read(clientSocket, &menuText, sizeof(menuText));
-if (n == -1) {
-		 throw "Error reading from menu";
-	 }
-
+int Client::receiveOrder() {
+	int order;
+	long n = read(clientSocket, &order, sizeof(order));
+	if (n == -1) {
+		throw "Error reading result from socket";
+	}
+	return order;
 }
 
-void Client::playMatch() {
+string Client::receiveMove() {
+	// Read the result from the server
+	char buffer[17];
+	//Fills/Empties the buffer
+	for (unsigned int j = 0; j < (sizeof(buffer)/sizeof(char)); j++) {
+			buffer[j] = '\0';
+	}
+	long n = read(clientSocket, &buffer, sizeof(buffer));
+	if (n == -1) {
+		throw "Error reading result from socket";
+	}
+	string move(buffer);
+	return move;
 }
 
-bool Client::makePlay() {
-}
 
-void Client::getOpponentPlay() {
-}

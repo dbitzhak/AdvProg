@@ -7,7 +7,7 @@
 #ifndef CELL_H_
 #define CELL_H_
 
-#include <boost/serialization/access.hpp>
+
 #include <iostream>
 
 class Cell {
@@ -96,13 +96,6 @@ public:
 	bool operator <(const Cell &compareCell) const;
 	
 private:
-	
-	// Allow serialization to access non-public data members
-	friend class boost::serialization::access;
-	template<class Archive>
-	void serialize(Archive &ar, unsigned int version) {
-		ar & value & xCord & yCord;
-	};
 	//Members
 	char value;
 	int xCord;

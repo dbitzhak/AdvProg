@@ -10,22 +10,22 @@
 
 #include "Player.h"
 #include "GraphicInterface.h"
+#include "GameLogic.h"
+#include "Board.h"
+#include <utility>
 
 class Client {
 	public:
 	 	 Client(const char *serverIP, int serverPort);
 	 	 void connectToServer();
-	 	 void chooseMenuOption();
-	 	 void playMatch();
+	 	 void sendMove(char* buffer);
+		int receiveOrder();
+	 	 string receiveMove();
 	private:
-	 	 bool makePlay();
-	 	 void getOpponentPlay();
+	 	 //Members
 	 	 const char *serverIP;
 	 	 int serverPort;
 	 	 int clientSocket;
-	 	 GraphicInterface *display;
-	 	 Player *humanPlayer; //The Player
-
 };
 
 #endif /* INCLUDE_CLIENT_H_ */

@@ -10,8 +10,7 @@
 
 #include "Cell.h"
 #include <vector>
-#include <boost/serialization/access.hpp>
-#include <boost/serialization/vector.hpp> //For the Cell  vector
+
 
 #include <iostream>
 
@@ -83,12 +82,7 @@ private:
 	inline int index(int a, int b) {
 		return (a * (this->numCol) + b);
 	};
-	// Allow serialization to access non-public data members
-	friend class boost::serialization::access;
-	template<class Archive>
-	void serialize(Archive &ar, unsigned int version) {
-		ar & _boardCells & numRows & numCol; // Serialize the data members of Board
-	};
+
 	
 };
 

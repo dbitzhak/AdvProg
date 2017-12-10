@@ -59,6 +59,14 @@ private:
 	********************************************************/
 	int findOpponentMaxCells(Board targetBoard);
 
+	/******************************************************
+	*Function name: outOfPlays()
+	*The input: None
+	*The output: None
+	*The function operation: informs the player it is out of plays
+	********************************************************/
+	virtual void outOfPlays();
+
 
 	//Members
 	const GraphicInterface *graphicProvider;

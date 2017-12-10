@@ -27,12 +27,7 @@ public:
 	virtual void displayMessage(std::string message) const = 0;
 	virtual void displayPlayer(Player *player) const = 0;
 	virtual void displayCoordinate(int a, int b) const = 0;
-	
-private:
-	// Allow serialization to access non-public data members
-	friend class boost::serialization::access;
-	template<class Archive>
-	void serialize(Archive &ar, unsigned int version) {};
+
 };
 
 #endif /* GRAPHICINTERFACE_H_ */
