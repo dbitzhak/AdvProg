@@ -5,6 +5,7 @@
  */
 
 #include "HumanPlayer.h"
+#include "GraphicInterface.h"
 #include <iostream>
 #include <limits>
 #include <utility>
@@ -23,9 +24,8 @@ pair<int, int> HumanPlayer::receivePlayerInput() {
 	 this->graphicProvider->displayMessage("Enter a number\n");
 	 this->graphicProvider->displayMessage("Row:");
 	 int num1 = getNumberFromUser();
-	 this->graphicProvider->displayMessage("Column:");
+	 this->graphicProvider->displayMessage(" Column:");
 	 this->graphicProvider->displayMessage("\n");
-
 	 int num2 = getNumberFromUser();
 	 return make_pair(num1, num2);
 }
@@ -53,3 +53,7 @@ pair<int, int> HumanPlayer::makeMove() {
 	return this->receivePlayerInput();
 }
 
+void HumanPlayer::outOfPlays() {
+	this->graphicProvider->displayPlayer(this);
+	this->graphicProvider->displayMessage("\nYou are out of plays!\n");
+}

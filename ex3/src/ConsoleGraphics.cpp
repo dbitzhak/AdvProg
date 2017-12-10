@@ -61,7 +61,7 @@ void ConsoleGraphics::displayPlayer(Player *player) const {
 	if (player == 0) {
 		cout << "Congratulations to both players!\n" << "It was a tie." << endl;
 	} else {
-		cout << "Player(" << player->getPlayerIdChar() << ") " << endl;
+		cout << "Player(" << player->getPlayerIdChar() << ")";
 	}
 }
 

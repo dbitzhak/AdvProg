@@ -54,6 +54,14 @@ private:
 	********************************************************/
 	int getNumberFromUser();
 	
+	/******************************************************
+	*Function name: outOfPlays()
+	*The input: None
+	*The output: None
+	*The function operation: informs the player it is out of plays
+	********************************************************/
+	virtual void outOfPlays();
+
 	// Allow serialization to access non-public data members
 	friend class boost::serialization::access;
 	template<class Archive>

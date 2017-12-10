@@ -77,9 +77,9 @@ TEST_F(StandardLogicTest, GetCorrectWinner) {
 	Board dummyBoard(*(standardLogic->getBoard()));
 		for (int i = 0; i < dummyBoard.getNumRows(); i++) {
 				for (int j = 0; j < dummyBoard.getNumCol(); j++) {
-					if (dummyBoard.getCellValue(i,j) == 'X') {
+					if (dummyBoard.getCellValue(i,j) == p1->getPlayerIdChar()) {
 						counterP1++;
-					} else if(dummyBoard.getCellValue(i,j) == 'O') {
+					} else if(dummyBoard.getCellValue(i,j) == p2->getPlayerIdChar()) {
 						counterP2++;
 					}
 				}
@@ -89,7 +89,7 @@ TEST_F(StandardLogicTest, GetCorrectWinner) {
 	if(counterP2 > counterP1) {
 		EXPECT_EQ(p2->getPlayerIdChar() == winner->getPlayerIdChar(),true);
 	} else if(counterP2 < counterP1) {
-		EXPECT_EQ(p2->getPlayerIdChar() == winner->getPlayerIdChar(),true);
+		EXPECT_EQ(p1->getPlayerIdChar() == winner->getPlayerIdChar(),true);
 	} else {
 		EXPECT_EQ(winner == 0,true);
 	}

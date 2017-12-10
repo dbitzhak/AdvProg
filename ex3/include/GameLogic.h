@@ -13,6 +13,7 @@
 #include "Cell.h"
 #include <vector>
 #include <map>
+#include <utility>
 
 using namespace std;
 
@@ -31,7 +32,8 @@ public:
 	virtual Board* getBoard() const = 0;
 	virtual vector<Cell> getValidPositions(Player *player, Board *gameBoard) = 0;
 	virtual void convertAndSpread(Board *gameBoard, Cell start, Player *player) = 0; //Makes the move and convert the necessary enemy cells
-
+	virtual pair<int,int> getLastPlay(void) = 0;
+	virtual char getCurrentPlayerId() = 0;
 
 private:
 	// Game Play actions

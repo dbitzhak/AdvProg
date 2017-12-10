@@ -64,6 +64,14 @@ public:
 	********************************************************/
 	void setPlayerId(char value);
 
+	/******************************************************
+	*Function name: outOfPlays()
+	*The input: None
+	*The output: None
+	*The function operation: informs the player it is out of plays
+	********************************************************/
+	virtual void outOfPlays() = 0;
+
 private:
 	// Allow serialization to access non-public data members
 	friend class boost::serialization::access;

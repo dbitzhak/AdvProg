@@ -95,3 +95,8 @@ int MachinePlayer::findOpponentMaxCells(Board targetBoard) {
 	return bestMoveScore;
 
 }
+
+void MachinePlayer::outOfPlays() {
+		this->graphicProvider->displayPlayer(this);
+		this->graphicProvider->displayMessage("\nYou are out of plays!\n");
+	}

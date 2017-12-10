@@ -108,6 +108,25 @@ public:
 	for converting the valid pieces transformed by its change of state.
 	********************************************************/
 	void convertAndSpread(Board *gameBoard,Cell start,Player *player);
+
+	/******************************************************
+	*Function name: getLastPlay()
+	*The input: None
+	*The output: The int pair representing the last played made in terms of x,y coordinates.
+	*The function operation: Returns a previously stored int pair.
+	********************************************************/
+	virtual pair<int,int> getLastPlay(void);
+
+
+	/******************************************************
+	*Function name: getCurrentPlayerId()
+	*The input: None
+	*The output: The char representing the current player.
+	*The function operation: Returns the current player id.
+	********************************************************/
+	virtual char getCurrentPlayerId();
+
+
 private:
 	// Game Play actions
 
@@ -234,6 +253,7 @@ private:
 	const GraphicInterface *graphicProvider;
 	int numRows;
 	int numCol;
+	pair<int,int> lastPlay;
 };
 
 
