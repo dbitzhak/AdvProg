@@ -1,10 +1,3 @@
-/*
- * GameLogic.h
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
-
 #ifndef GAMELOGIC_H_
 #define GAMELOGIC_H_
 
@@ -34,7 +27,7 @@ public:
 	virtual void convertAndSpread(Board *gameBoard, Cell start, Player *player) = 0; //Makes the move and convert the necessary enemy cells
 	virtual pair<int,int> getLastPlay(void) = 0;
 	virtual char getCurrentPlayerId() = 0;
-
+	virtual void stopMatch() = 0;
 private:
 	// Game Play actions
 	virtual bool isPositionValid(Cell c, Player *player, Board *gameBoard) = 0;

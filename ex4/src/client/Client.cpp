@@ -21,9 +21,12 @@
 
 using namespace std;
 
-Client::Client(const char *serverIP, int serverPort): serverIP(serverIP), serverPort(serverPort), clientSocket(0) {
-	 cout << "Client" << endl;
-	}
+Client::Client(const char *serverIP, int serverPort): serverIP(serverIP), serverPort(serverPort), clientSocket(0) {}
+
+Client::Client(): {
+	serverIP(getIP("clientconfig.txt"));
+	serverPort(getPort("clientconfig.txt"));
+}
 
 void Client::connectToServer() {
 	 // Create a socket point
@@ -58,9 +61,13 @@ void Client::connectToServer() {
 	  cout << "Connected to server" << endl;
 	 }
 
-void Client::sendMove(char* buffer) {
+void Client::sendMove(pair<int,int> move) {
 	//Sends input to Server
-	long n = write(clientSocket, &buffer, sizeof(buffer));
+	long n = write(clientSocket, &move.first, sizeof(move.first));
+	if (n == -1) {
+		throw "Error sending player's move";
+	}
+	n = write(clientSocket, &move.second, sizeof(move.second));
 	if (n == -1) {
 		throw "Error sending player's move";
 	}
@@ -75,19 +82,52 @@ int Client::receiveOrder() {
 	return order;
 }
 
-string Client::receiveMove() {
+pair<int,int> Client::receiveMove() {
 	// Read the result from the server
-	char buffer[17];
-	//Fills/Empties the buffer
-	for (unsigned int j = 0; j < (sizeof(buffer)/sizeof(char)); j++) {
-			buffer[j] = '\0';
-	}
-	long n = read(clientSocket, &buffer, sizeof(buffer));
+	int x, y;
+	
+	long n = read(clientSocket, &x, sizeof(x));
 	if (n == -1) {
 		throw "Error reading result from socket";
 	}
-	string move(buffer);
-	return move;
+	n = read(clientSocket, &y, sizeof(y));
+	if (n == -1) {
+		throw "Error reading result from socket";
+	}
+	return make_pair(x, y);
 }
 
+string Client::getIP(const char* file) {
+	ifstream infile;
+	
+	infile.open(file);
+	if (!infile) {
+		cout << "error opening file";
+	}
+	
+	char ip[13];
+	infile >> ip;
+	ip[12] = '\0';
+	
+	infile.close();
+	return ip;
+}
 
+int Client::getPort(const char* file) {
+	ifstream infile;
+	
+	infile.open(file);
+	if (!infile) {
+		cout << "error opening file";
+	}
+	
+	char buffer[20], port[5];
+	infile >> buffer >> port;
+	port[4] = '\0';
+	infile.close();
+	
+	stringstream s(port);
+	int p = 0;
+	s >> p;
+	return p;
+}

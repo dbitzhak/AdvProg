@@ -1,9 +1,3 @@
-/*
- * StandardLogic.h
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
 #ifndef STANDARDLOGIC_H_
 #define STANDARDLOGIC_H_
 
@@ -243,7 +237,8 @@ private:
 	*The function operation: Looks for valid paths to Cells and then calls convertPath on them.
 	********************************************************/
 	void propagateConversion(Cell start, Board *gameBoard);
-
+	
+	void stopMatch();
 
 	//Members
 	Board* myBoard;
@@ -254,6 +249,7 @@ private:
 	int numRows;
 	int numCol;
 	pair<int,int> lastPlay;
+	bool matchRunning;
 };
 
 

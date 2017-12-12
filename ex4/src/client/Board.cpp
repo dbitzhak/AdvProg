@@ -94,6 +94,9 @@ char Board:: getCellValue(int r, int c) {
  *The output: Sets the cell value to the given char
  *The function operation: Access and modifies Cell through setter.
  ********************************************************************************************************************/
-void Board::setCell(int row, int col, char set) {
-	(this->_boardCells.at(index(row,col))).setValue(set);
+void Board::setCell(int r, int c, char set) {
+	if ((r >= 0) && (r < this->numRows) &&
+		(c >= 0) && (c < this->numCol)) {
+		(this->_boardCells.at(index(r,c))).setValue(set);
+	}
 }

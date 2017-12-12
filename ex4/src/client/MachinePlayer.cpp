@@ -17,6 +17,10 @@ graphicProvider(gi), currentGameLogic(gl) {
 
 
 std::pair<int, int> MachinePlayer::makeMove() {
+	//Print moves
+	graphicProvider->displayMessage("It's");
+	graphicProvider->displayPlayer(this);
+	graphicProvider->displayMessage("'s turn\n");
 	return findBestMove();
 }
 

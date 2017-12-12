@@ -22,8 +22,7 @@ gameLogic(gl){
 }
 
 void LocalPlayer::outOfPlays() {
-	char buffer[] ="NoMove";
-	client.sendMove(buffer);
+	client.sendMove(make_pair(-1, -1));
 }
 
 pair<int, int> LocalPlayer::convertInputToCoord(char* buffer) {
@@ -34,9 +33,6 @@ pair<int, int> LocalPlayer::convertInputToCoord(char* buffer) {
 		if (index == string::npos) {
 			//Gets the string up to delimiter '\0'
 			string message = receivedText.substr(0, receivedText.find('\0'));
-			if(message.compare("NoMove") == 0) {
-				return make_pair(-1,-1);
-			}
 		}
 		//Get coordinates
 		string xCoord = receivedText.substr(0,index);
@@ -55,6 +51,10 @@ pair<int,int> LocalPlayer::makeMove() {
 	//Get Valid Plays
 	vector<Cell> validMoves;
 	validMoves = gameLogic->getValidPositions(this, gameLogic->getBoard());
+	//Print moves
+	display->displayPlayer(this);
+	display->displayMessage(": it's your move. \nYour possible moves: ");
+	display->displayMoves(validMoves);
 	//	creates and fills buffer
 	char buffer[17];
 	//Check if its valid input
@@ -74,11 +74,11 @@ pair<int,int> LocalPlayer::makeMove() {
 			if ((validMoves[i].getXCord() == playerInput.first) && (validMoves[i].getYCord() ==  playerInput.second)) {
 				validChoice = true;
 				//Sends the move to the server
-				client.sendMove(buffer);
-
+				client.sendMove(playerInput);
+				return playerInput;
 			}
 		}
-		display->displayMessage("Invalid input!\n ");
+		display->displayMessage("Invalid input!\n");
 	}
 	return playerInput;
 }

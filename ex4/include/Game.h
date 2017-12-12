@@ -1,9 +1,3 @@
-/*
- * Game.h
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
 #ifndef GAME_H_
 #define GAME_H_
 
@@ -51,6 +45,10 @@ private:
 	*The function operation: Starts the match loop, for the specific players and GameLogic derived class
 	********************************************************/
 	void playOneMatch(GameLogic* gl, Player* p1, Player* p2);
+	
+	string getIP();
+	
+	int getPort();
 
 	// Unimplemented - void startOver(); //restarts match
 	//Members

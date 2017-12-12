@@ -1,10 +1,3 @@
-/*
- * RemotePlayer.h
- *
- *  Created on: Dec 10, 2017
- *      Author: dan
- */
-
 #ifndef INCLUDE_REMOTEPLAYER_H_
 #define INCLUDE_REMOTEPLAYER_H_
 

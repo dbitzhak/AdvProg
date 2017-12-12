@@ -1,10 +1,3 @@
-/*
- * StandardLogicTest.h
- *
- *  Created on: Nov 26, 2017
- *      Author: dan
- */
-
 #ifndef TEST_STANDARDLOGICTEST_H_
 #define TEST_STANDARDLOGICTEST_H_
 

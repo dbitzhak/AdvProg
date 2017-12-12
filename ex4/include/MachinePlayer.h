@@ -1,10 +1,3 @@
-/*
- * MachinePlayer.h
- *
- *  Created on: Nov 18, 2017
- *      Author: dan
- */
-
 #ifndef MACHINEPLAYER_H_
 #define MACHINEPLAYER_H_
 

@@ -1,12 +1,3 @@
-/*
- * CellTest.cpp
- *
- *  Created on: Nov 29, 2017
- *      Author: dan
- */
-
-
-
 #include "Cell.h"
 #include "gtest/gtest.h"
 

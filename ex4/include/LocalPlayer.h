@@ -1,10 +1,3 @@
-/*
- * LocalPlayer.h
- *
- *  Created on: Dec 10, 2017
- *      Author: dan
- */
-
 #ifndef INCLUDE_LOCALPLAYER_H_
 #define INCLUDE_LOCALPLAYER_H_
 
@@ -46,8 +39,12 @@ private:
 	*The function operation: Informs the player it is out of plays
 	********************************************************/
 	virtual void outOfPlays();
-
-
+	/******************************************************
+	 *Function name: convertInputToCoord(char* buffer)
+	 *The input: char* 
+	 *The output: pair of ints
+	 *The function operation: Converts char* input to a pair of ints
+	 ********************************************************/
 	pair<int, int> convertInputToCoord(char* buffer);
 	//Members
 	const GraphicInterface *display;
