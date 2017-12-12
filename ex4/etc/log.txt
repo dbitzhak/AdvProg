@@ -1,0 +1,35 @@
+commit b86ed34f700754fece7daf050811bdb7fbef2136
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Mon Dec 11 01:24:42 2017 +0200
+
+    Client-Server integration fixes
+
+commit dda55c90fc821f46f2b0c30625d0004c43d2f5c6
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Thu Dec 7 23:11:50 2017 +0200
+
+    File update
+
+commit 967bb252a6ba1339ddf05f89b867aa5e0efb61e3
+Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
+Date:   Thu Dec 7 08:48:56 2017 +0200
+
+    Renamed for ex4, new serialization class included.
+
+commit 30a7eafbbb1bebc3b1e486fa05252df4e7a74198
+Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
+Date:   Thu Nov 30 00:05:51 2017 +0200
+
+    Merge testAdded branch
+
+commit 35c1b78dacef0e68654fd1fc123f3eb38e388f93
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Wed Nov 29 23:42:28 2017 +0200
+
+    Updated with tests and comments
+
+commit ceb140bf6a18a65aeee34d4d8a4d7b1d554dffdc
+Author: Daniel Ben Itzhak <dan@argonaut.Dlink>
+Date:   Sat Nov 25 13:54:54 2017 +0200
+
+    First version of ex3 with simple Machine Player implementation.
