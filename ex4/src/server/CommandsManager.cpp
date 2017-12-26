@@ -14,13 +14,15 @@
 #include "PlayCommand.h"
 #include "CloseCommand.h"
 
+
 CommandsManager::CommandsManager() {
+	gameInfo = new GameInfo();
 	commandsMap["print"] = new PrintCommand();
-	commandsMap["start"] = new StartCommand();
-	commandsMap["list_games"] = new ListGamesCommand();
-	commandsMap["join"] = new JoinCommand();
+	commandsMap["start"] = new StartCommand(gameInfo);
+	commandsMap["list_games"] = new ListGamesCommand(gameInfo);
+	commandsMap["join"] = new JoinCommand(gameInfo);
 	commandsMap["play"] = new PlayCommand();
-	commandsMap["close"] = new CloseCommand();
+	commandsMap["close"] = new CloseCommand(gameInfo);
 }
 
 void CommandsManager::executeCommand(string command, vector<string> args) {

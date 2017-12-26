@@ -9,38 +9,25 @@
 #ifndef StartCommand_h
 #define StartCommand_h
 #include "Command.h"
+#include "GameInfo.h"
 #include <iostream>
 #include <list>
 
 class StartCommand: public Command {
 public:
+	StartCommand(GameInfo *gameInfo);
 	virtual void execute(vector<string> args) {
-		for(int i = 0; i < gameList.size(); i++) {
-			if(gameList[i] == args[0]) {
-				
-			}
+		if(gameInfo->isInGameList(args[0])) {
+			throw "Could not add name to game list";
 		}
-		gameList.push_back(args[0]);
-		waitingList.push_back(args[0]);
+		gameInfo->addToWaitingList(args[0]);
+		gameInfo->addToGameList(args[0]);
 	}
 
-	
-	//return a list of games that the player can join (that only one player is currently in)
-	virtual list<string> listGames() {
-		return waitingList;
-	}
-	
-	void removeFromWaitingList(string name) {
-		try {
-			waitingList.remove(name);
-		} catch(exception e) {
-			throw "Could not remove name from waiting list";
-		}
-	}
-	
 private:
+	GameInfo *gameInfo;
 	vector<string> gameList;
-	list<string> waitingList;
+	vector<string> waitingList;
 };
 
 #endif /* StartCommand_h */

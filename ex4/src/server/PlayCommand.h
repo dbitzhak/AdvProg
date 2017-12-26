@@ -9,6 +9,7 @@
 #ifndef PlayCommand_h
 #define PlayCommand_h
 #include "Command.h"
+#include "GameInfo.h"
 #include <iostream>
 
 class PlayCommand: public Command {

@@ -11,6 +11,7 @@
 
 #include <map>
 #include "Command.h"
+#include "GameInfo.h"
 
 class CommandsManager {
 public:
@@ -19,6 +20,7 @@ public:
 	void executeCommand(string command, vector<string> args);
 private:
 	map<string, Command *> commandsMap;
+	GameInfo *gameInfo;
 };
 
 #endif /* CommandsManager_h */

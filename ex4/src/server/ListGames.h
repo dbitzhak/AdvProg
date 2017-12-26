@@ -15,6 +15,8 @@
 
 class ListGamesCommand: public Command {
 public:
+	ListGamesCommand(GameInfo *gameInfo);
+	
 	virtual void execute(vector<string> args) {
 		for(int i = 0; i < gameList.size(); i++) {
 			if(gameList[i] == args[0]) {
@@ -40,6 +42,7 @@ public:
 	}
 	
 private:
+	GameInfo *gameInfo;
 	vector<string> gameList;
 	list<string> waitingList;
 };

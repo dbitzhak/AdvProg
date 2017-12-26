@@ -9,16 +9,22 @@
 #ifndef JoinCommand_h
 #define JoinCommand_h
 #include "Command.h"
+#include "GameInfo.h"
 #include <iostream>
 
 class JoinCommand: public Command {
 public:
+	JoinCommand(GameInfo *gameInfo);
+	
 	virtual void execute(vector<string> args) {
-		for(int i = 0; i < args.size(); i++) {
-			cout << args[i] << " ";
+		if(!gameInfo->isInWaitingList(args[0])) {
+			throw "Could not join game";
 		}
-		cout << endl;
+		//else join...
+		gameInfo->removeFromWaitingList(args[0]);
 	}
+private:
+	GameInfo *gameInfo;
 };
 
 #endif /* JoinCommand_h */

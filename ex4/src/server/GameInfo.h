@@ -54,6 +54,24 @@ public:
 		throw "Could not remove name from game list";
 	}
 	
+	bool isInGameList(string name) {
+		for(int i = 0; i < gameList.size(); i++) {
+			if(name == gameList[i]) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	bool isInWaitingList(string name) {
+		for(int i = 0; i < waitingList.size(); i++) {
+			if(name == waitingList[i]) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 private:
 	vector<string> gameList;
 	vector<string> waitingList;
