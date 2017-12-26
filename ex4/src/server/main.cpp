@@ -1,6 +1,9 @@
 #include "Server.h"
 #include <iostream>
 #include <stdlib.h>
+#include <fstream>
+#include <sstream>
+
 using namespace std;
 
 int getPort(const char* file) {
@@ -8,7 +11,7 @@ int getPort(const char* file) {
 	
 	infile.open(file);
 	if (!infile) {
-		cout << "error opening file";
+		throw "Error opening file";
 	}
 	
 	char port[5];
@@ -23,7 +26,15 @@ int getPort(const char* file) {
 }
 
 int main() {
-	Server server(getPort("serverconfig.txt"));
+	int port;
+	try {
+		port = getPort("serverconfig.txt");
+	} catch(const char *msg) {
+		cout << msg << endl;
+		exit(-1);
+	}
+	Server server(port);
+//	Server server(8000);
 	try {
 		server.start();
 	} catch(const char *msg) {

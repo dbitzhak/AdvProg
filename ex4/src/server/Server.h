@@ -12,20 +12,26 @@
 #define END -666
 
 #include <utility>
+#include "CommandsManager.h"
+
 using namespace std;
 
 class Server {
-	public:
-		Server(int port);
-		void start();
-		void stop();
-	private:
-		int port;
-		int serverSocket; // the socket's file descriptor
-		void handleClients(int clientSocket1, int clientSocket2);
-		pair<int,int> receiveMove(int socket);
-		void passMove(pair<int,int> move, int socket);
-		void alertClient(int socket);
+public:
+	Server(int port);
+	void start();
+	void stop();
+private:
+	int port;
+	int serverSocket; // the socket's file descriptor
+	void handleClients(int clientSocket1, int clientSocket2);
+	pair<int,int> receiveMove(int socket);
+	void passMove(pair<int,int> move, int socket);
+	void alertClient(int socket);
+	//Members
+	CommandsManager commandsManager;
+	int clientSocket1;
+	int clientSocket2;
 };
 
 #endif /* INCLUDE_SERVER_H_ */
