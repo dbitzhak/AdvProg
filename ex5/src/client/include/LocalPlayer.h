@@ -5,7 +5,6 @@
 #include "GraphicInterface.h"
 #include "Client.h"
 #include "GameLogic.h"
-
 #include <utility>
 #include <iostream>
 
@@ -17,7 +16,9 @@ class LocalPlayer: public Player {
 public:
 	/******************************************************
 	*Function name: LocalPlayer()
-	*The input: Client client,GameLogic gl and GraphicInterface derived classes, char to be used to identify the Player
+	*The input: Client client,GameLogic gl and 
+	 GraphicInterface derived classes, char to be used to 
+	 identify the Player
 	*The output: LocalPlayer object
 	*The function operation: Constructor
 	********************************************************/
@@ -27,7 +28,8 @@ public:
 	*Function name: makeMove()
 	*The input: None
 	*The output: A pair of integers
-	*The function operation: Uses subroutines to receive user input and send it through the network
+	*The function operation: Uses subroutines to receive user 
+	 input and send it through the network
 	********************************************************/
 	std::pair<int,int> makeMove();
 
@@ -36,7 +38,8 @@ private:
 	*Function name: outOfPlays()
 	*The input: None
 	*The output: None
-	*The function operation: Informs the player it is out of plays
+	*The function operation: Informs the player it is out 
+	 of plays
 	********************************************************/
 	virtual void outOfPlays();
 
@@ -44,7 +47,8 @@ private:
 	 *Function name: convertInputToCoord(char* buffer)
 	 *The input: char* 
 	 *The output: pair of ints
-	 *The function operation: Converts char* input to a pair of ints
+	 *The function operation: Converts char* input to a pair 
+	 of ints
 	 ********************************************************/
 	pair<int, int> convertInputToCoord(char* buffer);
 	//Members

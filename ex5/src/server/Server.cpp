@@ -6,7 +6,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <utility>
-//using namespace std;
+
 #define MAX_CONNECTED_CLIENTS 10
 Server::Server(int port): port(port), serverSocket(0) {
  cout << "Server" << endl;
@@ -33,15 +33,17 @@ void Server::start() {
 	// Define the client socket's structures
 	struct sockaddr_in clientAddress;
 	socklen_t clientAddressLen = sizeof(clientAddress);
+
 	
 	while (true) {
-		cout << "Waiting for client connections..." << endl;
+		cout << endl << "Waiting for client connections..." << endl;
 		// Accept a new client connection
 		int clientSocket1 = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLen);
 		cout << "Client1 connected" << endl;
 		if (clientSocket1 == -1) {
 			throw "Error on accept";
 		}
+		cout << "Waiting for second client..." << endl;
 		
 		int clientSocket2 = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLen);
 		cout << "Client2 connected" << endl;
@@ -55,6 +57,8 @@ void Server::start() {
 		close(clientSocket2);
 	}
 }
+
+
 
 pair<int,int> Server::receiveMove(int socket) {
 	int x, y;
@@ -141,9 +145,8 @@ void Server::handleClients(int clientSocket1, int clientSocket2) {
 		
 		try {
 			move = receiveMove(clientSocket1);
-		} catch (const char *msg) { //alert both clients
+		} catch (const char *msg) {
 			cout << msg;
-//			alertClient(clientSocket1);
 			alertClient(clientSocket2);
 			return;
 		}
@@ -167,7 +170,6 @@ void Server::handleClients(int clientSocket1, int clientSocket2) {
 		} catch(const char *msg) {
 			cout << msg;
 			alertClient(clientSocket1);
-//			alertClient(clientSocket2);
 			return;
 		}
 		try {
@@ -189,6 +191,4 @@ void Server::handleClients(int clientSocket1, int clientSocket2) {
 void Server::stop() {
 	close(serverSocket);
 }
-
-
 

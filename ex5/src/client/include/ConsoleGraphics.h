@@ -34,7 +34,8 @@ public:
 	*Function name: displayBoard()
 	*The input: Board
 	*The output: None
-	*The function operation: Print's the Board's Cells in a defined Board format
+	*The function operation: Print's the Board's Cells in a 
+	 defined Board format
 	********************************************************/
 	virtual void displayBoard(Board b) const;
 
@@ -42,8 +43,9 @@ public:
 	*Function name: displayMoves()
 	*The input: a vector of Cells with the valid moves
 	*The output: None
-	*The function operation: Print's the vector's Cells in a defined coordinate format
-	****************************************************************************/
+	*The function operation: Print's the vector's Cells in a 
+	 defined coordinate format
+	********************************************************/
 	virtual void displayMoves(std::vector<Cell> availablePositions) const;
 
 	/******************************************************
@@ -51,14 +53,15 @@ public:
 	*The input: a string
 	*The output: None
 	*The function operation: Print's the string through cout
-	****************************************************************************/
+	********************************************************/
 	virtual void displayMessage(std::string message) const;
 
 	/******************************************************
 	*Function name: displayPlayer()
 	*The input: Player
 	*The output: None
-	*The function operation: Prints the Player identifier char in a defined format.
+	*The function operation: Prints the Player identifier char 
+	 in a defined format.
 	********************************************************/
 	virtual void displayPlayer(Player *player) const;
 
@@ -66,7 +69,8 @@ public:
 	*Function name: displayCoordinates
 	*The input: int coordX, int coordY
 	*The output: None
-	*The function operation: Prints the number in a determined coordinate format
+	*The function operation: Prints the number in a 
+	 determined coordinate format
 	********************************************************/
 	virtual void displayCoordinate(int a, int b) const;
 

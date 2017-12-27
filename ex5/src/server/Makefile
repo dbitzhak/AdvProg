@@ -1,13 +1,13 @@
 #Makefile
 
-a.out: main.o Server.o
-	g++ -o a.out main.o Server.o
+a.out: Server.o main.o
+	g++ Server.o main.o -o server.out
+
+Server.o: Server.cpp Server.h
+	g++ -c Server.cpp
 
 main.o: main.cpp Server.h
-	g++ -c -o main.o main.cpp
-
-Client.o: Server.cpp
-	g++ -c -o Server.o Server.cpp
+	g++ -c main.cpp
 
 run:
 	./a.out

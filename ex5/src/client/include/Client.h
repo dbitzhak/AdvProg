@@ -21,7 +21,8 @@ public:
 
 	/********************************************************************
 	*Function name: Client()
-	*The input: const char* serverIP (a string representing server info), int serverPort number
+	*The input: const char* serverIP (a string representing server info), 
+	 int serverPort number
 	*The output: Client object
 	*The function operation: Constructor
 	*********************************************************************/
@@ -31,7 +32,8 @@ public:
 	*Function name: connectToServer()
 	*The input: None
 	*The output: None
-	*The function operation: Establishes a connection between the remote server and the local client
+	*The function operation: Establishes a connection between the remote 
+	 server and the local client
 	*********************************************************************/
 	void connectToServer();
 
@@ -55,7 +57,8 @@ public:
 	*Function name: receiveOrder()
 	*The input: None
 	*The output: A pair of ints representing row and column coordinates.
-	*The function operation: Receives from the Server two ints and returns their pair
+	*The function operation: Receives from the Server two ints and returns 
+	 their pair
 	*********************************************************************/
 	pair<int,int> receiveMove();
 

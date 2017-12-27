@@ -29,7 +29,8 @@ public:
 	/******************************************************
 	*Function name: ==operator overload
 	*The input: Player for comparison
-	*The output: bool, true if they have the same identifying char, false otherwise
+	*The output: bool, true if they have the same 
+	 identifying char, false otherwise
 	*The function operation: char comparison
 	********************************************************/
 	bool operator ==(const Player &comparePlayer) const;
@@ -37,7 +38,8 @@ public:
 	/******************************************************
 	*Function name: <operator overload
 	*The input: Player for comparison
-	*The output: bool, true if current Player's char smaller than the compared player, false otherwise
+	*The output: bool, true if current Player's char smaller 
+	 than the compared player, false otherwise
 	*The function operation: char comparison
 	********************************************************/
 	bool operator <(const Player &comparePlayer) const;
@@ -54,7 +56,8 @@ public:
 	*Function name: setPlayerId()
 	*The input: char value
 	*The output: None
-	*The function operation: Setter for the Player's identifying char
+	*The function operation: Setter for the Player's 
+	 identifying char
 	********************************************************/
 	void setPlayerId(char value);
 
@@ -62,7 +65,8 @@ public:
 	*Function name: outOfPlays()
 	*The input: None
 	*The output: None
-	*The function operation: informs the player it is out of plays
+	*The function operation: informs the player it is out 
+	 of plays
 	********************************************************/
 	virtual void outOfPlays() = 0;
 
