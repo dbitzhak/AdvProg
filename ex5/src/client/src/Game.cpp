@@ -1,4 +1,8 @@
-
+/*
+ * Game.cpp
+ *  Author: Daniel Ben Itzhak
+ *      338017437
+ */
 
 #include "Game.h"
 #include "GraphicInterface.h"
@@ -23,6 +27,7 @@ using namespace std;
 Game::Game(GraphicInterface *gi) : graphicProvider(gi) {};
 
 void Game::start() {
+	bool validInput = false;
 	bool gameLoop = true;
 	this->graphicProvider->displayMessage("Welcome to Reversi!\n");
 	while(gameLoop) {
@@ -54,6 +59,7 @@ void Game::start() {
 				this->playOneMatch(gl,hp1, mp2);
 			}break;
 			case 3:{
+				validInput = false;
 				StandardLogic sl(graphicProvider);
 				GameLogic *gl = &sl;
 				Player *p1;
@@ -61,12 +67,29 @@ void Game::start() {
 				const char *serverIP = getIP().c_str();
 				int serverPort = getPort();
 				Client localClient(serverIP,serverPort);
-				
 				localClient.connectToServer();
-				//Gets the Player order
-				int order = localClient.receiveOrder();
+				while(!validInput) {
+					graphicProvider->displayMessage("Would you like to:\n");
+					graphicProvider->displayMessage("(1)Start a new game\n");
+					graphicProvider->displayMessage("(2)Join a game\n");
+					cin >> option;
+					if(option == 1) {
+						validInput = true;
+						
+						graphicProvider->displayMessage("Name your game (limit 25 characters)\n");
+						
+						
+						localClient.startGame(name);
+					} else if (option == 2) {
+						validInput = true;
+						graphicProvider->displayMessage("Which game would you like to join?\n");
+						
+						
+						localClient.joinGame(name);
+					}
+				}
 				
-				if (order == 1) {
+				if (option == 1) {
 					LocalPlayer lp(gl, localClient, graphicProvider, 'X');
 					RemotePlayer rp(gl, localClient, graphicProvider, 'O');
 					p1 = &lp;
@@ -80,7 +103,7 @@ void Game::start() {
 				this->playOneMatch(gl, p1, p2);
 				//Informs server game Ended
 				try {
-					localClient.sendMove(make_pair(END,END));
+					localClient.closeGame(name);
 				} catch (exception e) {}
 			}break;
 			case 4:{ //Breaks the game loop

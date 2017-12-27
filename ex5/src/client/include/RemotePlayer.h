@@ -13,8 +13,7 @@ class RemotePlayer: public Player {
 public:
 	/******************************************************
 	*Function name: LocalPlayer()
-	*The input: GameLogic gl, GraphicInterface gi, Client 
-	 client, char to be used to identify the Player
+	*The input: GameLogic gl, GraphicInterface gi, Client client, char to be used to identify the Player
 	*The output: RemotePlayer()
 	*The function operation: Constructor
 	********************************************************/
@@ -24,8 +23,7 @@ public:
 	*Function name: makeMove()
 	*The input: None
 	*The output: A pair of integers
-	*The function operation: Uses subroutines to receive user 
-	 input and send it through the network
+	*The function operation: Uses subroutines to receive user input and send it through the network
 	********************************************************/
 	std::pair<int,int> makeMove();
 
@@ -38,16 +36,9 @@ private:
 	********************************************************/
 	virtual void outOfPlays();
 
-	/********************************************************************
-	*Function name: convertInputToCoord()
-	*The input: char* buffer (coordinates in text form: x,y)
-	*The output: A pair of ints representing row and column coordinates.
-	*The function operation: Receives from as input from the user a 
-	 string and converts it to 2 ints
-	*********************************************************************/
+
 	pair<int, int> convertInputToCoord(char* buffer);
-	
-//Members
+	//Members
 	const GraphicInterface *display;
 	Client client;
 	GameLogic* gameLogic;

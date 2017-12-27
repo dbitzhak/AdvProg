@@ -1,3 +1,9 @@
+/*
+ * RemotePlayer.cpp
+ *
+ *  Created on: Dec 10, 2017
+ *      Author: dan
+ */
 
 #include "RemotePlayer.h"
 #include <sstream>
@@ -24,6 +30,6 @@ std::pair<int, int> RemotePlayer::makeMove() {
 void RemotePlayer::outOfPlays() {
 	pair<int, int> move = client.receiveMove();
 	display->displayPlayer(this);
-	display->displayMessage("\nYou are out of plays!\n");
+	display->displayMessage(" is out of plays!\n");
 }
 
