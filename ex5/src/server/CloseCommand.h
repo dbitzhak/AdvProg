@@ -9,20 +9,20 @@
 #ifndef CloseCommand_h
 #define CloseCommand_h
 #include "Command.h"
-#include "GameInfo.h"
 #include <iostream>
+#include "GameCenter.h"
 
 class CloseCommand: public Command {
 public:
-	CloseCommand(GameInfo *gameInfo);
+	CloseCommand(GameCentral *gameCentral);
 	
 	virtual void execute(vector<string> args) {
-		gameInfo->removeFromGameList(args[0]);
+		central->removeFromGameList(args[0]);
 		//close...
 	}
 	
 private:
-	GameInfo *gameInfo;
+	GameCentral *central;
 };
 
 #endif /* CloseCommand_h */

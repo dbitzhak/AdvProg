@@ -14,7 +14,7 @@
 class PrintCommand: public Command {
 public:
 	virtual void execute(vector<string> args) {
-		for(int i = 0; i < args.size(); i++) {
+		for(unsigned int i = 0; i < args.size(); i++) {
 			cout << args[i] << " ";
 		}
 		cout << endl;

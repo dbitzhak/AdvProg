@@ -9,13 +9,13 @@
 #ifndef PlayCommand_h
 #define PlayCommand_h
 #include "Command.h"
-#include "GameInfo.h"
 #include <iostream>
+#include "GameCenter.h"
 
 class PlayCommand: public Command {
 public:
 	virtual void execute(vector<string> args) {
-		for(int i = 0; i < args.size(); i++) {
+		for(unsigned int i = 0; i < args.size(); i++) {
 			cout << args[i] << " ";
 		}
 		cout << endl;

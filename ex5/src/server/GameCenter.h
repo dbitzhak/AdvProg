@@ -6,19 +6,22 @@
 //  Copyright © 2017 Gavriella. All rights reserved.
 //
 
-#ifndef GameInfo_h
-#define GameInfo_h
+#ifndef GameCentral_h
+#define GameCentral_h
 #include <vector>
 #include <list>
+#include <string>
 
-class GameInfo {
+using namespace std;
+
+class GameCentral {
 public:
 	vector<string> getWaitingList() {
 		return waitingList;
 	}
 	
 	void addToWaitingList(string name) {
-		for(int i = 0; i < waitingList.size(); i++) {
+		for(unsigned int i = 0; i < waitingList.size(); i++) {
 			if(name == waitingList[i]) {
 				throw "Could not add name to waiting list";
 			}
@@ -27,7 +30,7 @@ public:
 	}
 	
 	void addToGameList(string name) {
-		for(int i = 0; i < gameList.size(); i++) {
+		for(unsigned int i = 0; i < gameList.size(); i++) {
 			if(name == gameList[i]) {
 				throw "Could not add name to game list";
 			}
@@ -36,7 +39,7 @@ public:
 	}
 	
 	void removeFromWaitingList(string name) {
-		for(int i = 0; i < waitingList.size(); i++) {
+		for(unsigned int i = 0; i < waitingList.size(); i++) {
 			if(name == waitingList[i]) {
 				waitingList.erase(waitingList.begin() + i);
 				return;
@@ -46,7 +49,7 @@ public:
 	}
 	
 	void removeFromGameList(string name) {
-		for(int i = 0; i < gameList.size(); i++) {
+		for(unsigned int i = 0; i < gameList.size(); i++) {
 			if(name == gameList[i]) {
 				gameList.erase(gameList.begin() + i);
 			}
@@ -55,7 +58,7 @@ public:
 	}
 	
 	bool isInGameList(string name) {
-		for(int i = 0; i < gameList.size(); i++) {
+		for(unsigned int i = 0; i < gameList.size(); i++) {
 			if(name == gameList[i]) {
 				return true;
 			}
@@ -64,7 +67,7 @@ public:
 	}
 	
 	bool isInWaitingList(string name) {
-		for(int i = 0; i < waitingList.size(); i++) {
+		for(unsigned int i = 0; i < waitingList.size(); i++) {
 			if(name == waitingList[i]) {
 				return true;
 			}
@@ -77,4 +80,4 @@ private:
 	vector<string> waitingList;
 };
 
-#endif /* GameInfo_h */
+#endif /* GameCentral_h */

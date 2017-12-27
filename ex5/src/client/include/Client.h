@@ -58,7 +58,7 @@ public:
 	 *********************************************************************/
 	pair<int,int> receiveMove();
 	void init(const char* file);
-	void startGame(string name);
+	void startNewGame(string name);
 	vector<string> getGameList();
 	void joinGame(string name);
 	void closeGame(string name);

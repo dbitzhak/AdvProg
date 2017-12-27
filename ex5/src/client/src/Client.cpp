@@ -18,6 +18,10 @@
 #include <unistd.h>
 #include <utility>
 #include <string>
+#include <fstream>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
+
 
 #define MESSAGE_LIMIT 31
 
@@ -25,9 +29,10 @@ using namespace std;
 
 Client::Client(const char *serverIP, int serverPort): serverIP(serverIP), serverPort(serverPort), clientSocket(0) {}
 
-Client::Client(): {
-	serverIP(getIP("clientconfig.txt"));
-	serverPort(getPort("clientconfig.txt"));
+Client::Client() {
+	string strIP = getIP("clientconfig.txt");
+	serverIP = strIP.c_str(); //Converts to char *const
+	serverPort = getPort("clientconfig.txt");
 }
 
 void Client::connectToServer() {
@@ -68,7 +73,7 @@ void Client::startNewGame(string name) {
 	char buffer[31] = "start ";
 	int error;
 	
-	for(int i = 6; name.at(i) != '/0'; i++) {
+	for(int i = 6; name.at(i) != '\0'; i++) {
 		buffer[i] = name.at(i);
 	}
 	
@@ -86,7 +91,8 @@ void Client::startNewGame(string name) {
 	}
 }
 
-vector<string> getGameList() {
+vector<string> Client::getGameList() {
+
 	//limit of 31 chars
 	char buffer[31] = "list_games";
 	
@@ -94,15 +100,30 @@ vector<string> getGameList() {
 	if(n == -1) {
 		throw "Error joining game";
 	}
-	
-	/// TODO: read (deserialize)
+	// Create an input archive
+	std::fstream tempFile("/tmp/availableGames.ser");
+	boost::archive::binary_iarchive inArchive(tempFile);
+	//Get vector size
+	unsigned long vectorSize;
+	n = read(clientSocket,&vectorSize, sizeof(vectorSize));
+	//Get vector
+	char vectorBuffer[vectorSize];
+	n = read(clientSocket,&vectorBuffer, vectorSize);
+	tempFile.write(vectorBuffer,sizeof(vectorBuffer)); //Write vector to file
+	// Load data
+	vector<string> availableGames;
+	inArchive & availableGames;
+	//Close & Delete File
+	tempFile.close();
+	remove("/tmp/availableGames.ser");
+	return availableGames;
 }
 
 void Client::joinGame(string name) {
 	//limit of 31 chars
 	char buffer[31] = "join ";
 	
-	for(int i = 5; name.at(i) != '/0'; i++) {
+	for(int i = 5; name.at(i) != '\0'; i++) {
 		buffer[i] = name.at(i);
 	}
 	
@@ -118,7 +139,7 @@ void Client::closeGame(string name) {
 	//limit of 31 chars
 	char buffer[31] = "close ";
 	
-	for(int i = 6; name.at(i) != '/0'; i++) {
+	for(int i = 6; name.at(i) != '\0'; i++) {
 		buffer[i] = name.at(i);
 	}
 	

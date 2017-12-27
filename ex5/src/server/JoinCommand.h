@@ -9,22 +9,22 @@
 #ifndef JoinCommand_h
 #define JoinCommand_h
 #include "Command.h"
-#include "GameInfo.h"
 #include <iostream>
+#include "GameCenter.h"
 
 class JoinCommand: public Command {
 public:
-	JoinCommand(GameInfo *gameInfo);
+	JoinCommand(GameCentral *central);
 	
 	virtual void execute(vector<string> args) {
-		if(!gameInfo->isInWaitingList(args[0])) {
+		if(!central->isInWaitingList(args[0])) {
 			throw "Could not join game";
 		}
 		//else join...
-		gameInfo->removeFromWaitingList(args[0]);
+		central->removeFromWaitingList(args[0]);
 	}
 private:
-	GameInfo *gameInfo;
+	GameCentral *central;
 };
 
 #endif /* JoinCommand_h */

@@ -6,17 +6,17 @@
 //  Copyright © 2017 Gavriella. All rights reserved.
 //
 
+#include <ListGamesCommand.h>
 #include "CommandsManager.h"
 #include "PrintCommand.h"
 #include "StartCommand.h"
-#include "ListGames.h"
 #include "JoinCommand.h"
 #include "PlayCommand.h"
 #include "CloseCommand.h"
 
 
 CommandsManager::CommandsManager() {
-	gameInfo = new GameInfo();
+	gameCenter = new GameCenter();
 	commandsMap["print"] = new PrintCommand();
 	commandsMap["start"] = new StartCommand(gameInfo);
 	commandsMap["list_games"] = new ListGamesCommand(gameInfo);

@@ -9,23 +9,23 @@
 #ifndef StartCommand_h
 #define StartCommand_h
 #include "Command.h"
-#include "GameInfo.h"
 #include <iostream>
 #include <list>
+#include "GameCenter.h"
 
 class StartCommand: public Command {
 public:
-	StartCommand(GameInfo *gameInfo);
+	StartCommand(GameCentral *gameCentral);
 	virtual void execute(vector<string> args) {
-		if(gameInfo->isInGameList(args[0])) {
+		if(central->isInGameList(args[0])) {
 			throw "Could not add name to game list";
 		}
-		gameInfo->addToWaitingList(args[0]);
-		gameInfo->addToGameList(args[0]);
+		central->addToWaitingList(args[0]);
+		central->addToGameList(args[0]);
 	}
 
 private:
-	GameInfo *gameInfo;
+	GameCentral *central;
 	vector<string> gameList;
 	vector<string> waitingList;
 };
