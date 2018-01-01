@@ -4,26 +4,31 @@
 #define ERROR -5
 #define END -666
 
+#include "CommandsManager.h"
 #include <utility>
+#include <vector>
+#include <pthread.h>
+
 using namespace std;
+
 
 //Server class
 class Server {
 public:
 	/********************************************************************
 	 *Function name: Server()
-	 *The input: int representing the port number
+	 *The input: int representing the port number, CommandsManager to manage the received commands.
 	 *The output: Server object
 	 *The function operation: Constructor
 	 *********************************************************************/
-	Server(int port);
+	Server(int port, CommandsManager *cm);
 	
 	/********************************************************************
 	 *Function name: start()
 	 *The input: None
 	 *The output: None
 	 *The function operation: Starts listening for input through a socket
-	 * and waits for 2 players to connect.
+	 * and waits for players to connect.
 	 *********************************************************************/
 	void start();
 	
@@ -31,19 +36,18 @@ public:
 	 *Function name: stop()
 	 *The input: None
 	 *The output: None
-	 *The function operation: Closes the server socket
+	 *The function operation: Closes the server socket and all open threads
 	 *********************************************************************/
 	void stop();
 	
 private:
 	/********************************************************************
-	 *Function name: handleClients()
-	 *The input: int socket of the first player, int socket of the second player.
+	 *Function name: handleClient()
+	 *The input: Struct with necessary arguments
 	 *The output: None
-	 *The function operation: Sends them a message with their respective order and then keeps
-	 * transmitting messages (moves) between them until told otherwise by an encoded message.
+	 *The function operation: Creates a new thread for dealing each client's requests.
 	 *********************************************************************/
-	void handleClients(int clientSocket1, int clientSocket2);
+	static void * handleClient(void * arguments);
 	
 	/********************************************************************
 	 *Function name: receiveMove()
@@ -57,7 +61,7 @@ private:
 	 *Function name: passMove()
 	 *The input: A pair of ints, target's socket info
 	 *The output: None
-	 *The function operation: Uses thr socket info to send the pair through 2 messages.
+	 *The function operation: Uses the socket info to send the pair through 2 messages.
 	 *********************************************************************/
 	void passMove(pair<int,int> move, int socket);
 	
@@ -69,9 +73,16 @@ private:
 	 *a defined message
 	 *********************************************************************/
 	void alertClient(int socket);
+
+	void * acceptClients();
+
 	//Members
 	int port;
 	int serverSocket; // the socket's file descriptor
+	bool serverOn;
+	vector<int> connectedClients;
+	vector<pthread_t> runningThreads;
+	CommandsManager *commandsManager;
 	
 };
 #endif /* INCLUDE_SERVER_H_ */

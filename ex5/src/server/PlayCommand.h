@@ -14,12 +14,8 @@
 
 class PlayCommand: public Command {
 public:
-	virtual void execute(vector<string> args) {
-		for(unsigned int i = 0; i < args.size(); i++) {
-			cout << args[i] << " ";
-		}
-		cout << endl;
-	}
+	PlayCommand();
+	virtual void execute(vector<string> args);
 };
 
 #endif /* PlayCommand_h */

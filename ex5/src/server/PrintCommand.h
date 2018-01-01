@@ -13,12 +13,8 @@
 
 class PrintCommand: public Command {
 public:
-	virtual void execute(vector<string> args) {
-		for(unsigned int i = 0; i < args.size(); i++) {
-			cout << args[i] << " ";
-		}
-		cout << endl;
-	}
+	PrintCommand();
+	virtual void execute(vector<string> args);
 };
 
 #endif /* PrintCommand_h */

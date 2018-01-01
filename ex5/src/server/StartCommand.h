@@ -15,17 +15,11 @@
 
 class StartCommand: public Command {
 public:
-	StartCommand(GameCentral *gameCentral);
-	virtual void execute(vector<string> args) {
-		if(central->isInGameList(args[0])) {
-			throw "Could not add name to game list";
-		}
-		central->addToWaitingList(args[0]);
-		central->addToGameList(args[0]);
-	}
+	StartCommand(GameCenter *gc);
+	virtual void execute(vector<string> args);
 
 private:
-	GameCentral *central;
+	GameCenter *gameCenter;
 	vector<string> gameList;
 	vector<string> waitingList;
 };

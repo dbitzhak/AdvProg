@@ -1,18 +1,53 @@
 #include <iostream>
-#include "ConsoleGraphics.h"
-#include "GraphicInterface.h"
-#include "Game.h"
+#include <stdlib.h>
+#include <fstream>
+#include <sstream>
+#include <string>
 using namespace std;
 
+#include "Server.h"
+#include "GameCenter.h"
 
-/******************************************************
- *Function name: main()
- *The output: 0 if successful other numbers if not.
- ********************************************************/
+int getPort(const char* file) {
+	ifstream infile;
+	
+	infile.open(file);
+	if (!infile) {
+		throw "Error opening file";
+	}
+	
+	char port[5];
+	infile >> port;
+	port[4] = '\0';
+	infile.close();
+	
+	stringstream s(port);
+	int p = 0;
+	s >> p;
+	return p;
+}
+
 int main() {
-	ConsoleGraphics cg;
-	GraphicInterface *gi = &cg;
-	Game myGame(gi);
-	myGame.start();
-	return 0;
+	 string input;
+	    getline(cin,input);
+		// your code goes here
+	cout << input;
+
+	int port;
+	try {
+		port = getPort("serverconfig.txt");
+	} catch(const char *msg) {
+		cout << msg << endl;
+		exit(-1);
+	}
+	GameCenter gc;
+	CommandsManager cm(&gc);
+	Server server(port, &cm);
+	//	Server server(8000);
+	try {
+		server.start();
+	} catch(const char *msg) {
+		cout << "Cannot start server. Reason: " << msg << endl;
+		exit(-1);
+	}
 }

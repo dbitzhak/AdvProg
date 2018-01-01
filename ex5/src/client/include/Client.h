@@ -58,11 +58,12 @@ public:
 	 *********************************************************************/
 	pair<int,int> receiveMove();
 	void init(const char* file);
-	void startNewGame(string name);
-	vector<string> getGameList();
 	void joinGame(string name);
 	void closeGame(string name);
 private:
+	char * getUserInput(char *buffer);
+	void startNewGame(string name);
+	vector<string> getGameList();
 	string getIP(const char* file);
 	int getPort(const char* file);
 	//Members

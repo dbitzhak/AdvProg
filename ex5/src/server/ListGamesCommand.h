@@ -15,30 +15,17 @@
 
 class ListGamesCommand: public Command {
 public:
-	ListGamesCommand(GameCentral *gameInfo);
+	ListGamesCommand(GameCenter *gc);
 	
-	virtual void execute(vector<string> args) {
-		for(unsigned int i = 0; i < gameList.size(); i++) {
-			if(gameList[i] == args[0]) {
-				
-			}
-		}
-		gameList.push_back(args[0]);
-		waitingList.push_back(args[0]);
-	}
+	virtual void execute(vector<string> args);
 	
-	
+
 	//return a list of games that the player can join (that only one player is currently in)
-	virtual list<string> listGames() {
-		return waitingList;
-	}
-	
-	void removeFromWaitingList(string name) {
-		waitingList.remove(name);
-	}
-	
+	virtual list<string> listGames();
+
+	void removeFromWaitingList(string name);
 private:
-	GameCentral *gameCentral;
+	GameCenter *gameCenter;
 	vector<string> gameList;
 	list<string> waitingList;
 };

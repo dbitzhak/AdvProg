@@ -14,17 +14,10 @@
 
 class JoinCommand: public Command {
 public:
-	JoinCommand(GameCentral *central);
-	
-	virtual void execute(vector<string> args) {
-		if(!central->isInWaitingList(args[0])) {
-			throw "Could not join game";
-		}
-		//else join...
-		central->removeFromWaitingList(args[0]);
-	}
+	JoinCommand(GameCenter*gc);
+	virtual void execute(vector<string> args);
 private:
-	GameCentral *central;
+	GameCenter *gameCenter;
 };
 
 #endif /* JoinCommand_h */

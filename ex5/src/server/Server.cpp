@@ -1,4 +1,5 @@
 #include "Server.h"
+#include "CommandsManager.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
@@ -6,12 +7,25 @@
 #include <iostream>
 #include <stdio.h>
 #include <utility>
+#include <pthread.h>
+#include <cstdlib>
+
+typedef void * (*funcPointer)(void *);
 
 #define MAX_CONNECTED_CLIENTS 10
-Server::Server(int port): port(port), serverSocket(0) {
+
+struct ThreadArgs {
+ int clientSocket;
+ CommandsManager *commandsManager;
+};
+
+
+
+Server::Server(int port, CommandsManager *cm): port(port), serverSocket(0) , serverOn(false), commandsManager(cm){
  cout << "Server" << endl;
 }
 void Server::start() {
+	serverOn = true;
 	// Create a socket point
 	serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if (serverSocket == -1) {
@@ -28,33 +42,21 @@ void Server::start() {
 	if (::bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
 		throw "Error on binding";
 	}
-	// Start listening to incoming connections
-	listen(serverSocket, MAX_CONNECTED_CLIENTS);
-	// Define the client socket's structures
-	struct sockaddr_in clientAddress;
-	socklen_t clientAddressLen = sizeof(clientAddress);
-
-	
-	while (true) {
-		cout << endl << "Waiting for client connections..." << endl;
-		// Accept a new client connection
-		int clientSocket1 = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLen);
-		cout << "Client1 connected" << endl;
-		if (clientSocket1 == -1) {
-			throw "Error on accept";
-		}
-		cout << "Waiting for second client..." << endl;
-		
-		int clientSocket2 = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLen);
-		cout << "Client2 connected" << endl;
-		if (clientSocket2 == -1) {
-			throw "Error on accept";
-		}
-
-		handleClients(clientSocket1, clientSocket2);
-		// Close communication with the clients
-		close(clientSocket1);
-		close(clientSocket2);
+	//Create a thread for closng the server
+	pthread_t threadStop;
+	runningThreads.push_back(threadStop); //Add for thread control
+	int result = pthread_create(&runningThreads.back(), NULL,(funcPointer) &Server::stop, this); //Run acceptClients
+	if (result) {
+		cout << "Error: unable to create thread, " << result << endl;
+		exit(-1);
+	}
+	//Create a thread for listening to client connections
+	pthread_t newThread;
+	runningThreads.push_back(newThread); //Add for thread control
+	result = pthread_create(&runningThreads.back(), NULL,(funcPointer) &Server::acceptClients, this); //Run acceptClients
+	if (result) {
+		cout << "Error: unable to create thread, " << result << endl;
+		exit(-1);
 	}
 }
 
@@ -86,6 +88,7 @@ void Server::passMove(pair<int,int> move, int socket) {
 	long n;
 	try {
 		n = write(socket, &move.first, sizeof(move.first));
+
 	} catch(exception e) {
 		cout << "passMove: Error writing x to socket" << endl;
 		throw "Error writing x to socket\n";
@@ -118,77 +121,48 @@ void Server::alertClient(int socket) {
 }
 
 // Handle requests from a specific client
-void Server::handleClients(int clientSocket1, int clientSocket2) {
-	int client1 = 1;
-	int client2 = 2;
-	
-	//send 1 to client1
-	long n = write(clientSocket1, &client1, sizeof(client1));
-	if (n == -1) {
-		cout << "Error writing to socket1" << endl;
-		alertClient(clientSocket2);
-		return;
-	}
-	
-	//send 2 to client2
-	n = write(clientSocket2, &client2, sizeof(client2));
-	if (n == -1) {
-		cout << "Error writing to socket2" << endl;
-		alertClient(clientSocket1);
-		return;
-	}
-	
-	
-	while (true) {
-		// Read new move argument from client1
-		pair<int,int> move;
-		
-		try {
-			move = receiveMove(clientSocket1);
-		} catch (const char *msg) {
-			cout << msg;
-			alertClient(clientSocket2);
-			return;
-		}
-		
-		try {
-			passMove(move, clientSocket2);
-		} catch (const char *msg) {
-			cout << msg;
-			alertClient(clientSocket1);
-			return;
-		}
-		
-		//if game ended
-		if (move.first == END || move.first == ERROR) {
-			return;
-		}
-		
-		// Read new move argument from client2
-		try {
-			move = receiveMove(clientSocket2);
-		} catch(const char *msg) {
-			cout << msg;
-			alertClient(clientSocket1);
-			return;
-		}
-		try {
-			passMove(move, clientSocket1);
-		} catch (const char *msg) {
-			cout << msg;
-			alertClient(clientSocket2);
-			return;
-		}
-		
-		//if game ended
-		if (move.first == END || move.first == ERROR) {
-			return;
-		}
-	}
+void * Server::handleClient(void * args) {
+	ThreadArgs *ta = (struct ThreadArgs*) args;
+	ThreadArgs temp;
+	temp.clientSocket = ta->clientSocket;
+	temp.commandsManager = ta->commandsManager;
+	delete ta; //Frees the memory
+	return temp.commandsManager->getUserCommand(temp.clientSocket);
 }
 
 
 void Server::stop() {
+	serverOn = false;
 	close(serverSocket);
 }
 
+void * Server::acceptClients() {
+	// Start listening to incoming connections
+	listen(serverSocket, MAX_CONNECTED_CLIENTS);
+	// Define the client socket's structures
+	struct sockaddr_in clientAddress;
+	socklen_t clientAddressLen = sizeof(clientAddress);
+	while (serverOn) {
+		cout << endl << "Waiting for client connections..." << endl;
+		// Accept a new client connection
+		int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLen);
+		cout << "New client connected" << endl;
+		if (clientSocket == -1) {
+			throw "Error on accept";
+		}
+		cout << "Waiting for other clients..." << endl;
+
+		//Creates a new thread to handle client's request
+		ThreadArgs * args = new ThreadArgs();
+		args->clientSocket = clientSocket;
+		args->commandsManager = this->commandsManager;
+		pthread_t newThread;
+		runningThreads.push_back(newThread); //Add for thread control
+		int result = pthread_create(&runningThreads.back(), NULL, Server::handleClient,(void *) args); //Run handleClient
+		if (result) {
+		 cout << "Error: unable to create thread, " << result << endl;
+		 exit(-1);
+		}
+	}
+	return 0;
+}

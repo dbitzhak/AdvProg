@@ -70,13 +70,8 @@ void Client::connectToServer() {
 
 void Client::startNewGame(string name) {
 	//limit of 31 chars
-	char buffer[31] = "start ";
-	int error;
-	
-	for(int i = 6; name.at(i) != '\0'; i++) {
-		buffer[i] = name.at(i);
-	}
-	
+	char buffer[31] = {};
+	getUserInput(buffer);	int error;
 	long n = write(clientSocket, &buffer, MESSAGE_LIMIT);
 	if(n == -1) {
 		throw "Error starting game";
@@ -94,8 +89,8 @@ void Client::startNewGame(string name) {
 vector<string> Client::getGameList() {
 
 	//limit of 31 chars
-	char buffer[31] = "list_games";
-	
+	char buffer[31] = {};
+	getUserInput(buffer);
 	long n = write(clientSocket, &buffer, MESSAGE_LIMIT);
 	if(n == -1) {
 		throw "Error joining game";
@@ -121,28 +116,18 @@ vector<string> Client::getGameList() {
 
 void Client::joinGame(string name) {
 	//limit of 31 chars
-	char buffer[31] = "join ";
-	
-	for(int i = 5; name.at(i) != '\0'; i++) {
-		buffer[i] = name.at(i);
-	}
-	
+	char buffer[31] = {};
+	getUserInput(buffer);
 	long n = write(clientSocket, &buffer, MESSAGE_LIMIT);
 	if (n == -1) {
 		throw "Error joining game";
 	}
-	
-	/// TODO: read
 }
 
 void Client::closeGame(string name) {
 	//limit of 31 chars
-	char buffer[31] = "close ";
-	
-	for(int i = 6; name.at(i) != '\0'; i++) {
-		buffer[i] = name.at(i);
-	}
-	
+	char buffer[31] = {};
+	getUserInput(buffer);
 	long n = write(clientSocket, &buffer, MESSAGE_LIMIT);
 	if (n == -1) {
 		throw "Error closing game";
@@ -151,11 +136,8 @@ void Client::closeGame(string name) {
 
 void Client::sendMove(pair<int,int> move) {
 	//limit of 31 chars
-	char buffer[31] = "play ";
-	buffer[5] = move.first;
-	buffer[6] = ' ';
-	buffer[7] = move.second;
-	
+	char buffer[31] = {};
+	getUserInput(buffer);
 	long n = write(clientSocket, &buffer, MESSAGE_LIMIT);
 	if (n == -1) {
 		throw "Error sending player's move";
@@ -191,6 +173,15 @@ string Client::getIP(const char* file) {
 	
 	infile.close();
 	return ip;
+}
+
+char * Client::getUserInput(char *buffer) {
+	string input;
+	 getline(cin, input);
+	 //limit of 31 chars
+	 const char *temp = input.c_str();
+	 strcpy(buffer,temp);
+	 return buffer;
 }
 
 int Client::getPort(const char* file) {

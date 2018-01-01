@@ -15,12 +15,12 @@
 
 class CommandsManager {
 public:
-	CommandsManager();
+	CommandsManager(GameCenter *gm);
 	~CommandsManager();
-	void executeCommand(string command, vector<string> args);
+	void * getUserCommand(int clientSocket);
 private:
 	map<string, Command *> commandsMap;
-	GameCentral *gameCentral;
+	GameCenter *gameCenter;
 };
 
 #endif /* CommandsManager_h */

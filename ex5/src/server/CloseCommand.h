@@ -14,15 +14,11 @@
 
 class CloseCommand: public Command {
 public:
-	CloseCommand(GameCentral *gameCentral);
-	
-	virtual void execute(vector<string> args) {
-		central->removeFromGameList(args[0]);
-		//close...
-	}
+	CloseCommand(GameCenter *gc);
+	virtual void execute(vector<string> args);
 	
 private:
-	GameCentral *central;
+	GameCenter *gameCenter;
 };
 
 #endif /* CloseCommand_h */

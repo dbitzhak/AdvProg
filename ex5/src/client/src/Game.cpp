@@ -68,6 +68,7 @@ void Game::start() {
 				int serverPort = getPort();
 				Client localClient(serverIP,serverPort);
 				localClient.connectToServer();
+				string name;
 				while(!validInput) {
 					graphicProvider->displayMessage("Would you like to:\n");
 					graphicProvider->displayMessage("(1)Start a new game\n");
@@ -75,16 +76,13 @@ void Game::start() {
 					cin >> option;
 					if(option == 1) {
 						validInput = true;
-						
 						graphicProvider->displayMessage("Name your game (limit 25 characters)\n");
-						
-						
-						localClient.startGame(name);
+						cin >> name;
+						//localClient.startGame(name);
 					} else if (option == 2) {
 						validInput = true;
 						graphicProvider->displayMessage("Which game would you like to join?\n");
-						
-						
+						cin >> name;
 						localClient.joinGame(name);
 					}
 				}
