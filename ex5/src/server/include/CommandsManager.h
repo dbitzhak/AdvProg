@@ -17,7 +17,7 @@ class CommandsManager {
 public:
 	CommandsManager(GameCenter *gm);
 	~CommandsManager();
-	void * getUserCommand(int clientSocket);
+	void * executeCommand(string command, vector<string> args, int socket);
 private:
 	map<string, Command *> commandsMap;
 	GameCenter *gameCenter;

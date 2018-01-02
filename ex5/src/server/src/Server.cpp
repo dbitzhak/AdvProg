@@ -9,19 +9,24 @@
 #include <utility>
 #include <pthread.h>
 #include <cstdlib>
+#include <sstream>
 
 typedef void * (*funcPointer)(void *);
 
 #define MAX_CONNECTED_CLIENTS 10
+#define MAX_COMMAND_LEN 35
+
+static void *acceptClients(void *);
+static void *handleClient(void *);
+
 
 struct ThreadArgs {
- int clientSocket;
- CommandsManager *commandsManager;
+	long serverSocket;
+	long clientSocket;
+	CommandsManager *commandManager;
 };
 
-
-
-Server::Server(int port, CommandsManager *cm): port(port), serverSocket(0) , serverOn(false), commandsManager(cm){
+Server::Server(int port, CommandsManager *cm): port(port), serverSocket(0) , serverOn(false), commandsManager(cm), serverThreadId(0) {
  cout << "Server" << endl;
 }
 void Server::start() {
@@ -39,21 +44,23 @@ void Server::start() {
 	//Converts the unsigned short integer hostshort f/ host byte order to network byte order.
 	serverAddress.sin_port = htons(port);
 	//If binding fails throws exception
-	if (::bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
+	if (bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
 		throw "Error on binding";
 	}
-	//Create a thread for closng the server
+	// Start listening to incoming connection requests
+	listen(serverSocket, MAX_CONNECTED_CLIENTS);
+	//Create a thread for closing the server
 	pthread_t threadStop;
-	runningThreads.push_back(threadStop); //Add for thread control
-	int result = pthread_create(&runningThreads.back(), NULL,(funcPointer) &Server::stop, this); //Run acceptClients
+	int result = pthread_create(&threadStop, NULL,(funcPointer) &Server::stop, this); //Run stop
 	if (result) {
 		cout << "Error: unable to create thread, " << result << endl;
 		exit(-1);
 	}
 	//Create a thread for listening to client connections
-	pthread_t newThread;
-	runningThreads.push_back(newThread); //Add for thread control
-	result = pthread_create(&runningThreads.back(), NULL,(funcPointer) &Server::acceptClients, this); //Run acceptClients
+	ThreadArgs *args = new ThreadArgs;
+	args->commandManager = commandsManager;
+	args->serverSocket = serverSocket;
+	result = pthread_create(&serverThreadId, NULL, &acceptClients,(void *) args); //Run acceptClients
 	if (result) {
 		cout << "Error: unable to create thread, " << result << endl;
 		exit(-1);
@@ -121,48 +128,67 @@ void Server::alertClient(int socket) {
 }
 
 // Handle requests from a specific client
-void * Server::handleClient(void * args) {
-	ThreadArgs *ta = (struct ThreadArgs*) args;
-	ThreadArgs temp;
-	temp.clientSocket = ta->clientSocket;
-	temp.commandsManager = ta->commandsManager;
-	delete ta; //Frees the memory
-	return temp.commandsManager->getUserCommand(temp.clientSocket);
+static void * handleClient(void * threadArgs) {
+	ThreadArgs *ta =  (ThreadArgs*) threadArgs;	//Unpack thread args
+	long clientSocket = ta->clientSocket;
+	char commandStr[MAX_COMMAND_LEN];
+	 // Read the command from the socket
+	 int n = read(clientSocket, commandStr, MAX_COMMAND_LEN);
+	 if (n == -1) {
+	 cout << "Error reading command" << endl;
+	 return NULL;
+	 }
+	 cout << "Received command: " << commandStr << endl;
+	 // Split the command string to the command name and the arguments
+	 string str(commandStr);
+	 istringstream iss(str);
+	 string command;
+	 iss >> command;
+	 vector<string> args;
+	 while (iss) {
+	 string arg;
+	 iss >> arg;
+	 args.push_back(arg);
+	 }
+	 ta->commandManager->executeCommand(command, args, clientSocket);
+	 return NULL;
 }
 
 
 void Server::stop() {
+	string stop = "";
+	 do {
+		cout << "Enter 'stop' for closing the server." << endl;
+		cin >> stop;
+	} while(stop.compare("stop"));
+
 	serverOn = false;
+	pthread_cancel(serverThreadId);
 	close(serverSocket);
+	cout << "Server stopped" << endl;
 }
 
-void * Server::acceptClients() {
-	// Start listening to incoming connections
-	listen(serverSocket, MAX_CONNECTED_CLIENTS);
+static void * acceptClients(void * args) {
+	ThreadArgs *ta =  (ThreadArgs*) args;	//Unpack thread args
 	// Define the client socket's structures
+	long serverSocket = ta->serverSocket;
 	struct sockaddr_in clientAddress;
 	socklen_t clientAddressLen = sizeof(clientAddress);
-	while (serverOn) {
-		cout << endl << "Waiting for client connections..." << endl;
+	while (true) {
+		cout << "Waiting for client connections..." << endl;
 		// Accept a new client connection
-		int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLen);
-		cout << "New client connected" << endl;
+		int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress,&clientAddressLen);
+		cout << "Client connected" << endl;
 		if (clientSocket == -1) {
-			throw "Error on accept";
+			 throw "Error on accept";
 		}
-		cout << "Waiting for other clients..." << endl;
-
-		//Creates a new thread to handle client's request
-		ThreadArgs * args = new ThreadArgs();
-		args->clientSocket = clientSocket;
-		args->commandsManager = this->commandsManager;
 		pthread_t newThread;
-		runningThreads.push_back(newThread); //Add for thread control
-		int result = pthread_create(&runningThreads.back(), NULL, Server::handleClient,(void *) args); //Run handleClient
+		//Passes the client socket as parameter
+		ta->clientSocket = clientSocket;
+		int result = pthread_create(&newThread, NULL, &handleClient,(void *) ta); //Run handleClient
 		if (result) {
 		 cout << "Error: unable to create thread, " << result << endl;
 		 exit(-1);
 		}
 	}
-	return 0;
 }

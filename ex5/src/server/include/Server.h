@@ -47,7 +47,7 @@ private:
 	 *The output: None
 	 *The function operation: Creates a new thread for dealing each client's requests.
 	 *********************************************************************/
-	static void * handleClient(void * arguments);
+	//static void * handleClient(void * arguments);
 	
 	/********************************************************************
 	 *Function name: receiveMove()
@@ -74,15 +74,13 @@ private:
 	 *********************************************************************/
 	void alertClient(int socket);
 
-	void * acceptClients();
 
 	//Members
 	int port;
 	int serverSocket; // the socket's file descriptor
 	bool serverOn;
-	vector<int> connectedClients;
-	vector<pthread_t> runningThreads;
 	CommandsManager *commandsManager;
+	pthread_t serverThreadId;
 	
 };
 #endif /* INCLUDE_SERVER_H_ */

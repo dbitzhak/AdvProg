@@ -25,8 +25,10 @@ CommandsManager::CommandsManager(GameCenter *gc) : gameCenter(gc) {
 	commandsMap["close"] = new CloseCommand(gameCenter);
 }
 
-void * CommandsManager::getUserCommand(int clientSocket) {
-	return NULL;
+void * CommandsManager::executeCommand(string command, vector<string> args, int socket) {
+		 Command *commandObj = commandsMap[command];
+		 commandObj->execute(args, socket);
+		 return NULL;
 }
 
 CommandsManager::~CommandsManager() {
