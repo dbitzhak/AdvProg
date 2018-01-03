@@ -1,8 +1,19 @@
 #include "GameCenter.h"
 #include <unistd.h>
 #include <string>
+#define MSG_LIMIT 31
 
-void GameCenter::run(string name, long socket1, long socket2) {
+void GameCenter::run(string name, long socket2) {
+	long socket1 = gameToSocketMap.at(name);
+	char buffer[MSG_LIMIT];
+	
+	long n = read((int)socket1, &buffer, sizeof(buffer));
+	if(n == -1) {
+		cout << "Error reading from socket\n";
+	}
+	
+	string command = getCommand(buffer);
+	vector<string> args = getArgs(buffer);
 	
 }
 

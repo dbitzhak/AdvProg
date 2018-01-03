@@ -15,7 +15,7 @@ using namespace std;
 
 class GameCenter {
 public:
-	void run(string name, long socket1, long socket2);
+	void run(string name, long socket2);
 	
 	vector<string> getWaitingList();
 	

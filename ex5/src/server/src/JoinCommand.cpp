@@ -9,5 +9,6 @@ void JoinCommand::execute(vector<string> args, long dstSocket) {
 	}
 	gameCenter->writeToOpponent(name, SUCCESS);
 	gameCenter->removeFromWaitingList(name);
+	gameCenter->run(name, dstSocket);
 }
 

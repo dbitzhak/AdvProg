@@ -108,7 +108,7 @@ private:
 	 *********************************************************************/
 	char* getUserInput(char *buffer);
 	
-	
+	char* getBuffer(string command, string name);
 	
 	/********************************************************************
 	 *Function name:
