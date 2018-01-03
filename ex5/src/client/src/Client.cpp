@@ -21,7 +21,7 @@
 #include <fstream>
 
 
-
+#define SERVER_STOPPED -777
 #define MSG_LIMIT 31
 
 using namespace std;
@@ -94,9 +94,9 @@ void Client::startNewGame(string name) {
 	cout << "Got " << response << endl;
 	if(n == 0) {
 		return;
-	} else {
-		cout << "Wrong confirmation code\n";
-		throw "Wrong confirmation code\n";
+	} else if (n == SERVER_STOPPED){
+		cout << "Server stopped\n";
+		throw "Server stopped\n";
 	}
 }
 
@@ -108,8 +108,12 @@ string Client::getGameList() {
 		throw "Error sending command list_games\n";
 	}
 	//Get string size
-	unsigned long stringSize;
+	int stringSize;
 	n = read(clientSocket,&stringSize, sizeof(stringSize));
+	
+	if(stringSize == 0) {
+		throw "No games to join\n";
+	}
 	//Get string as char *
 	char stringBuffer[stringSize];
 	n = read(clientSocket,&stringBuffer, stringSize);
@@ -121,7 +125,7 @@ string Client::getGameList() {
 int Client::joinGame(string name) {
 	char *buffer = getBuffer("join", name);
 
-	long n = write(clientSocket, buffer, sizeof(buffer));
+	long n = write(clientSocket, buffer, sizeof(buffer) + 1);
 	delete[] buffer;
 	
 	if (n == -1) {
@@ -138,7 +142,7 @@ int Client::joinGame(string name) {
 
 void Client::closeGame(string name) {
 	char* buffer = getBuffer("close", name);
-	long n = write(clientSocket, buffer, sizeof(buffer));
+	long n = write(clientSocket, buffer, sizeof(buffer) + 1);
 	delete[] buffer;
 	if (n == -1) {
 		throw "Error closing game";

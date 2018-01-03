@@ -14,7 +14,7 @@
 #include <fstream>
 #include <sstream>
 
-#define END -666
+#define SERVER_STOPPED -777
 
 using namespace std;
 
@@ -84,7 +84,12 @@ void Game::start() {
 							error = false;
 							try {
 								localClient.startNewGame(name);
-							} catch(const char* msg) {
+							} catch(int i) {
+								if(i == SERVER_STOPPED) {
+									graphicProvider->displayMessage("Server stopped/n");
+									return;
+								}
+							} catch(const char *msg) {
 								graphicProvider->displayMessage(msg);
 								error = true;
 								cin >> name;
@@ -92,12 +97,17 @@ void Game::start() {
 						}
 					} else if (option == 2) {
 						validInput = true;
-						graphicProvider->displayMessage("Which game would you like to join?\n");
 						
-						string gameList = localClient.getGameList();
-						graphicProvider->displayMessage(gameList);
+						string gameList;
+						try {
+							gameList = localClient.getGameList();
+						} catch(const char *msg) {
+							graphicProvider->displayMessage(msg);
+							return;
 						}
-						
+						graphicProvider->displayMessage("Which game would you like to join?\n");
+						graphicProvider->displayMessage(gameList);
+						graphicProvider->displayMessage("\n");
 						cin >> name;
 						while(localClient.joinGame(name) == -1) {
 							graphicProvider->displayMessage("Invalid choice\n");
@@ -122,14 +132,15 @@ void Game::start() {
 					localClient.closeGame(name);
 				} catch (exception e) {}
 			}break;
-			case 4:{ //Breaks the game loop
-				gameLoop = false;
-			}break;
-			default:{
-				this->graphicProvider->displayMessage("Invalid option\n");
-			}break;
+			//case 4:{ //Breaks the game loop
+			//	gameLoop = false;
+			//}break;
+			//default:{
+			//	this->graphicProvider->displayMessage("Invalid option\n");
+			//}break;
 		}
 	}
+}
 }
 
 

@@ -9,6 +9,7 @@
 
 #define SUCCESS 0
 #define FAILURE -1
+#define TRY_AGAIN 10
 
 using namespace std;
 
@@ -30,6 +31,10 @@ public:
 	
 	bool isInWaitingList(string name);
 	
+	unsigned long getWaitingListSize();
+	
+	void changeWaitingListSize(int diff);
+	
 	void addToMap(string name, long socket);
 	
 	void removeFromMap(string name);
@@ -39,6 +44,8 @@ public:
 	void writeToClient(int socket, char* buffer);
 	
 	void writeToOpponent(string name, int msg);
+	
+	string readStringFromClient(int socket);
 private:
 	pair<int,int> receiveMove(int socket);
 	void passMove(pair<int,int> move, int socket);
@@ -49,6 +56,7 @@ private:
 	int strandedClient;
 	vector<string> gameList;
 	vector<string> waitingList;
+	unsigned long waitingListSize;
 	map<string, long> gameToSocketMap;
 	static pthread_mutex_t lock;
 };

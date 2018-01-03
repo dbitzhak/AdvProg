@@ -40,6 +40,9 @@ public:
 	 *********************************************************************/
 	void * stop();
 	
+	//Members
+	static pthread_mutex_t lock;
+	
 private:
 	/********************************************************************
 	 *Function name: handleClient()
@@ -82,6 +85,6 @@ private:
 	CommandsManager *commandsManager;
 	pthread_t serverThreadId;
 	vector<long> connectedClients;
-	
+	vector<pthread_t> openThreads;
 };
 #endif /* INCLUDE_SERVER_H_ */

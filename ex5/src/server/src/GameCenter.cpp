@@ -13,8 +13,8 @@ pthread_mutex_t GameCenter::lock;
 
 void GameCenter::run(string name, long socket) {
 	inPlay = true;
-	int dstSocket = (int)gameToSocketMap.at(name);
-	int srcSocket = (int)socket;
+	int dstSocket = gameToSocketMap.at(name);
+	int srcSocket = socket;
 	
 	while (inPlay) {
 		int tmp = srcSocket;
@@ -116,10 +116,17 @@ void GameCenter::passMove(pair<int,int> move, int socket) {
 
 void GameCenter::writeToOpponent(string name, int msg) {
 	long socket = gameToSocketMap.at(name);
-	long n = write((int)socket, &msg, sizeof(msg));
+	long n = write(socket, &msg, sizeof(msg) + 1);
 	if(n == -1) {
 		cout << "Error writing to socket\n";
 	}
+}
+
+
+string GameCenter::readStringFromClient(int socket) {
+	char buffer[31];
+	long n = read(socket, &buffer, sizeof(buffer) + 1);
+	return (string)buffer;
 }
 
 vector<string> GameCenter::getWaitingList() {
@@ -128,6 +135,7 @@ vector<string> GameCenter::getWaitingList() {
 
 void GameCenter::addToWaitingList(string name) {
 	pthread_mutex_lock(&lock);
+	changeWaitingListSize(name.length() + 1);
 	unsigned long size = waitingList.size();
 	for(unsigned int i = 0; i < size; i++) {
 		if(name == waitingList[i]) {
@@ -153,6 +161,7 @@ void GameCenter::addToGameList(string name) {
 
 void GameCenter::removeFromWaitingList(string name) {
 	pthread_mutex_lock(&lock);
+	changeWaitingListSize(-(name.length() + 1));
 	unsigned long size = waitingList.size();
 	for(unsigned int i = 0; i < size; i++) {
 		if(name == waitingList[i]) {
@@ -212,6 +221,14 @@ void GameCenter::removeFromMap(string name) {
 	pthread_mutex_unlock(&lock);
 }
 
+unsigned long GameCenter::getWaitingListSize() {
+	return waitingListSize;
+}
+
+void GameCenter::changeWaitingListSize(int diff) {
+	waitingListSize += diff;
+}
+
 void GameCenter::writeToClient(int socket, int i) {
 	long n = write(socket, &i, sizeof(i));
 	if(n == -1) {
@@ -220,10 +237,13 @@ void GameCenter::writeToClient(int socket, int i) {
 }
 
 void GameCenter::writeToClient(int socket, char* buffer) {
-	long n = write(socket, &buffer, sizeof(buffer));
+	cout << buffer << endl;
+	cout << getWaitingListSize() << endl;
+	long n = write(socket, buffer, getWaitingListSize());
 	if(n == -1) {
 		throw "Error writing to socket\n";
 	}
+	delete[] buffer;
 }
 
 

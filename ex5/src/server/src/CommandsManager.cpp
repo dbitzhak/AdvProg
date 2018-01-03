@@ -9,7 +9,6 @@
 
 CommandsManager::CommandsManager(GameCenter *gc) : gameCenter(gc) {
 	commandsMap["start"] = new StartCommand(gameCenter);
-	commandsMap["list_games"] = new ListGamesCommand(gameCenter);
 	commandsMap["join"] = new JoinCommand(gameCenter);
 	commandsMap["play"] = new PlayCommand();
 	commandsMap["close"] = new CloseCommand(gameCenter);
@@ -23,9 +22,12 @@ void * CommandsManager::executeCommand(string command, vector<string> args, int 
 		error = false;
 		try {
 			commandObj->execute(args, socket);
-		} catch(const char *msg) {
-			cout << msg << endl;
-			error = true;
+		} catch(int e) {
+			if(e == TRY_AGAIN) {
+				error = true;
+			} else {
+				return NULL;
+			}
 		}
 	}
 	return NULL;
