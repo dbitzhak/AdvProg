@@ -19,8 +19,7 @@
 #include <utility>
 #include <string>
 #include <fstream>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/serialization/vector.hpp>
+
 
 
 #define MESSAGE_LIMIT 31
@@ -71,50 +70,49 @@ void Client::connectToServer() {
 void Client::startNewGame(string name) {
 	//limit of 31 chars
 	char buffer[31] = {};
-	getUserInput(buffer);	int error;
+	getUserInput(buffer);
+	int response;
 	long n = write(clientSocket, &buffer, MESSAGE_LIMIT);
 	if(n == -1) {
 		throw "Error starting game";
 	}
-	
-	n = read(clientSocket, &error, sizeof(error));
+	n = read(clientSocket, &response, sizeof(response));
 	if(n == -1) {
 		throw "Error reading result from socket";
 	}
-	if(error == -1) {
-		throw "Name is already taken";
+	if(response == -1) {
+		throw "Name already taken\n";
 	}
-}
-
-vector<string> Client::getGameList() {
-
-	//limit of 31 chars
-	char buffer[31] = {};
-	getUserInput(buffer);
-	long n = write(clientSocket, &buffer, MESSAGE_LIMIT);
+	//Get confirmation code 0 when player connects to game
+	n = read(clientSocket, &response, sizeof(response));
 	if(n == -1) {
-		throw "Error joining game";
+		throw "Error reading result from socket";
 	}
-	// Create an input archive
-	std::fstream tempFile("/tmp/availableGames.ser");
-	boost::archive::binary_iarchive inArchive(tempFile);
-	//Get vector size
-	unsigned long vectorSize;
-	n = read(clientSocket,&vectorSize, sizeof(vectorSize));
-	//Get vector
-	char vectorBuffer[vectorSize];
-	n = read(clientSocket,&vectorBuffer, vectorSize);
-	tempFile.write(vectorBuffer,sizeof(vectorBuffer)); //Write vector to file
-	// Load data
-	vector<string> availableGames;
-	inArchive & availableGames;
-	//Close & Delete File
-	tempFile.close();
-	remove("/tmp/availableGames.ser");
-	return availableGames;
+	if(n == 0) {
+		return;
+	} else {
+		throw "Wrong confirmation code\n";
+	}
 }
 
-void Client::joinGame(string name) {
+char* Client::getGameList() {
+	string str = "list_games";
+	//limit of 31 chars
+	const char* tmp = str.c_str();
+	long n = write(clientSocket, &tmp, MESSAGE_LIMIT);
+	if(n == -1) {
+		throw "Error sending command list_games\n";
+	}
+	//Get buffer size
+	unsigned long bufferSize;
+	n = read(clientSocket, &bufferSize, sizeof(bufferSize));
+	//Get buffer
+	char* buffer = new char[bufferSize];
+	n = read(clientSocket, &(buffer), bufferSize);
+	return buffer;
+}
+
+int Client::joinGame(string name) {
 	//limit of 31 chars
 	char buffer[31] = {};
 	getUserInput(buffer);
@@ -122,6 +120,13 @@ void Client::joinGame(string name) {
 	if (n == -1) {
 		throw "Error joining game";
 	}
+	int response;
+	//Server sends -1 if name is invalid, else 0
+	n = read(clientSocket, &response, sizeof(response));
+	if(n == -1) {
+		throw "Error reading result from socket";
+	}
+	return response;
 }
 
 void Client::closeGame(string name) {

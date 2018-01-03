@@ -19,6 +19,7 @@ public:
 	virtual void displayBoard(Board b) const = 0;
 	virtual void displayMoves(std::vector<Cell> availablePositions) const = 0;
 	virtual void displayMessage(std::string message) const = 0;
+	virtual void displayMessage(char message) const = 0;
 	virtual void displayPlayer(Player *player) const = 0;
 	virtual void displayCoordinate(int a, int b) const = 0;
 

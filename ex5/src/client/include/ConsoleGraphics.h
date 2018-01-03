@@ -34,7 +34,7 @@ public:
 	*Function name: displayBoard()
 	*The input: Board
 	*The output: None
-	*The function operation: Print's the Board's Cells in a 
+	*The function operation: Prints the Board's Cells in a 
 	 defined Board format
 	********************************************************/
 	virtual void displayBoard(Board b) const;
@@ -43,7 +43,7 @@ public:
 	*Function name: displayMoves()
 	*The input: a vector of Cells with the valid moves
 	*The output: None
-	*The function operation: Print's the vector's Cells in a 
+	*The function operation: Prints the vector's Cells in a
 	 defined coordinate format
 	********************************************************/
 	virtual void displayMoves(std::vector<Cell> availablePositions) const;
@@ -52,10 +52,18 @@ public:
 	*Function name: displayMessage()
 	*The input: a string
 	*The output: None
-	*The function operation: Print's the string through cout
+	*The function operation: Prints the string through cout
 	********************************************************/
 	virtual void displayMessage(std::string message) const;
 
+	/******************************************************
+	 *Function name: displayMessage()
+	 *The input: a char
+	 *The output: None
+	 *The function operation: Prints the char through cout
+	 ********************************************************/
+	virtual void displayMessage(char message) const;
+	
 	/******************************************************
 	*Function name: displayPlayer()
 	*The input: Player

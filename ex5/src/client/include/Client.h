@@ -57,14 +57,73 @@ public:
 	 *The function operation: Receives from the Server two ints and returns their pair
 	 *********************************************************************/
 	pair<int,int> receiveMove();
+	
+	/********************************************************************
+	 *Function name: init()
+	 *The input: The file name
+	 *The output: Void
+	 *The function operation:
+	 *********************************************************************/
 	void init(const char* file);
-	void joinGame(string name);
+	
+	/********************************************************************
+	 *Function name: joinGame()
+	 *The input: Name of game to join
+	 *The output: Void
+	 *The function operation: Tells server that client wants to join game "name"
+	 *********************************************************************/
+	int joinGame(string name);
+	
+	/********************************************************************
+	 *Function name: closeGame()
+	 *The input: Name of game to close
+	 *The output: Void
+	 *The function operation: Tells server that client is ending the game
+	 *********************************************************************/
 	void closeGame(string name);
-private:
-	char * getUserInput(char *buffer);
+	
+	/********************************************************************
+	 *Function name:
+	 *The input:
+	 *The output:
+	 *The function operation:
+	 *********************************************************************/
 	void startNewGame(string name);
-	vector<string> getGameList();
+	
+	/********************************************************************
+	 *Function name:
+	 *The input:
+	 *The output:
+	 *The function operation:
+	 *********************************************************************/
+	char* getGameList();
+	
+	int getNumberOfGames();
+private:
+	/********************************************************************
+	 *Function name: getUserInput()
+	 *The input: Array of chars
+	 *The output: 
+	 *The function operation:
+	 *********************************************************************/
+	char* getUserInput(char *buffer);
+	
+	
+	
+	/********************************************************************
+	 *Function name:
+	 *The input:
+	 *The output:
+	 *The function operation:
+	 *********************************************************************/
 	string getIP(const char* file);
+	
+	/********************************************************************
+	 *Function name:
+	 *The input:
+	 *The output:
+	 *The function operation:
+	 *********************************************************************/
 	int getPort(const char* file);
 	//Members
 	const char *serverIP;
