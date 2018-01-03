@@ -44,7 +44,7 @@ void Server::start() {
 	//Converts the unsigned short integer hostshort f/ host byte order to network byte order.
 	serverAddress.sin_port = htons(port);
 	//If binding fails throws exception
-	if (bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
+	if(::bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
 		throw "Error on binding";
 	}
 	// Start listening to incoming connection requests
@@ -66,7 +66,6 @@ void Server::start() {
 		exit(-1);
 	}
 }
-
 
 
 pair<int,int> Server::receiveMove(int socket) {
@@ -133,10 +132,10 @@ static void * handleClient(void * threadArgs) {
 	long clientSocket = ta->clientSocket;
 	char commandStr[MAX_COMMAND_LEN];
 	 // Read the command from the socket
-	 int n = read(clientSocket, commandStr, MAX_COMMAND_LEN);
+	 long n = read(clientSocket, commandStr, MAX_COMMAND_LEN);
 	 if (n == -1) {
-	 cout << "Error reading command" << endl;
-	 return NULL;
+		 cout << "Error reading command" << endl;
+		 return NULL;
 	 }
 	 cout << "Received command: " << commandStr << endl;
 	 // Split the command string to the command name and the arguments
@@ -146,14 +145,13 @@ static void * handleClient(void * threadArgs) {
 	 iss >> command;
 	 vector<string> args;
 	 while (iss) {
-	 string arg;
-	 iss >> arg;
-	 args.push_back(arg);
+		 string arg;
+		 iss >> arg;
+		 args.push_back(arg);
 	 }
 	 ta->commandManager->executeCommand(command, args, clientSocket);
 	 return NULL;
 }
-
 
 void Server::stop() {
 	string stop = "";
@@ -185,7 +183,7 @@ static void * acceptClients(void * args) {
 		pthread_t newThread;
 		//Passes the client socket as parameter
 		ta->clientSocket = clientSocket;
-		int result = pthread_create(&newThread, NULL, &handleClient,(void *) ta); //Run handleClient
+		int result = pthread_create(&newThread, NULL, &handleClient, (void *) ta); //Run handleClient
 		if (result) {
 		 cout << "Error: unable to create thread, " << result << endl;
 		 exit(-1);

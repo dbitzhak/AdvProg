@@ -1,11 +1,3 @@
-//
-//  StartCommand.h
-//  Server
-//
-//  Created by Gavriella on 12/26/17.
-//  Copyright © 2017 Gavriella. All rights reserved.
-//
-
 #ifndef StartCommand_h
 #define StartCommand_h
 #include "Command.h"
@@ -16,7 +8,7 @@
 class StartCommand: public Command {
 public:
 	StartCommand(GameCenter *gc);
-	virtual void execute(vector<string> args);
+	virtual void execute(vector<string> args, long dstSocket);
 
 private:
 	GameCenter *gameCenter;

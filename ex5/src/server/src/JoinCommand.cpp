@@ -1,19 +1,13 @@
-/*
- * JoinCommand.cpp
- *
- *  Created on: Dec 30, 2017
- *      Author: dan
- */
-
 #include "JoinCommand.h"
 
 JoinCommand::JoinCommand(GameCenter*gc) : gameCenter(gc){}
 
-void JoinCommand::execute(vector<string> args) {
-	if(!gameCenter->isInWaitingList(args[0])) {
+void JoinCommand::execute(vector<string> args, long dstSocket) {
+	string name = args[0];
+	if(!gameCenter->isInWaitingList(name)) {
 		throw "Could not join game";
 	}
-	//else join...
-	gameCenter->removeFromWaitingList(args[0]);
+	gameCenter->writeToOpponent(name, SUCCESS);
+	gameCenter->removeFromWaitingList(name);
 }
 
