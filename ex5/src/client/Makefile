@@ -8,4 +8,4 @@ compileAll: include/*.h src/*.cpp
 	g++ -Iinclude/ -c src/*.cpp
 
 run:
-	./client.out
+	./a.out

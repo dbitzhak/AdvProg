@@ -1,13 +1,11 @@
 #Makefile
 
-a.out: Server.o main.o
-	g++ Server.o main.o -o server.out
+a.out: compileAll
+	g++ *.o
+	rm -f *.o
 
-Server.o: Server.cpp Server.h
-	g++ -c Server.cpp
-
-main.o: main.cpp Server.h
-	g++ -c main.cpp
+compileAll: include/*.h src/*.cpp
+	g++ -Iinclude/ -c src/*.cpp
 
 run:
 	./a.out

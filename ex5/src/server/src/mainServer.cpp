@@ -3,10 +3,10 @@
 #include <stdlib.h>
 using namespace std;
 
-int main_Server() {
+int main() {
 	GameCenter gc;
 	CommandsManager cm(&gc);
-	Server server(8000, &cm);
+	Server server(8008, &cm);
 	try {
 		server.start();
 	} catch(const char *msg) {

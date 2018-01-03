@@ -71,7 +71,7 @@ void Client::startNewGame(string name) {
 	char *buffer = getBuffer("start", name);
 	int response;
 	
-	long n = write(clientSocket, &buffer, sizeof(buffer));
+	long n = write(clientSocket, buffer, 31);
 	delete[] buffer;
 	
 	if(n == -1) {
@@ -84,14 +84,18 @@ void Client::startNewGame(string name) {
 	if(response == -1) {
 		throw "Name already taken\n";
 	}
+	cout << "Waiting for player to join...";
 	//Get confirmation code 0 when player connects to game
 	n = read(clientSocket, &response, sizeof(response));
 	if(n == -1) {
+		cout << "Error reading result from socket\n";
 		throw "Error reading result from socket\n";
 	}
+	cout << "Got " << response << endl;
 	if(n == 0) {
 		return;
 	} else {
+		cout << "Wrong confirmation code\n";
 		throw "Wrong confirmation code\n";
 	}
 }
@@ -117,7 +121,7 @@ string Client::getGameList() {
 int Client::joinGame(string name) {
 	char *buffer = getBuffer("join", name);
 
-	long n = write(clientSocket, &buffer, sizeof(buffer));
+	long n = write(clientSocket, buffer, sizeof(buffer));
 	delete[] buffer;
 	
 	if (n == -1) {
@@ -134,7 +138,7 @@ int Client::joinGame(string name) {
 
 void Client::closeGame(string name) {
 	char* buffer = getBuffer("close", name);
-	long n = write(clientSocket, &buffer, sizeof(buffer));
+	long n = write(clientSocket, buffer, sizeof(buffer));
 	delete[] buffer;
 	if (n == -1) {
 		throw "Error closing game";
@@ -146,6 +150,9 @@ char* Client::getBuffer(string command, string args) {
 	command.append(args);
 	char *buffer = new char[MSG_LIMIT];
     strcpy(buffer, command.c_str());
+	
+	cout << buffer;
+	
 	return buffer;
 }
 

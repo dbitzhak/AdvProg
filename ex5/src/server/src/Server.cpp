@@ -14,13 +14,17 @@
 typedef void * (*funcPointer)(void *);
 
 #define MAX_CONNECTED_CLIENTS 10
-#define MAX_COMMAND_LEN 35
+#define MAX_COMMAND_LEN 31
 #define DISCONNECT -666
 
 //Thread functions
 static void *acceptClients(void *);
 static void *handleClient(void *);
 static void *endServer(void *);
+
+///TODO TODO TODO - DELETE
+static void *testFunction(long socket, CommandsManager *cm);
+///TODO TODO TODO - DELETE
 
 
 struct ThreadArgs {
@@ -48,10 +52,17 @@ void Server::start() {
 	serverAddress.sin_port = htons(port);
 	//If binding fails throws exception
 	if(::bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
-		throw "Error on binding";
+			throw "Error on binding";
 	}
 	// Start listening to incoming connection requests
 	listen(serverSocket, MAX_CONNECTED_CLIENTS);
+	
+	
+	///TODO TODO TODO - DELETE
+	testFunction(serverSocket, this->commandsManager);
+	///TODO TODO TODO - DELETE
+	
+	
 	//Create a thread for closing the server
 	pthread_t threadStop;
 	int result = pthread_create(&threadStop, NULL, &endServer, (void *) this); //Run stop
@@ -72,64 +83,6 @@ void Server::start() {
 	}
 }
 
-
-pair<int,int> Server::receiveMove(int socket) {
-	int x, y;
-	
-	// Read new move argument from client
-	long n = read(socket, &x, sizeof(x));
-	if (n == -1) {
-		throw "Error reading x";
-	}
-	if (n == 0) {
-		throw "Client disconnected";
-	}
-	n = read(socket, &y, sizeof(y));
-	if (n == -1) {
-		throw "Error reading y";
-	}
-	
-	cout << "Got move from client: " << x << ", " << y << endl;
-	
-	return make_pair(x, y);
-	
-}
-
-void Server::passMove(pair<int,int> move, int socket) {
-	long n;
-	try {
-		n = write(socket, &move.first, sizeof(move.first));
-		
-	} catch(exception e) {
-		cout << "passMove: Error writing x to socket" << endl;
-		throw "Error writing x to socket\n";
-	}
-	if (n == -1) {
-		cout << "passMove: Error writing x to socket" << endl;
-		throw "Error writing x to socket\n";
-		//		return;
-	}
-	try {
-		n = write(socket, &move.second, sizeof(move.second));
-	} catch(exception e) {
-		cout << "passMove: Error writing y to socket" << endl;
-		throw "Error writing y to socket\n";
-		//		return;
-	}
-	if (n == -1) {
-		cout << "passMove: Error writing y to socket" << endl;
-		throw "Error writing y to socket\n";
-		//		return;
-	}
-}
-
-void Server::alertClient(int socket) {
-	try {
-		passMove(pair<int,int>(ERROR,ERROR), socket);
-	} catch (const char *msg) {
-		cout << msg;
-	}
-}
 
 // Handle requests from a specific client
 static void * handleClient(void * threadArgs) {
@@ -211,3 +164,45 @@ static void * endServer(void * args) {
 	trgtServer->stop();
 	return NULL;
 }
+
+
+///TODO TODO TODO - DELETE
+
+
+static void *testFunction(long socket, CommandsManager *cm) {
+	struct sockaddr_in clientAddress;
+	socklen_t clientAddressLen = sizeof(clientAddress);
+	while (true) {
+		cout << "Waiting for client connections..." << endl;
+		// Accept a new client connection
+		int clientSocket = accept(socket, (struct sockaddr *)&clientAddress,&clientAddressLen);
+		cout << "Client connected" << endl;
+		if (clientSocket == -1) {
+			throw "Error on accept";
+		}
+		char commandStr[MAX_COMMAND_LEN];
+		// Read the command from the socket
+		long n = read(clientSocket, commandStr, MAX_COMMAND_LEN);
+		if (n == -1) {
+			cout << "Error reading command" << endl;
+			return NULL;
+		}
+		cout << "Received command: " << commandStr << endl;
+		// Split the command string to the command name and the arguments
+		string str(commandStr);
+		istringstream iss(str);
+		string command;
+		iss >> command;
+		vector<string> args;
+		while (iss) {
+			string arg;
+			iss >> arg;
+			args.push_back(arg);
+		}
+		cout << command;
+		cm->executeCommand(command, args, clientSocket);
+		return NULL;
+	}
+}
+
+///TODO TODO TODO - DELETE

@@ -61,7 +61,13 @@ void Game::start() {
 				const char *serverIP = getIP().c_str();
 				int serverPort = getPort();
 				Client localClient(serverIP,serverPort);
-				localClient.connectToServer();
+				try {
+					localClient.connectToServer();
+				} catch(const char *msg) {
+					graphicProvider->displayMessage(msg);
+					graphicProvider->displayMessage("\n");
+					return;
+				}
 				string name;
 				while(!validInput) {
 					graphicProvider->displayMessage("Would you like to:\n");
@@ -97,8 +103,8 @@ void Game::start() {
 							graphicProvider->displayMessage("Invalid choice\n");
 						}
 					}
-				}
 				
+		
 				if (option == 1) {
 					LocalPlayer lp(gl, localClient, graphicProvider, 'X');
 					RemotePlayer rp(gl, localClient, graphicProvider, 'O');
@@ -130,7 +136,8 @@ void Game::start() {
 string Game::getIP() {
 	ifstream infile;
 	
-	infile.open("clientconfig.txt");
+	//	infile.open("clientconfig.txt");
+	infile.open("/Users/gavriella/AdvProg/ex5/src/client/src/clientconfig.txt");
 	if (!infile) {
 		cout << "Error opening file\n";
 	}
@@ -146,7 +153,8 @@ string Game::getIP() {
 int Game::getPort() {
 	ifstream infile;
 	
-	infile.open("clientconfig.txt");
+	//	infile.open("clientconfig.txt");
+	infile.open("/Users/gavriella/AdvProg/ex5/src/client/src/clientconfig.txt");
 	if (!infile) {
 		cout << "Error opening file\n";
 	}

@@ -16,9 +16,19 @@ CommandsManager::CommandsManager(GameCenter *gc) : gameCenter(gc) {
 }
 
 void * CommandsManager::executeCommand(string command, vector<string> args, int socket) {
-		 Command *commandObj = commandsMap[command];
-		 commandObj->execute(args, socket);
-		 return NULL;
+	cout << command << endl;
+	Command *commandObj = commandsMap[command];
+	bool error = true;
+	while(error) {
+		error = false;
+		try {
+			commandObj->execute(args, socket);
+		} catch(const char *msg) {
+			cout << msg << endl;
+			error = true;
+		}
+	}
+	return NULL;
 }
 
 CommandsManager::~CommandsManager() {

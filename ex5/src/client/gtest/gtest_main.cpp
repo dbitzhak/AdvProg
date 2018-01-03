@@ -5,3 +5,4 @@ GTEST_API_ int main2(int argc, char **argv) {
 	return RUN_ALL_TESTS();
 }
 
+
