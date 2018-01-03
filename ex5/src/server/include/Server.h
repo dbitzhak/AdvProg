@@ -38,7 +38,7 @@ public:
 	 *The output: None
 	 *The function operation: Closes the server socket and all open threads
 	 *********************************************************************/
-	void stop();
+	static void * stop();
 	
 private:
 	/********************************************************************
@@ -81,6 +81,7 @@ private:
 	bool serverOn;
 	CommandsManager *commandsManager;
 	pthread_t serverThreadId;
+	vector<long> connectedClients;
 	
 };
 #endif /* INCLUDE_SERVER_H_ */

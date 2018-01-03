@@ -46,6 +46,7 @@ private:
 	vector<string> gameList;
 	vector<string> waitingList;
 	map<string, long> gameToSocketMap;
+	static pthread_mutex_t lock;
 };
 
 #endif /* GameCenter_h */

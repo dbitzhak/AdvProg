@@ -15,9 +15,12 @@ typedef void * (*funcPointer)(void *);
 
 #define MAX_CONNECTED_CLIENTS 10
 #define MAX_COMMAND_LEN 35
+#define DISCONNECT -666
 
+//Thread functions
 static void *acceptClients(void *);
 static void *handleClient(void *);
+static void *endServer(void *);
 
 
 struct ThreadArgs {
@@ -51,7 +54,7 @@ void Server::start() {
 	listen(serverSocket, MAX_CONNECTED_CLIENTS);
 	//Create a thread for closing the server
 	pthread_t threadStop;
-	int result = pthread_create(&threadStop, NULL,(funcPointer) &Server::stop, this); //Run stop
+	int result = pthread_create(&threadStop, NULL, &endServer, (void *) this); //Run stop
 	if (result) {
 		cout << "Error: unable to create thread, " << result << endl;
 		exit(-1);
@@ -153,17 +156,21 @@ static void * handleClient(void * threadArgs) {
 	 return NULL;
 }
 
-void Server::stop() {
-	string stop = "";
-	 do {
-		cout << "Enter 'stop' for closing the server." << endl;
-		cin >> stop;
-	} while(stop.compare("stop"));
-
+void * Server::stop() {
+	unsigned int size = connectedClients.size();
+	long n;
+	//Sends a disconnection signal to all connected clients
+	for (unsigned int i = 0; i < size; i++ ) {
+		n = write(connectedClients[i], &DISCONNECT, sizeof(DISCONNECT));
+		if (n) {
+			cout << "Error: unable to send shutdown message to socket: " <<  connectedClients[i] << endl;
+		}
+	}
 	serverOn = false;
 	pthread_cancel(serverThreadId);
 	close(serverSocket);
 	cout << "Server stopped" << endl;
+	return NULL;
 }
 
 static void * acceptClients(void * args) {
@@ -190,3 +197,15 @@ static void * acceptClients(void * args) {
 		}
 	}
 }
+
+static void * endServer(void * args) {
+	Server *trgtServer = (Server*) args;
+	string stop = "";
+	 do {
+		cout << "Enter 'stop' for closing the server." << endl;
+		cin >> stop;
+	} while(stop.compare("stop"));
+	trgtServer->stop();
+	return NULL;
+}
+

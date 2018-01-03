@@ -53,10 +53,6 @@ void ConsoleGraphics::displayMessage(std::string message) const {
 	cout << message;
 }
 
-void ConsoleGraphics::displayMessage(char message) const {
-	cout << message;
-}
-
 void ConsoleGraphics::displayPlayer(Player *player) const {
 	if (player == 0) {
 		cout << "Congratulations to both players!\n" << "It was a tie." << endl;
