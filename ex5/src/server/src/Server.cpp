@@ -161,7 +161,7 @@ void * Server::stop() {
 	long n;
 	//Sends a disconnection signal to all connected clients
 	for (unsigned int i = 0; i < size; i++ ) {
-		n = write(connectedClients[i], &DISCONNECT, sizeof(DISCONNECT));
+		n = write(connectedClients[i], &message, sizeof(message));
 		if (n) {
 			cout << "Error: unable to send shutdown message to socket: " <<  connectedClients[i] << endl;
 		}

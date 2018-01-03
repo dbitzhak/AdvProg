@@ -4,6 +4,7 @@
 #include <iostream>
 
 #define MSG_LIMIT 31
+#define CLOSE -666
 
 using namespace std;
 
@@ -12,13 +13,86 @@ pthread_mutex_t GameCenter::lock;
 void GameCenter::run(string name, long socket2) {
 	long socket1 = gameToSocketMap.at(name);
 	char buffer[MSG_LIMIT];
+	
 	long n = read((int)socket1, &buffer, sizeof(buffer));
 	if(n == -1) {
 		cout << "Error reading from socket\n";
 	}
-	string command = getCommand(buffer);
-	vector<string> args = getArgs(buffer);
+	
+	bool running = true;
+	
+	while (running) {
+		// Read new move argument from client1
+		pair<int,int> move;
+		
+		try {
+			move = receiveMove(socket1);
+		} catch (const char *msg) { //alert both clients
+			cout << msg;
+			//			alertClient(clientSocket1);
+			alertClient(clientSocket2);
+			return;
+		}
+		
+		try {
+			passMove(move, clientSocket2);
+		} catch (const char *msg) {
+			cout << msg;
+			alertClient(clientSocket1);
+			return;
+		}
+		
+		//if game ended
+		if (move.first == END || move.first == ERROR) {
+			return;
+		}
+		
+		// Read new move argument from client2
+		try {
+			move = receiveMove(clientSocket2);
+		} catch(const char *msg) {
+			cout << msg;
+			alertClient(clientSocket1);
+			//			alertClient(clientSocket2);
+			return;
+		}
+		try {
+			passMove(move, clientSocket1);
+		} catch (const char *msg) {
+			cout << msg;
+			alertClient(clientSocket2);
+			return;
+		}
+		
+		//if game ended
+		if (move.first == END || move.first == ERROR) {
+			return;
+		}
+	}
 }
+
+pair<int,int> GameCenter::receiveMove(int socket) {
+	int x, y;
+	
+	// Read new move argument from client
+	long n = read(socket, &x, sizeof(x));
+	if (n == -1) {
+		throw "Error reading x";
+	}
+	if (n == 0) {
+		throw "Client disconnected";
+	}
+	n = read(socket, &y, sizeof(y));
+	if (n == -1) {
+		throw "Error reading y";
+	}
+	
+	cout << "Got move from client: " << x << ", " << y << endl;
+	
+	return make_pair(x, y);
+	
+}
+
 
 string GameCenter::getCommand(char *buffer) {
 	return (string)buffer;

@@ -41,6 +41,7 @@ public:
 	
 	void writeToOpponent(string name, int msg);
 private:
+	pair<int,int> receiveMove(int socket);
 	string getCommand(char *buffer);
 	vector<string> getArgs(char *buffer);
 	vector<string> gameList;

@@ -38,7 +38,7 @@ public:
 	 *The output: None
 	 *The function operation: Closes the server socket and all open threads
 	 *********************************************************************/
-	static void * stop();
+	void * stop();
 	
 private:
 	/********************************************************************
@@ -73,14 +73,15 @@ private:
 	 *a defined message
 	 *********************************************************************/
 	void alertClient(int socket);
-
-
+	
+	
 	//Members
 	int port;
 	int serverSocket; // the socket's file descriptor
 	bool serverOn;
 	CommandsManager *commandsManager;
 	pthread_t serverThreadId;
+	vector<long> connectedClients;
 	
 };
 #endif /* INCLUDE_SERVER_H_ */
