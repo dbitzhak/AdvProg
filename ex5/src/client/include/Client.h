@@ -96,7 +96,7 @@ public:
 	 *The output:
 	 *The function operation:
 	 *********************************************************************/
-	char* getGameList();
+	string getGameList();
 	
 	int getNumberOfGames();
 private:

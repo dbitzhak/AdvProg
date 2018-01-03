@@ -30,7 +30,7 @@ void GameCenter::run(string name, long socket) {
 
 void GameCenter::playOneTurn(int srcSocket, int dstSocket) {
 	pair<int,int> move;
-	
+
 	// Read new move argument from srcSocket
 	try {
 		move = receiveMove(srcSocket);
@@ -225,6 +225,8 @@ void GameCenter::writeToClient(int socket, char* buffer) {
 		throw "Error writing to socket\n";
 	}
 }
+
+
 
 
 

@@ -59,6 +59,8 @@ void Server::start() {
 		cout << "Error: unable to create thread, " << result << endl;
 		exit(-1);
 	}
+	//Makes Server waits for threadStop
+	pthread_join(threadStop, NULL);
 	//Create a thread for listening to client connections
 	ThreadArgs *args = new ThreadArgs;
 	args->commandManager = commandsManager;

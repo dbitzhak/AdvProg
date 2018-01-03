@@ -1,4 +1,3 @@
-
 #ifndef GameCenter_h
 #define GameCenter_h
 #include <iostream>
@@ -16,15 +15,15 @@ using namespace std;
 class GameCenter {
 public:
 	void run(string name, long socket2);
-	
+
 	vector<string> getWaitingList();
-	
+
 	void addToWaitingList(string name);
-	
+
 	void addToGameList(string name);
-	
+
 	void removeFromWaitingList(string name);
-	
+
 	void removeFromGameList(string name);
 	
 	bool isInGameList(string name);
@@ -55,3 +54,4 @@ private:
 };
 
 #endif /* GameCenter_h */
+

@@ -88,10 +88,8 @@ void Game::start() {
 						validInput = true;
 						graphicProvider->displayMessage("Which game would you like to join?\n");
 						
-						char *gameList = localClient.getGameList();
-						
-						for(int i = 0; *gameList + i != '\0'; i++) {
-							graphicProvider->displayMessage(*gameList + i);
+						string gameList = localClient.getGameList();
+						graphicProvider->displayMessage(gameList);
 						}
 						
 						cin >> name;
