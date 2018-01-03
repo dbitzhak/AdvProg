@@ -72,7 +72,7 @@ public:
 	 *The output: Void
 	 *The function operation: Tells server that client wants to join game "name"
 	 *********************************************************************/
-	int joinGame(string name);
+	string joinGame(string name);
 	
 	/********************************************************************
 	 *Function name: closeGame()

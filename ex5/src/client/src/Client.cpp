@@ -122,11 +122,31 @@ string Client::getGameList() {
 	return availableGames;
 }
 
-int Client::joinGame(string name) {
-	char *buffer = getBuffer("join", name);
-
-	long n = write(clientSocket, buffer, sizeof(buffer) + 1);
-	delete[] buffer;
+string Client::joinGame(string name) {
+	if(name.empty()) {
+		char *buffer = getBuffer("join", name);
+		long n = write(clientSocket, &buffer, sizeof(buffer) + 1);
+		if(n == -1) {
+			throw "Error sending command join\n";
+		}
+		//Get string size
+		int stringSize;
+		n = read(clientSocket,&stringSize, sizeof(stringSize));
+		
+		if(stringSize == 0) {
+			throw "No games to join\n";
+		}
+		//Get string as char *
+		char stringBuffer[stringSize];
+		n = read(clientSocket,&stringBuffer, stringSize);
+		//Convert to string
+		string availableGames(stringBuffer);
+		return availableGames;
+	}
+	
+	char buffer[31];
+	strcpy(buffer, name.c_str());
+	long n = write(clientSocket, &buffer, sizeof(buffer) + 1);
 	
 	if (n == -1) {
 		throw "Error joining game";
@@ -137,7 +157,13 @@ int Client::joinGame(string name) {
 	if(n == -1) {
 		throw "Error reading result from socket";
 	}
-	return response;
+	if(response == -1) {
+		return "0";
+	} else if(response == 0) {
+		return "1";
+	} else {
+		return "2";
+	}
 }
 
 void Client::closeGame(string name) {

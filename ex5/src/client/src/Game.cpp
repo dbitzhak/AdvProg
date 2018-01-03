@@ -100,7 +100,7 @@ void Game::start() {
 						
 						string gameList;
 						try {
-							gameList = localClient.getGameList();
+							gameList = localClient.joinGame("");
 						} catch(const char *msg) {
 							graphicProvider->displayMessage(msg);
 							return;
@@ -109,7 +109,7 @@ void Game::start() {
 						graphicProvider->displayMessage(gameList);
 						graphicProvider->displayMessage("\n");
 						cin >> name;
-						while(localClient.joinGame(name) == -1) {
+						while(localClient.joinGame(name) == "0") {
 							graphicProvider->displayMessage("Invalid choice\n");
 						}
 					}
