@@ -5,69 +5,64 @@
 
 #define MSG_LIMIT 31
 #define CLOSE -666
+#define ERROR -5
 
 using namespace std;
 
 pthread_mutex_t GameCenter::lock;
 
-void GameCenter::run(string name, long socket2) {
-	long socket1 = gameToSocketMap.at(name);
-	char buffer[MSG_LIMIT];
+void GameCenter::run(string name, long socket) {
+	inPlay = true;
+	int dstSocket = (int)gameToSocketMap.at(name);
+	int srcSocket = (int)socket;
 	
-	long n = read((int)socket1, &buffer, sizeof(buffer));
-	if(n == -1) {
-		cout << "Error reading from socket\n";
+	while (inPlay) {
+		int tmp = srcSocket;
+		srcSocket = dstSocket;
+		dstSocket = tmp;
+		playOneTurn(srcSocket, dstSocket);
 	}
 	
-	bool running = true;
+	alertClient(strandedClient);
+	removeFromGameList(name);
+	removeFromMap(name);
+}
+
+void GameCenter::playOneTurn(int srcSocket, int dstSocket) {
+	pair<int,int> move;
 	
-	while (running) {
-		// Read new move argument from client1
-		pair<int,int> move;
-		
-		try {
-			move = receiveMove(socket1);
-		} catch (const char *msg) { //alert both clients
-			cout << msg;
-			//			alertClient(clientSocket1);
-			alertClient(clientSocket2);
-			return;
-		}
-		
-		try {
-			passMove(move, clientSocket2);
-		} catch (const char *msg) {
-			cout << msg;
-			alertClient(clientSocket1);
-			return;
-		}
-		
-		//if game ended
-		if (move.first == END || move.first == ERROR) {
-			return;
-		}
-		
-		// Read new move argument from client2
-		try {
-			move = receiveMove(clientSocket2);
-		} catch(const char *msg) {
-			cout << msg;
-			alertClient(clientSocket1);
-			//			alertClient(clientSocket2);
-			return;
-		}
-		try {
-			passMove(move, clientSocket1);
-		} catch (const char *msg) {
-			cout << msg;
-			alertClient(clientSocket2);
-			return;
-		}
-		
-		//if game ended
-		if (move.first == END || move.first == ERROR) {
-			return;
-		}
+	// Read new move argument from srcSocket
+	try {
+		move = receiveMove(srcSocket);
+	} catch(const char *msg) {
+		cout << msg;
+		endPlay(dstSocket);
+		return;
+	}
+	try {
+		passMove(move, dstSocket);
+	} catch (const char *msg) {
+		cout << msg;
+		endPlay(srcSocket);
+		return;
+	}
+	
+	//if game ended
+	if (move.first == CLOSE || move.first == ERROR) {
+		endPlay(dstSocket);
+	}
+}
+
+void GameCenter::endPlay(int socket) {
+	strandedClient = socket;
+	inPlay = false;
+}
+
+void GameCenter::alertClient(int socket) {
+	try {
+		passMove(pair<int,int>(ERROR,ERROR), socket);
+	} catch (const char *msg) {
+		cout << msg;
 	}
 }
 
@@ -90,19 +85,33 @@ pair<int,int> GameCenter::receiveMove(int socket) {
 	cout << "Got move from client: " << x << ", " << y << endl;
 	
 	return make_pair(x, y);
-	
 }
 
-
-string GameCenter::getCommand(char *buffer) {
-	return (string)buffer;
-}
-
-vector<string> GameCenter::getArgs(char *buffer) {
-	int i;
-	for(i = 0; buffer[i] != '\0'; i++) {}
-	vector<string> args = {(string)(buffer + i + 1)};
-	return args;
+void GameCenter::passMove(pair<int,int> move, int socket) {
+	long n;
+	try {
+		n = write(socket, &move.first, sizeof(move.first));
+	} catch(exception e) {
+		cout << "passMove: Error writing x to socket" << endl;
+		throw "Error writing x to socket\n";
+	}
+	if (n == -1) {
+		cout << "passMove: Error writing x to socket" << endl;
+		throw "Error writing x to socket\n";
+		//		return;
+	}
+	try {
+		n = write(socket, &move.second, sizeof(move.second));
+	} catch(exception e) {
+		cout << "passMove: Error writing y to socket" << endl;
+		throw "Error writing y to socket\n";
+		//		return;
+	}
+	if (n == -1) {
+		cout << "passMove: Error writing y to socket" << endl;
+		throw "Error writing y to socket\n";
+		//		return;
+	}
 }
 
 void GameCenter::writeToOpponent(string name, int msg) {

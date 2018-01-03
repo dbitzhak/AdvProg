@@ -159,6 +159,7 @@ static void * handleClient(void * threadArgs) {
 void * Server::stop() {
 	unsigned int size = connectedClients.size();
 	long n;
+	int message = DISCONNECT;
 	//Sends a disconnection signal to all connected clients
 	for (unsigned int i = 0; i < size; i++ ) {
 		n = write(connectedClients[i], &message, sizeof(message));

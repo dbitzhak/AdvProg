@@ -42,8 +42,12 @@ public:
 	void writeToOpponent(string name, int msg);
 private:
 	pair<int,int> receiveMove(int socket);
-	string getCommand(char *buffer);
-	vector<string> getArgs(char *buffer);
+	void passMove(pair<int,int> move, int socket);
+	void alertClient(int socket);
+	void playOneTurn(int srcSocket, int dstSocket);
+	void endPlay(int socket);
+	bool inPlay;
+	int strandedClient;
 	vector<string> gameList;
 	vector<string> waitingList;
 	map<string, long> gameToSocketMap;
