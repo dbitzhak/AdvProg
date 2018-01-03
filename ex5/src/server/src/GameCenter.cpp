@@ -65,7 +65,7 @@ void GameCenter::addToGameList(string name) {
 	}
 	gameList.push_back(name);
 	pthread_mutex_unlock(&lock);
-
+	
 }
 
 void GameCenter::removeFromWaitingList(string name) {
@@ -142,7 +142,6 @@ void GameCenter::writeToClient(int socket, char* buffer) {
 		throw "Error writing to socket\n";
 	}
 }
-
 
 
 

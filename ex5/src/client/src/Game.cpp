@@ -1,9 +1,3 @@
-/*
- * Game.cpp
- *  Author: Daniel Ben Itzhak
- *      338017437
- */
-
 #include "Game.h"
 #include "GraphicInterface.h"
 #include "ConsoleGraphics.h"
@@ -78,12 +72,32 @@ void Game::start() {
 						validInput = true;
 						graphicProvider->displayMessage("Name your game (limit 25 characters)\n");
 						cin >> name;
-						localClient.startNewGame(name);
+						bool error = true;
+						
+						while(error) {
+							error = false;
+							try {
+								localClient.startNewGame(name);
+							} catch(const char* msg) {
+								graphicProvider->displayMessage(msg);
+								error = true;
+								cin >> name;
+							}
+						}
 					} else if (option == 2) {
 						validInput = true;
 						graphicProvider->displayMessage("Which game would you like to join?\n");
+						
+						char *gameList = localClient.getGameList();
+						
+						for(int i = 0; *gameList + i != '\0'; i++) {
+							graphicProvider->displayMessage(*gameList + i);
+						}
+						
 						cin >> name;
-						localClient.joinGame(name);
+						while(localClient.joinGame(name) == -1) {
+							graphicProvider->displayMessage("Invalid choice\n");
+						}
 					}
 				}
 				
@@ -120,7 +134,7 @@ string Game::getIP() {
 	
 	infile.open("clientconfig.txt");
 	if (!infile) {
-		cout << "error opening file";
+		cout << "Error opening file\n";
 	}
 	
 	char ip[13];
@@ -136,7 +150,7 @@ int Game::getPort() {
 	
 	infile.open("clientconfig.txt");
 	if (!infile) {
-		cout << "error opening file";
+		cout << "Error opening file\n";
 	}
 	
 	char buffer[20], port[5];

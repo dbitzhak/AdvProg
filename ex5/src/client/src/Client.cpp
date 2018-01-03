@@ -20,7 +20,9 @@
 #include <string>
 #include <fstream>
 
-#define MESSAGE_LIMIT 31
+
+
+#define MSG_LIMIT 31
 
 using namespace std;
 
@@ -66,67 +68,123 @@ void Client::connectToServer() {
 }
 
 void Client::startNewGame(string name) {
-	//limit of 31 chars
-	char buffer[31] = {};
-	getUserInput(buffer);	int error;
-	long n = write(clientSocket, &buffer, MESSAGE_LIMIT);
-	if(n == -1) {
-		throw "Error starting game";
-	}
+	char *buffer = getBuffer("start", name);
+	int response;
 	
-	n = read(clientSocket, &error, sizeof(error));
+	long n = write(clientSocket, &buffer, sizeof(buffer));
+	delete[] buffer;
+	
 	if(n == -1) {
-		throw "Error reading result from socket";
+		throw "Error starting game\n";
 	}
-	if(error == -1) {
-		throw "Name is already taken";
+	n = read(clientSocket, &response, sizeof(response));
+	if(n == -1) {
+		throw "Error reading result from socket\n";
+	}
+	if(response == -1) {
+		throw "Name already taken\n";
+	}
+	//Get confirmation code 0 when player connects to game
+	n = read(clientSocket, &response, sizeof(response));
+	if(n == -1) {
+		throw "Error reading result from socket\n";
+	}
+	if(n == 0) {
+		return;
+	} else {
+		throw "Wrong confirmation code\n";
 	}
 }
 
-string Client::getGameList() {
-	//limit of 31 chars
-	char buffer[31] = {};
-	getUserInput(buffer);
-	long n = write(clientSocket, &buffer, MESSAGE_LIMIT);
+char* Client::getGameList() {
+	char tmp[MSG_LIMIT] = {'l','i','s','t','_','g','a','m','e','s','\0'};
+	
+	long n = write(clientSocket, &tmp, sizeof(tmp));
 	if(n == -1) {
-		throw "Error joining game";
+		throw "Error sending command list_games\n";
 	}
-	//Get string size
-	unsigned long stringSize;
-	n = read(clientSocket,&stringSize, sizeof(stringSize));
-	//Get string as char *
-	char stringBuffer[stringSize];
-	n = read(clientSocket,&stringBuffer, stringSize);
-	//Convert to string
-	string availableGames(stringBuffer);
-	return availableGames;
+	//Get buffer size
+	unsigned long bufferSize;
+	n = read(clientSocket, &bufferSize, sizeof(bufferSize));
+	//Get buffer
+	char* buffer = new char[bufferSize];
+	n = read(clientSocket, &(buffer), bufferSize);
+	return buffer;
 }
 
-void Client::joinGame(string name) {
-	//limit of 31 chars
-	char buffer[31] = {};
-	getUserInput(buffer);
-	long n = write(clientSocket, &buffer, MESSAGE_LIMIT);
+int Client::joinGame(string name) {
+	char *buffer = getBuffer("join", name);
+
+	long n = write(clientSocket, &buffer, sizeof(buffer));
+	delete[] buffer;
+	
 	if (n == -1) {
 		throw "Error joining game";
 	}
+	int response;
+	//Server sends -1 if name is invalid, else 0
+	n = read(clientSocket, &response, sizeof(response));
+	if(n == -1) {
+		throw "Error reading result from socket";
+	}
+	return response;
 }
 
 void Client::closeGame(string name) {
-	//limit of 31 chars
-	char buffer[31] = {};
-	getUserInput(buffer);
-	long n = write(clientSocket, &buffer, MESSAGE_LIMIT);
+	char* buffer = getBuffer("close", name);
+	
+	long n = write(clientSocket, &buffer, sizeof(buffer));
+	delete[] buffer;
+	
 	if (n == -1) {
 		throw "Error closing game";
 	}
 }
 
+char* Client::getBuffer(string c, string n) {
+	const char *command = c.c_str();
+	const char *name = n.c_str();
+	char *buffer = new char[MSG_LIMIT];
+	int index = 0;
+	
+	for(int i = 0; i < c.length(); i++, index++) {
+		buffer[i] = *command + i;
+	}
+	buffer[index] = '\0';
+	buffer[++index] = ' ';
+	index++;
+	
+	for(int i = 0; i < n.length(); i++) {
+		buffer[index + i] = *name + i;
+	}
+	buffer[index] = '\0';
+	return buffer;
+}
+
 void Client::sendMove(pair<int,int> move) {
-	//limit of 31 chars
-	char buffer[31] = {};
-	getUserInput(buffer);
-	long n = write(clientSocket, &buffer, MESSAGE_LIMIT);
+	int index;
+	char buffer[MSG_LIMIT] = {};
+	if(move.first > 9) {
+		buffer[0] = (char)(move.first / 10);
+		buffer[1] = (char)(move.first % 10);
+		buffer[2] = ',';
+		index = 3;
+	} else {
+		buffer[0] = (char)(move.first);
+		buffer[1] = ',';
+		index = 2;
+	}
+	
+	if(move.second > 9) {
+		buffer[index] = (char)(move.second / 10);
+		buffer[index + 1] = (char)(move.second % 10);
+		buffer[index + 2] = '\0';
+	} else {
+		buffer[index] = (char)(move.second);
+		buffer[index + 1] = '\0';
+	}
+	
+	long n = write(clientSocket, &buffer, sizeof(buffer));
 	if (n == -1) {
 		throw "Error sending player's move";
 	}
@@ -149,13 +207,16 @@ pair<int,int> Client::receiveMove() {
 
 string Client::getIP(const char* file) {
 	ifstream infile;
+	
 	infile.open(file);
 	if (!infile) {
 		cout << "error opening file";
 	}
+	
 	char ip[13];
 	infile >> ip;
 	ip[12] = '\0';
+	
 	infile.close();
 	return ip;
 }

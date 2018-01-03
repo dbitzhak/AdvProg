@@ -81,7 +81,6 @@ private:
 	bool serverOn;
 	CommandsManager *commandsManager;
 	pthread_t serverThreadId;
-	vector<long> connectedClients;
 	
 };
 #endif /* INCLUDE_SERVER_H_ */
