@@ -15,7 +15,6 @@
 RemotePlayer::RemotePlayer(GameLogic *gl, Client network, const GraphicInterface *gi, char value) : display(gi), client(network),
 gameLogic(gl){
 		setPlayerId(value);
-
 }
 
 std::pair<int, int> RemotePlayer::makeMove() {

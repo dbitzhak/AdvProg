@@ -49,7 +49,7 @@ public:
 private:
 	pair<int,int> receiveMove(int socket);
 	void passMove(pair<int,int> move, int socket);
-	void alertClient(int socket);
+	void closeClientSocket(int socket);
 	void playOneTurn(int srcSocket, int dstSocket);
 	void endPlay(int socket);
 	bool inPlay;

@@ -3,6 +3,7 @@
 
 #include "GameLogic.h"
 #include "GraphicInterface.h"
+#include "Client.h"
 
 /******************************************************
 GameClass, object that holds the necessary members for running Games,
@@ -45,6 +46,10 @@ private:
 	*The function operation: Starts the match loop, for the specific players and GameLogic derived class
 	********************************************************/
 	void playOneMatch(GameLogic* gl, Player* p1, Player* p2);
+	
+	void startGame(Client localClient);
+	
+	void joinGame(Client localClient);
 	
 	string getIP();
 	

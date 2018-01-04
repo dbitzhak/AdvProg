@@ -1,14 +1,12 @@
 #include "CommandsManager.h"
 #include "StartCommand.h"
 #include "JoinCommand.h"
-#include "CloseCommand.h"
 #include "GameCenter.h"
 
 
 CommandsManager::CommandsManager(GameCenter *gc) : gameCenter(gc) {
 	commandsMap["start"] = new StartCommand(gameCenter);
 	commandsMap["join"] = new JoinCommand(gameCenter);
-	commandsMap["close"] = new CloseCommand(gameCenter);
 }
 
 void * CommandsManager::executeCommand(string command, vector<string> args, int socket) {

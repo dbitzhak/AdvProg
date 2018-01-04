@@ -23,7 +23,7 @@ void GameCenter::run(string name, long socket) {
 		playOneTurn(srcSocket, dstSocket);
 	}
 	
-	alertClient(strandedClient);
+	closeClientSocket(strandedClient);
 	removeFromGameList(name);
 	removeFromMap(name);
 }
@@ -39,17 +39,19 @@ void GameCenter::playOneTurn(int srcSocket, int dstSocket) {
 		endPlay(dstSocket);
 		return;
 	}
+	
+	//if game ended
+	if (move.first == CLOSE || move.first == ERROR) {
+		endPlay(dstSocket);
+		return;
+	}
+	
 	try {
 		passMove(move, dstSocket);
 	} catch (const char *msg) {
 		cout << msg;
 		endPlay(srcSocket);
 		return;
-	}
-	
-	//if game ended
-	if (move.first == CLOSE || move.first == ERROR) {
-		endPlay(dstSocket);
 	}
 }
 
@@ -58,12 +60,8 @@ void GameCenter::endPlay(int socket) {
 	inPlay = false;
 }
 
-void GameCenter::alertClient(int socket) {
-	try {
-		passMove(pair<int,int>(ERROR,ERROR), socket);
-	} catch (const char *msg) {
-		cout << msg;
-	}
+void GameCenter::closeClientSocket(int socket) {
+	close(socket);
 }
 
 pair<int,int> GameCenter::receiveMove(int socket) {
@@ -72,15 +70,24 @@ pair<int,int> GameCenter::receiveMove(int socket) {
 	// Read new move argument from client
 	long n = read(socket, &x, sizeof(x));
 	if (n == -1) {
-		throw "Error reading x";
+		return make_pair(CLOSE, CLOSE);
 	}
 	if (n == 0) {
 		throw "Client disconnected";
 	}
+	cout << "Got X from client: " << x << endl;
+	
+	//if game ended
+	if (x == CLOSE || x == ERROR) {
+		return make_pair(CLOSE, CLOSE);
+	}
+	
 	n = read(socket, &y, sizeof(y));
 	if (n == -1) {
 		throw "Error reading y";
 	}
+	
+	cout << "Got Y from client: " << y << endl;
 	
 	cout << "Got move from client: " << x << ", " << y << endl;
 	
@@ -116,7 +123,7 @@ void GameCenter::passMove(pair<int,int> move, int socket) {
 
 void GameCenter::writeToOpponent(string name, int msg) {
 	long socket = gameToSocketMap.at(name);
-	long n = write(socket, &msg, sizeof(msg));
+	long n = write(socket, &msg, sizeof(msg) + 1);
 	if(n == -1) {
 		cout << "Error writing to socket\n";
 	}
@@ -179,6 +186,7 @@ void GameCenter::removeFromGameList(string name) {
 	for(unsigned int i = 0; i < size; i++) {
 		if(name == gameList[i]) {
 			gameList.erase(gameList.begin() + i);
+			return;
 		}
 	}
 	pthread_mutex_unlock(&lock);
@@ -237,6 +245,8 @@ void GameCenter::writeToClient(int socket, int i) {
 }
 
 void GameCenter::writeToClient(int socket, char* buffer) {
+	cout << buffer << endl;
+	cout << getWaitingListSize() << endl;
 	long n = write(socket, buffer, getWaitingListSize());
 	if(n == -1) {
 		throw "Error writing to socket\n";

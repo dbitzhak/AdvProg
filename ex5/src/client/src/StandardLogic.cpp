@@ -20,8 +20,8 @@ using namespace std;
 
 StandardLogic:: StandardLogic(const GraphicInterface* gi) {
 	this->graphicProvider = gi;
-	numCol = 8;
-	numRows = 8;
+	numCol = 4;
+	numRows = 4;
 	
 	//Initialize Pointers to invalid address;
 	this->player1 = 0;
@@ -294,7 +294,6 @@ char StandardLogic::getCurrentPlayerId() {
 }
 
 void StandardLogic::stopMatch() {
-	graphicProvider->displayMessage("Remote player disconnected. Ending game.\n");
 	matchRunning = false;
 }
 

@@ -58,6 +58,7 @@ void Game::start() {
 				GameLogic *gl = &sl;
 				Player *p1;
 				Player *p2;
+				//Setting client connection
 				const char *serverIP = getIP().c_str();
 				int serverPort = getPort();
 				Client localClient(serverIP,serverPort);
@@ -68,7 +69,7 @@ void Game::start() {
 					graphicProvider->displayMessage("\n");
 					return;
 				}
-				string name;
+				//Get client choice
 				while(!validInput) {
 					graphicProvider->displayMessage("Would you like to:\n");
 					graphicProvider->displayMessage("(1)Start a new game\n");
@@ -76,43 +77,17 @@ void Game::start() {
 					cin >> option;
 					if(option == 1) {
 						validInput = true;
-						graphicProvider->displayMessage("Name your game (limit 25 characters)\n");
-						cin >> name;
-						bool error = true;
-						
-						while(error) {
-							error = false;
-							try {
-								localClient.startNewGame(name);
-							} catch(int i) {
-								if(i == SERVER_STOPPED) {
-									graphicProvider->displayMessage("Server stopped/n");
-									return;
-								}
-							} catch(const char *msg) {
-								graphicProvider->displayMessage(msg);
-								error = true;
-								cin >> name;
-							}
-						}
-					} else if (option == 2) {
-						validInput = true;
-						
-						string gameList;
 						try {
-							gameList = localClient.joinGame("");
+							startGame(localClient);
 						} catch(const char *msg) {
 							graphicProvider->displayMessage(msg);
 							return;
 						}
-						graphicProvider->displayMessage("Which game would you like to join?\n");
-						graphicProvider->displayMessage(gameList);
-						cin >> name;
-						while(localClient.joinGame(name) == "0") {
-							graphicProvider->displayMessage("Invalid choice\n");
-						}
+					} else if (option == 2) {
+						validInput = true;
+						joinGame(localClient);
 					}
-				
+				}
 		
 				if (option == 1) {
 					LocalPlayer lp(gl, localClient, graphicProvider, 'X');
@@ -128,25 +103,26 @@ void Game::start() {
 				this->playOneMatch(gl, p1, p2);
 				//Informs server game Ended
 				try {
-					localClient.closeGame(name);
+					localClient.closeGame();
 				} catch (exception e) {}
 			}break;
-			//case 4:{ //Breaks the game loop
-			//	gameLoop = false;
-			//}break;
-			//default:{
-			//	this->graphicProvider->displayMessage("Invalid option\n");
-			//}break;
+			case 4:{ //Breaks the game loop
+				gameLoop = false;
+			}break;
+			default:{
+				this->graphicProvider->displayMessage("Invalid option\n");
+			}break;
 		}
 	}
 }
-}
+
 
 
 string Game::getIP() {
 	ifstream infile;
 	
-	infile.open("clientconfig.txt");
+	//	infile.open("clientconfig.txt");
+	infile.open("/Users/gavriella/AdvProg/ex5/src/client/src/clientconfig.txt");
 	if (!infile) {
 		cout << "Error opening file\n";
 	}
@@ -162,7 +138,8 @@ string Game::getIP() {
 int Game::getPort() {
 	ifstream infile;
 	
-	infile.open("clientconfig.txt");
+	//	infile.open("clientconfig.txt");
+	infile.open("/Users/gavriella/AdvProg/ex5/src/client/src/clientconfig.txt");
 	if (!infile) {
 		cout << "Error opening file\n";
 	}
@@ -190,3 +167,49 @@ void Game::playOneMatch(GameLogic* gl, Player* p1, Player* p2) {
 void Game::setGraphicProvider(const GraphicInterface *graphicProvider) {
 	this->graphicProvider = graphicProvider;
 }
+
+void Game::startGame(Client localClient) {
+	string name;
+	graphicProvider->displayMessage("Name your game (limit 25 characters)\n");
+	cin >> name;
+	bool error = true;
+	
+	while(error) {
+		error = false;
+		try {
+			localClient.startNewGame(name);
+		} catch(int i) {
+			if(i == SERVER_STOPPED) {
+				throw "Server stopped\n";
+			}
+		} catch(const char *msg) {
+			graphicProvider->displayMessage(msg);
+			error = true;
+			cin >> name;
+		}
+	}
+}
+
+void Game::joinGame(Client localClient) {
+	string gameList, name;
+	gameList = localClient.joinGame("");
+	if(gameList.length() == 0) {
+		graphicProvider->displayMessage("No games to join.\n");
+		startGame(localClient);
+		return;
+	}
+	
+	graphicProvider->displayMessage("Which game would you like to join?\n");
+	graphicProvider->displayMessage(gameList);
+	graphicProvider->displayMessage("\n");
+	cin >> name;
+	while(localClient.joinGame(name) == "0") {
+		graphicProvider->displayMessage("Invalid choice\n");
+	}
+}
+
+
+
+
+
+

@@ -17,6 +17,8 @@ gameLogic(gl){
 }
 
 void LocalPlayer::outOfPlays() {
+	display->displayPlayer(this);
+	display->displayMessage(" is out of plays!\n");
 	client.sendMove(make_pair(-1, -1));
 }
 

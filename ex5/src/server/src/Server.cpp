@@ -56,7 +56,6 @@ void Server::start() {
 	// Start listening to incoming connection requests
 	listen(serverSocket, MAX_CONNECTED_CLIENTS);
 	
-	
 	//Prepare thread args
 	ThreadArgs *args = new ThreadArgs;
 	args->commandManager = commandsManager;
@@ -81,6 +80,9 @@ void Server::start() {
 	//Makes Server waits for threadStop
 	pthread_join(threadStop, NULL);
 }
+
+
+
 
 // Handle requests from a specific client
 static void * handleClient(void * threadArgs) {
@@ -116,16 +118,16 @@ void * Server::stop() {
 	long n;
 	int message = DISCONNECT;
 	unsigned int size = connectedClients.size();
-	for (unsigned int i = 0; i < size; i++ ) {
-		n = write(connectedClients[i], &message, sizeof(message));
+	for(unsigned int i = 0; i < size; i++) {
+		n = close(connectedClients[i]);
 		if(n) {
-			cout << "Error: unable to send shutdown message to socket: " <<  connectedClients[i] << endl;
+			cout << "Error: unable to close socket: " <<  connectedClients[i] << endl;
 		}
 	}
 	size = openThreads.size();
 	
 	//Closes threads
-	for (unsigned int i = 0; i < size; i++ ) {
+	for(unsigned int i = 0; i < size; i++) {
 		pthread_cancel(openThreads[i]);
 	}
 	pthread_cancel(serverThreadId);
@@ -133,6 +135,7 @@ void * Server::stop() {
 	cout << "Server stopped" << endl;
 	return NULL;
 }
+
 
 static void * acceptClients(void * args) {
 	ThreadArgs *ta =  (ThreadArgs*) args;	//Unpack thread args

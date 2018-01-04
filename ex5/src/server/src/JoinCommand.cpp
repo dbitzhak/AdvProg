@@ -15,16 +15,21 @@ void JoinCommand::execute(vector<string> args, long dstSocket) {
 	}
 	string stringBuffer = "";
 	
-	for(int i = 0; i < listSize; i++) {
+	int i;
+	for(i = 0; i < listSize - 1; i++) {
 		stringBuffer.append(v[i]);
+//		stringBuffer.append("\n");
 		stringBuffer += '\n';
 	}
+	stringBuffer.append(v[i]);
+	
 	pthread_mutex_unlock(&lock);
 	
-	char buffer[sizeof(stringBuffer) - 1];
+	char buffer[sizeof(stringBuffer)];
 	strcpy(buffer, stringBuffer.c_str());
-	
-	gameCenter->writeToClient(dstSocket, sizeof(stringBuffer));
+	cout << "buffer sent: " << buffer << endl;
+	//Write length of list
+	gameCenter->writeToClient(dstSocket, stringBuffer.length());
 	gameCenter->writeToClient(dstSocket, buffer);
 	
 	//Get name
@@ -39,5 +44,4 @@ void JoinCommand::execute(vector<string> args, long dstSocket) {
 	gameCenter->removeFromWaitingList(name);
 	gameCenter->run(name, dstSocket);
 }
-
 

@@ -80,7 +80,7 @@ public:
 	 *The output: Void
 	 *The function operation: Tells server that client is ending the game
 	 *********************************************************************/
-	void closeGame(string name);
+	void closeGame();
 	
 	/********************************************************************
 	 *Function name:

@@ -20,7 +20,7 @@ Board::Board(int rows, int columns) : numRows(rows), numCol(columns) {
 	}
 }
 
-Board::Board() : numRows(8), numCol(8) {
+Board::Board() : numRows(4), numCol(4) {
 	// Using a unary vector for safety/ inline practice
 	this->_boardCells = vector<Cell>();
 	for (int i = 0; i < this->numRows; i++ ) {

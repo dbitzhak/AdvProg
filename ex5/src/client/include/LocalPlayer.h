@@ -32,6 +32,8 @@ public:
 	 input and send it through the network
 	********************************************************/
 	std::pair<int,int> makeMove();
+	
+
 
 private:
 	/******************************************************

@@ -1,10 +1,3 @@
-/*
- * Client.cpp
- *
- *  Created on: Dec 3, 2017
- *      Author: dan
- */
-
 #include "Client.h"
 #include "Board.h"
 #include "Cell.h"
@@ -20,7 +13,7 @@
 #include <string>
 #include <fstream>
 
-#define SUCCESS 0
+#define ERROR -5
 #define SERVER_STOPPED -777
 #define MSG_LIMIT 31
 
@@ -81,6 +74,9 @@ void Client::startNewGame(string name) {
 	if(n == -1) {
 		throw "Error reading result from socket\n";
 	}
+	if(n == 0) {
+		throw SERVER_STOPPED;
+	}
 	if(response == -1) {
 		throw "Name already taken\n";
 	}
@@ -91,37 +87,12 @@ void Client::startNewGame(string name) {
 		cout << "Error reading result from socket\n";
 		throw "Error reading result from socket\n";
 	}
-	cout << "Got " << response << endl;
-	if(response == SUCCESS) {
+	if(n == 0) {
 		return;
-	} else if (response == SERVER_STOPPED){
+	} else if (n == SERVER_STOPPED){
 		cout << "Server stopped\n";
 		throw "Server stopped\n";
-	} else {
-		throw "Unexpected response\n";
 	}
-}
-
-string Client::getGameList() {
-	char tmp[MSG_LIMIT] = {'l','i','s','t','_','g','a','m','e','s','\0'};
-	
-	long n = write(clientSocket, &tmp, sizeof(tmp));
-	if(n == -1) {
-		throw "Error sending command list_games\n";
-	}
-	//Get string size
-	int stringSize;
-	n = read(clientSocket,&stringSize, sizeof(stringSize));
-	
-	if(stringSize == 0) {
-		throw "No games to join\n";
-	}
-	//Get string as char *
-	char stringBuffer[stringSize];
-	n = read(clientSocket,&stringBuffer, stringSize);
-	//Convert to string
-	string availableGames(stringBuffer);
-	return availableGames;
 }
 
 string Client::joinGame(string name) {
@@ -133,16 +104,17 @@ string Client::joinGame(string name) {
 		}
 		//Get string size
 		int stringSize;
-		n = read(clientSocket,&stringSize, sizeof(stringSize));
-		
+		n = read(clientSocket, &stringSize, sizeof(stringSize));
 		if(stringSize == 0) {
-			throw "No games to join\n";
+			return "";
 		}
+		cout << "string size: " << stringSize << endl;
 		//Get string as char *
-		char stringBuffer[stringSize];
-		n = read(clientSocket,&stringBuffer, stringSize);
+		char stringBuffer[stringSize + 1];
+		n = read(clientSocket, &stringBuffer, stringSize);
 		//Convert to string
 		string availableGames(stringBuffer);
+		cout << "(joinGame)availableGames: " << availableGames << endl;
 		return availableGames;
 	}
 	
@@ -168,13 +140,8 @@ string Client::joinGame(string name) {
 	}
 }
 
-void Client::closeGame(string name) {
-	char* buffer = getBuffer("close", name);
-	long n = write(clientSocket, buffer, sizeof(buffer) + 1);
-	delete[] buffer;
-	if (n == -1) {
-		throw "Error closing game";
-	}
+void Client::closeGame() {
+	close(clientSocket);
 }
 
 char* Client::getBuffer(string command, string args) {
@@ -182,9 +149,6 @@ char* Client::getBuffer(string command, string args) {
 	command.append(args);
 	char *buffer = new char[MSG_LIMIT];
     strcpy(buffer, command.c_str());
-	
-	cout << buffer;
-	
 	return buffer;
 }
 
@@ -194,6 +158,7 @@ void Client::sendMove(pair<int,int> move) {
 	 if (n == -1) {
 	 	throw "Error sending player's move";
 	 }
+
 	 n = write(clientSocket, &move.second, sizeof(move.second));
 	 if (n == -1) {
 		 throw "Error sending player's move";
@@ -207,11 +172,22 @@ pair<int,int> Client::receiveMove() {
 	
 	long n = read(clientSocket, &x, sizeof(x));
 	if (n == -1) {
-		throw "Error reading result from socket";
+		return make_pair(SERVER_STOPPED, SERVER_STOPPED);
 	}
+
+	if(n == 0) {
+		return make_pair(SERVER_STOPPED, SERVER_STOPPED);
+	}
+	if(x == ERROR) {
+		return make_pair(ERROR, ERROR);
+	}
+	
 	n = read(clientSocket, &y, sizeof(y));
 	if (n == -1) {
-		throw "Error reading result from socket";
+		return make_pair(SERVER_STOPPED, SERVER_STOPPED);
+	}
+	if(n == 0) {
+		return make_pair(SERVER_STOPPED, SERVER_STOPPED);
 	}
 	return make_pair(x, y);
 }
@@ -230,6 +206,15 @@ string Client::getIP(const char* file) {
 	
 	infile.close();
 	return ip;
+}
+
+char * Client::getUserInput(char *buffer) {
+	string input;
+	 getline(cin, input);
+	 //limit of 31 chars
+	 const char *temp = input.c_str();
+	 strcpy(buffer,temp);
+	 return buffer;
 }
 
 int Client::getPort(const char* file) {
