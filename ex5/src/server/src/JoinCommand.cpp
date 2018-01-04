@@ -1,4 +1,5 @@
 #include "JoinCommand.h"
+#include <string.h>
 
 pthread_mutex_t lock;
 

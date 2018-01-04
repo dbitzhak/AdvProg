@@ -38,7 +38,6 @@ public:
 	void setGraphicProvider(const GraphicInterface *graphicProvider);
 
 private:
-	//Methods
 	/******************************************************
 	*Function name: playOneMatch()
 	*The input: GameLogic derived class,two Player's derived objects
@@ -47,12 +46,38 @@ private:
 	********************************************************/
 	void playOneMatch(GameLogic* gl, Player* p1, Player* p2);
 	
+	/******************************************************
+	*Function name: startGame
+	*The input: Client localClient, the local connected Client
+	*The output: None
+	*The function operation: Starts a new game with the user given name
+	* and waits for another user to chose the created game, connecting them through the Client.
+	********************************************************/
 	void startGame(Client localClient);
 	
+
+	/******************************************************
+	*Function name: joinGame
+	*The input: Client localClient, the local connected Client
+	*The output: None
+	*The function operation: Prints a list of the available games and connects the user to the chosen one via the Client.
+	********************************************************/
 	void joinGame(Client localClient);
-	
+
+	/********************************************************************
+	 *Function name: getIP
+	 *The input: None
+	 *The output: int the IP value written in the file
+	 *The function operation: Opens the desigated hardcoded relative path of the configuration file and retuns the specified IP number
+	 *********************************************************************/
 	string getIP();
-	
+
+	/********************************************************************
+	 *Function name: getPort
+	 *The input: None
+	 *The output: int the port value written in the file
+	 *The function operation: Opens the desigated hardcoded relative path of the configuration file and retuns the specified port number
+	 *********************************************************************/
 	int getPort();
 
 	// Unimplemented - void startOver(); //restarts match

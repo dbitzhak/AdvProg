@@ -120,9 +120,7 @@ void Game::start() {
 
 string Game::getIP() {
 	ifstream infile;
-	
-	//	infile.open("clientconfig.txt");
-	infile.open("/Users/gavriella/AdvProg/ex5/src/client/src/clientconfig.txt");
+	infile.open("clientconfig.txt");
 	if (!infile) {
 		cout << "Error opening file\n";
 	}
@@ -138,8 +136,7 @@ string Game::getIP() {
 int Game::getPort() {
 	ifstream infile;
 	
-	//	infile.open("clientconfig.txt");
-	infile.open("/Users/gavriella/AdvProg/ex5/src/client/src/clientconfig.txt");
+	infile.open("clientconfig.txt");
 	if (!infile) {
 		cout << "Error opening file\n";
 	}

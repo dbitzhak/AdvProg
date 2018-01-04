@@ -20,8 +20,8 @@ using namespace std;
 
 StandardLogic:: StandardLogic(const GraphicInterface* gi) {
 	this->graphicProvider = gi;
-	numCol = 4;
-	numRows = 4;
+	numCol = 8;
+	numRows = 8;
 	
 	//Initialize Pointers to invalid address;
 	this->player1 = 0;

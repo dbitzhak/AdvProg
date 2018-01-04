@@ -53,6 +53,7 @@ private:
 	 of ints
 	 ********************************************************/
 	pair<int, int> convertInputToCoord(char* buffer);
+
 	//Members
 	const GraphicInterface *display;
 	Client client;

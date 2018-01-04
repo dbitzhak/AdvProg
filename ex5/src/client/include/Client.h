@@ -76,55 +76,70 @@ public:
 	
 	/********************************************************************
 	 *Function name: closeGame()
-	 *The input: Name of game to close
+	 *The input: None
 	 *The output: Void
-	 *The function operation: Tells server that client is ending the game
+	 *The function operation: Closes the client socket
 	 *********************************************************************/
 	void closeGame();
 	
 	/********************************************************************
-	 *Function name:
-	 *The input:
-	 *The output:
-	 *The function operation:
+	 *Function name: startNewGame
+	 *The input: string nameofthe new gametobe opened
+	 *The output: None
+	 *The function operation: Opens a new entry for the chosen name and waits until another
+	 * player connect to it for starting the game
 	 *********************************************************************/
 	void startNewGame(string name);
 	
 	/********************************************************************
-	 *Function name:
-	 *The input:
-	 *The output:
-	 *The function operation:
+	 *Function name: getGameList
+	 *The input: None
+	 *The output: None
+	 *The function operation: Retrieves the current game list and prints it
 	 *********************************************************************/
 	string getGameList();
 	
+	/********************************************************************
+	 *Function name: getNumberOfGames
+	 *The input: None
+	 *The output: int the number of open games
+	 *The function operation: Retrieves the current game list size and returns it
+	 *********************************************************************/
 	int getNumberOfGames();
+
 private:
 	/********************************************************************
-	 *Function name: getUserInput()
+	 *Function name: getUserInput
 	 *The input: Array of chars
-	 *The output: 
-	 *The function operation:
+	 *The output: Returns the received buffer
+	 *The function operation: Stores user input inside the passed buffer
 	 *********************************************************************/
 	char* getUserInput(char *buffer);
 	
+	/********************************************************************
+	 *Function name: getBuffer
+	 *The input: 2 strings - a command and its arguments
+	 *The output: Returns the allocated buffer address
+	 *The function operation: Appends both stringsand copies themto a char * buffer
+	 *********************************************************************/
 	char* getBuffer(string command, string name);
 	
 	/********************************************************************
-	 *Function name:
-	 *The input:
-	 *The output:
-	 *The function operation:
+	 *Function name: getIP
+	 *The input: const char* file - a char array (string) representing the configuration filename
+	 *The output: int the IP value written in the file
+	 *The function operation: Opens the desigated configuration file and retuns the specified IP number
 	 *********************************************************************/
 	string getIP(const char* file);
 	
 	/********************************************************************
-	 *Function name:
-	 *The input:
-	 *The output:
-	 *The function operation:
+	 *Function name: getPort
+	 *The input: const char* file - a char array (string) representing the configuration filename
+	 *The output: int the port value written in the file
+	 *The function operation: Opens the desigated configuration file and retuns the specified port number
 	 *********************************************************************/
 	int getPort(const char* file);
+	
 	//Members
 	const char *serverIP;
 	int serverPort;
