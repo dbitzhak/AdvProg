@@ -56,15 +56,6 @@ void Server::start() {
 	// Start listening to incoming connection requests
 	listen(serverSocket, MAX_CONNECTED_CLIENTS);
 	
-	//Create a thread for closing the server
-	pthread_t threadStop;
-	int result = pthread_create(&threadStop, NULL, &endServer, (void *) this); //Run stop
-	if (result) {
-		cout << "Error: unable to create thread, " << result << endl;
-		exit(-1);
-	}
-	//Makes Server waits for threadStop
-	pthread_join(threadStop, NULL);
 	
 	//Prepare thread args
 	ThreadArgs *args = new ThreadArgs;
@@ -74,70 +65,21 @@ void Server::start() {
 	args->threadList = openThreads;
 	
 	//Create a thread for listening to client connections
-	result = pthread_create(&serverThreadId, NULL, &acceptClients,(void *) args); //Run acceptClients
+	int result = pthread_create(&serverThreadId, NULL, &acceptClients,(void *) args); //Run acceptClients
 	if (result) {
 		cout << "Error: unable to create thread, " << result << endl;
 		exit(-1);
 	}
-}
-
-
-pair<int,int> Server::receiveMove(int socket) {
-	int x, y;
 	
-	// Read new move argument from client
-	long n = read(socket, &x, sizeof(x));
-	if (n == -1) {
-		throw "Error reading x";
+	//Create a thread for closing the server
+	pthread_t threadStop;
+	result = pthread_create(&threadStop, NULL, &endServer, (void *) this); //Run stop
+	if (result) {
+		cout << "Error: unable to create thread, " << result << endl;
+		exit(-1);
 	}
-	if (n == 0) {
-		throw "Client disconnected";
-	}
-	n = read(socket, &y, sizeof(y));
-	if (n == -1) {
-		throw "Error reading y";
-	}
-	
-	cout << "Got move from client: " << x << ", " << y << endl;
-	
-	return make_pair(x, y);
-	
-}
-
-void Server::passMove(pair<int,int> move, int socket) {
-	long n;
-	try {
-		n = write(socket, &move.first, sizeof(move.first));
-		
-	} catch(exception e) {
-		cout << "passMove: Error writing x to socket" << endl;
-		throw "Error writing x to socket\n";
-	}
-	if (n == -1) {
-		cout << "passMove: Error writing x to socket" << endl;
-		throw "Error writing x to socket\n";
-		//		return;
-	}
-	try {
-		n = write(socket, &move.second, sizeof(move.second));
-	} catch(exception e) {
-		cout << "passMove: Error writing y to socket" << endl;
-		throw "Error writing y to socket\n";
-		//		return;
-	}
-	if (n == -1) {
-		cout << "passMove: Error writing y to socket" << endl;
-		throw "Error writing y to socket\n";
-		//		return;
-	}
-}
-
-void Server::alertClient(int socket) {
-	try {
-		passMove(pair<int,int>(ERROR,ERROR), socket);
-	} catch (const char *msg) {
-		cout << msg;
-	}
+	//Makes Server waits for threadStop
+	pthread_join(threadStop, NULL);
 }
 
 // Handle requests from a specific client
@@ -176,13 +118,13 @@ void * Server::stop() {
 	unsigned int size = connectedClients.size();
 	for (unsigned int i = 0; i < size; i++ ) {
 		n = write(connectedClients[i], &message, sizeof(message));
-		if (n) {
+		if(n) {
 			cout << "Error: unable to send shutdown message to socket: " <<  connectedClients[i] << endl;
 		}
 	}
 	size = openThreads.size();
 	
-	//Closesthreads
+	//Closes threads
 	for (unsigned int i = 0; i < size; i++ ) {
 		pthread_cancel(openThreads[i]);
 	}

@@ -1,8 +1,6 @@
-#include "ListGamesCommand.h"
 #include "CommandsManager.h"
 #include "StartCommand.h"
 #include "JoinCommand.h"
-#include "PlayCommand.h"
 #include "CloseCommand.h"
 #include "GameCenter.h"
 
@@ -10,7 +8,6 @@
 CommandsManager::CommandsManager(GameCenter *gc) : gameCenter(gc) {
 	commandsMap["start"] = new StartCommand(gameCenter);
 	commandsMap["join"] = new JoinCommand(gameCenter);
-	commandsMap["play"] = new PlayCommand();
 	commandsMap["close"] = new CloseCommand(gameCenter);
 }
 

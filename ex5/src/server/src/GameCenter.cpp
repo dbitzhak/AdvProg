@@ -116,7 +116,7 @@ void GameCenter::passMove(pair<int,int> move, int socket) {
 
 void GameCenter::writeToOpponent(string name, int msg) {
 	long socket = gameToSocketMap.at(name);
-	long n = write(socket, &msg, sizeof(msg) + 1);
+	long n = write(socket, &msg, sizeof(msg));
 	if(n == -1) {
 		cout << "Error writing to socket\n";
 	}
@@ -237,13 +237,10 @@ void GameCenter::writeToClient(int socket, int i) {
 }
 
 void GameCenter::writeToClient(int socket, char* buffer) {
-	cout << buffer << endl;
-	cout << getWaitingListSize() << endl;
 	long n = write(socket, buffer, getWaitingListSize());
 	if(n == -1) {
 		throw "Error writing to socket\n";
 	}
-	delete[] buffer;
 }
 
 

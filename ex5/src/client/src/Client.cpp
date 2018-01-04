@@ -20,7 +20,7 @@
 #include <string>
 #include <fstream>
 
-
+#define SUCCESS 0
 #define SERVER_STOPPED -777
 #define MSG_LIMIT 31
 
@@ -92,11 +92,13 @@ void Client::startNewGame(string name) {
 		throw "Error reading result from socket\n";
 	}
 	cout << "Got " << response << endl;
-	if(n == 0) {
+	if(response == SUCCESS) {
 		return;
-	} else if (n == SERVER_STOPPED){
+	} else if (response == SERVER_STOPPED){
 		cout << "Server stopped\n";
 		throw "Server stopped\n";
+	} else {
+		throw "Unexpected response\n";
 	}
 }
 
@@ -124,7 +126,7 @@ string Client::getGameList() {
 
 string Client::joinGame(string name) {
 	if(name.empty()) {
-		char *buffer = getBuffer("join", name);
+		char buffer[] = {'j','o','i','n','\0'};
 		long n = write(clientSocket, &buffer, sizeof(buffer) + 1);
 		if(n == -1) {
 			throw "Error sending command join\n";
@@ -228,15 +230,6 @@ string Client::getIP(const char* file) {
 	
 	infile.close();
 	return ip;
-}
-
-char * Client::getUserInput(char *buffer) {
-	string input;
-	 getline(cin, input);
-	 //limit of 31 chars
-	 const char *temp = input.c_str();
-	 strcpy(buffer,temp);
-	 return buffer;
 }
 
 int Client::getPort(const char* file) {

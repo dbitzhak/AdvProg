@@ -107,7 +107,6 @@ void Game::start() {
 						}
 						graphicProvider->displayMessage("Which game would you like to join?\n");
 						graphicProvider->displayMessage(gameList);
-						graphicProvider->displayMessage("\n");
 						cin >> name;
 						while(localClient.joinGame(name) == "0") {
 							graphicProvider->displayMessage("Invalid choice\n");
@@ -147,8 +146,7 @@ void Game::start() {
 string Game::getIP() {
 	ifstream infile;
 	
-	//	infile.open("clientconfig.txt");
-	infile.open("/Users/gavriella/AdvProg/ex5/src/client/src/clientconfig.txt");
+	infile.open("clientconfig.txt");
 	if (!infile) {
 		cout << "Error opening file\n";
 	}
@@ -164,8 +162,7 @@ string Game::getIP() {
 int Game::getPort() {
 	ifstream infile;
 	
-	//	infile.open("clientconfig.txt");
-	infile.open("/Users/gavriella/AdvProg/ex5/src/client/src/clientconfig.txt");
+	infile.open("clientconfig.txt");
 	if (!infile) {
 		cout << "Error opening file\n";
 	}
