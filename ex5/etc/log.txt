@@ -1,8 +1,178 @@
+commit e4951d29509d1f426bbb093cb4809caa1b5afc65
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Thu Jan 4 16:02:29 2018 +0200
+
+    Fixed close and printing and gameflow (Daniel&Gavriella)
+
+commit 8dfc33648636bda34d92446f957fad5ff79e766c
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Thu Jan 4 04:08:15 2018 +0200
+
+    Working with multiple threads
+
+commit f4f58a473ee6c57eab4d14b0e8ccba0c7f2df423
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Wed Jan 3 23:53:54 2018 +0200
+
+    Joined list and join in client
+
+commit bb1e609a5310f17ca1542b0ba1c2e83eb209788f
+Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
+Date:   Wed Jan 3 17:23:23 2018 +0200
+
+    Server and Client improvements and bug fixes
+
+commit b315e879d70e6aaa665c675a3ba4aa4daf124574
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Wed Jan 3 16:43:12 2018 +0200
+
+    Made game loop in GameCenter
+
+commit f152161b190d76cca00043d86313c1e9a7834465
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Wed Jan 3 15:35:25 2018 +0200
+
+    More bug fixes
+
+commit 455eb81f21e8e53582df95a6b547d2dfc2d96eed
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Wed Jan 3 15:09:39 2018 +0200
+
+    Fixed merge conflicts
+
+commit dfcd550e3d8f2f4e0a350bea172fb377d8188a40
+Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
+Date:   Wed Jan 3 14:07:39 2018 +0200
+
+    Thread safety included, bugs fixes
+
+commit a2de89ead125646d97b9924caca75caafa4ea6c7
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Wed Jan 3 05:43:22 2018 +0200
+
+    More Client changes
+
+commit 9e1388c90ea3310fedf71b45115046aeb7b400b4
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Wed Jan 3 04:21:26 2018 +0200
+
+    Changes to Server, Commands
+
+commit d649c1422d9c3dd9e97a98ab4408d93a4f8aaf1f
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Wed Jan 3 04:20:48 2018 +0200
+
+    Changes to Client
+
+commit fcfacb66afe4603d9e6fb9cb0bcd64c3fc9b34ff
+Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
+Date:   Wed Jan 3 00:07:16 2018 +0200
+
+    Updated Server
+
+commit 864ed2aa1177451ee1a1e4aa21dbc23b66cad749
+Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
+Date:   Mon Jan 1 22:19:37 2018 +0200
+
+    Threads included
+
+commit 100810b7bd201054ec063782486ac1da4627c14b
+Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
+Date:   Wed Dec 27 23:25:47 2017 +0200
+
+    Minor bug fixes
+
+commit 6d86f4a9587218707c661372b413155bc752ef2f
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Wed Dec 27 16:36:29 2017 +0200
+
+    Kills ds_store
+
+commit b5d71f477557206f39566564ad4ee8ee4355eac0
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Wed Dec 27 16:28:14 2017 +0200
+
+    Comments in client.h
+
+commit db806b4660f1e84c512b046cbdc6276098aa9066
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Wed Dec 27 16:22:03 2017 +0200
+
+    Adds updated files
+
+commit b411af607fc65dfb43945ec46b2decf9f944a134
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Wed Dec 27 16:11:44 2017 +0200
+
+    Updating master files
+
+commit af1657736c1722d471b2c978776cd06bff79b923
+Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
+Date:   Wed Dec 27 11:33:59 2017 +0200
+
+    Removed ex4 old files
+
+commit c0d9836b76e67764c87756f9076552810beb6d27
+Merge: 3fcee6a 233e964
+Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
+Date:   Wed Dec 27 11:31:39 2017 +0200
+
+    Including the new classes created by Gavriella Stein for the Command Manager  in the main branch
+
+commit 233e9640ddb39dc6fe83b56186f9f93f008bdf56
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Tue Dec 26 18:32:34 2017 +0200
+
+    Adds GameInfo
+
+commit a8fae6cacc7dcbdc5e844f4a71c1814f90c45482
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Tue Dec 26 18:04:01 2017 +0200
+
+    Adds some Server commands
+
+commit 3fcee6aad37d70f29250cb0c50eb66527fc8d4d8
+Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
+Date:   Tue Dec 12 21:35:05 2017 +0200
+
+    Improved and commented ex4
+
+commit 3d038290f770c9f67dd3d0334670d37554880821
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Tue Dec 12 19:24:32 2017 +0200
+
+    Client server error fixes
+
 commit b86ed34f700754fece7daf050811bdb7fbef2136
 Author: Gavi Stein <gavriella.stein@gmail.com>
 Date:   Mon Dec 11 01:24:42 2017 +0200
 
     Client-Server integration fixes
+
+commit e7228ca6b8c6c754697606ef366e5f937da260b0
+Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
+Date:   Sun Dec 10 22:13:07 2017 +0200
+
+    Simplified Client implementation with Game on client's side. (Ex still unfinished)
+
+commit d9164faab786a042bb8db9d1d1950fdb84c33168
+Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
+Date:   Sun Dec 10 15:44:11 2017 +0200
+
+    Changes on Client and bug fixes
+
+commit 913bc17a62d6df9950765082d5592e931dfed12d
+Merge: f668379 967bb25
+Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
+Date:   Fri Dec 8 16:44:20 2017 +0200
+
+    Merge branch 'master' into addedComments
+
+commit f6683796de6cf3b62db6ed0de16f89aae798c248
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Fri Dec 8 02:28:08 2017 +0200
+
+    small bug fixes
 
 commit dda55c90fc821f46f2b0c30625d0004c43d2f5c6
 Author: Gavi Stein <gavriella.stein@gmail.com>
@@ -10,11 +180,35 @@ Date:   Thu Dec 7 23:11:50 2017 +0200
 
     File update
 
+commit f43342cf8704c704820698b159a6171acca4f860
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Thu Dec 7 10:39:17 2017 +0200
+
+    Includes serialization test
+
+commit 05b4b0d279533d0594cd08fc4f41523f9338b66a
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Thu Dec 7 10:37:19 2017 +0200
+
+    Includes serialization test
+
 commit 967bb252a6ba1339ddf05f89b867aa5e0efb61e3
 Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
 Date:   Thu Dec 7 08:48:56 2017 +0200
 
     Renamed for ex4, new serialization class included.
+
+commit 967e8d08eddd4c7572b83f6ffc983965f8cef14b
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Thu Nov 30 12:58:34 2017 +0200
+
+    Add comments to tests
+
+commit 619c5b8ca639ebddc84231ed25ff697a4717e7dd
+Author: Gavi Stein <gavriella.stein@gmail.com>
+Date:   Thu Nov 30 12:47:16 2017 +0200
+
+    Correct orientation of X/O
 
 commit 30a7eafbbb1bebc3b1e486fa05252df4e7a74198
 Author: Daniel Ben Itzhak <danielshlomo91@gmail.com>
