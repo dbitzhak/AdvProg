@@ -85,7 +85,12 @@ void Game::start() {
 						}
 					} else if (option == 2) {
 						validInput = true;
-						joinGame(localClient);
+						try {
+							joinGame(localClient);
+						} catch(const char *msg) {
+							graphicProvider->displayMessage(msg);
+							return;
+						}
 					}
 				}
 		
@@ -120,7 +125,7 @@ void Game::start() {
 
 string Game::getIP() {
 	ifstream infile;
-	infile.open("clientconfig.txt");
+	infile.open("/Users/gavriella/AdvProg/ex5/src/client/src/clientconfig.txt");
 	if (!infile) {
 		cout << "Error opening file\n";
 	}
@@ -136,7 +141,7 @@ string Game::getIP() {
 int Game::getPort() {
 	ifstream infile;
 	
-	infile.open("clientconfig.txt");
+	infile.open("/Users/gavriella/AdvProg/ex5/src/client/src/clientconfig.txt");
 	if (!infile) {
 		cout << "Error opening file\n";
 	}
@@ -191,9 +196,7 @@ void Game::joinGame(Client localClient) {
 	string gameList, name;
 	gameList = localClient.joinGame("");
 	if(gameList.length() == 0) {
-		graphicProvider->displayMessage("No games to join.\n");
-		startGame(localClient);
-		return;
+		throw "No games to join.\n";
 	}
 	
 	graphicProvider->displayMessage("Which game would you like to join?\n");

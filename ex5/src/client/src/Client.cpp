@@ -108,13 +108,11 @@ string Client::joinGame(string name) {
 		if(stringSize == 0) {
 			return "";
 		}
-		cout << "string size: " << stringSize << endl;
 		//Get string as char *
 		char stringBuffer[stringSize + 1];
-		n = read(clientSocket, &stringBuffer, stringSize);
+		n = read(clientSocket, &stringBuffer, stringSize + 1);
 		//Convert to string
 		string availableGames(stringBuffer);
-		cout << "(joinGame)availableGames: " << availableGames << endl;
 		return availableGames;
 	}
 	
