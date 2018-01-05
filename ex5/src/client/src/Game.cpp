@@ -99,13 +99,14 @@ void Game::start() {
 					RemotePlayer rp(gl, localClient, graphicProvider, 'O');
 					p1 = &lp;
 					p2 = &rp;
+					this->playOneMatch(gl, p1, p2);
 				} else {
 					LocalPlayer lp(gl, localClient, graphicProvider, 'O');
 					RemotePlayer rp(gl, localClient, graphicProvider, 'X');
 					p1 = &rp;
 					p2 = &lp;
+					this->playOneMatch(gl, p1, p2);
 				}
-				this->playOneMatch(gl, p1, p2);
 				//Informs server game Ended
 				try {
 					localClient.closeGame();
@@ -125,7 +126,7 @@ void Game::start() {
 
 string Game::getIP() {
 	ifstream infile;
-	infile.open("/Users/gavriella/AdvProg/ex5/src/client/src/clientconfig.txt");
+	infile.open("clientconfig.txt");
 	if (!infile) {
 		cout << "Error opening file\n";
 	}
@@ -141,7 +142,7 @@ string Game::getIP() {
 int Game::getPort() {
 	ifstream infile;
 	
-	infile.open("/Users/gavriella/AdvProg/ex5/src/client/src/clientconfig.txt");
+	infile.open("clientconfig.txt");
 	if (!infile) {
 		cout << "Error opening file\n";
 	}

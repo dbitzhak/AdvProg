@@ -75,7 +75,6 @@ pair<int,int> GameCenter::receiveMove(int socket) {
 	if (n == 0) {
 		throw "Client disconnected";
 	}
-	cout << "Got X from client: " << x << endl;
 	
 	//if game ended
 	if (x == CLOSE || x == ERROR) {
@@ -86,11 +85,6 @@ pair<int,int> GameCenter::receiveMove(int socket) {
 	if (n == -1) {
 		throw "Error reading y";
 	}
-	
-	cout << "Got Y from client: " << y << endl;
-	
-	cout << "Got move from client: " << x << ", " << y << endl;
-	
 	return make_pair(x, y);
 }
 
@@ -244,10 +238,8 @@ void GameCenter::writeToClient(int socket, int i) {
 	}
 }
 
-void GameCenter::writeToClient(int socket, char* buffer) {
-	cout << buffer << endl;
-	cout << getWaitingListSize() << endl;
-	long n = write(socket, buffer, getWaitingListSize());
+void GameCenter::writeToClient(int socket, char* buffer, int sizeOfBuffer) {
+	long n = write(socket, buffer, sizeOfBuffer);
 	if(n == -1) {
 		throw "Error writing to socket\n";
 	}

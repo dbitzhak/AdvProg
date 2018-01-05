@@ -95,7 +95,6 @@ static void * handleClient(void * threadArgs) {
 		cout << "Error reading command" << endl;
 		return NULL;
 	}
-	cout << "Received command: " << commandStr << endl;
 	// Split the command string to the command name and the arguments
 	string str(commandStr);
 	istringstream iss(str);

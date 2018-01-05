@@ -126,7 +126,7 @@ public:
 	 *The output: void
 	 *The function operation: Sends the char buffer contents to the given socket address
 	 *********************************************************************/
-	void writeToClient(int socket, char* buffer);
+	void writeToClient(int socket, char* buffer, int bufferSize);
 	
 	/********************************************************************
 	 *Function name: writeToOpponent()

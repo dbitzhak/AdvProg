@@ -80,7 +80,7 @@ void Client::startNewGame(string name) {
 	if(response == -1) {
 		throw "Name already taken\n";
 	}
-	cout << "Waiting for player to join...";
+	cout << "Waiting for player to join..." << endl;
 	//Get confirmation code 0 when player connects to game
 	n = read(clientSocket, &response, sizeof(response));
 	if(n == -1) {

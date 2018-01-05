@@ -28,10 +28,9 @@ void JoinCommand::execute(vector<string> args, long dstSocket) {
 	
 	char buffer[sizeof(stringBuffer)];
 	strcpy(buffer, stringBuffer.c_str());
-	cout << "buffer sent: " << buffer << endl;
 	//Write length of list
 	gameCenter->writeToClient(dstSocket, stringBuffer.length());
-	gameCenter->writeToClient(dstSocket, buffer);
+	gameCenter->writeToClient(dstSocket, buffer, stringBuffer.length() + 1);
 	
 	//Get name
 	string name = gameCenter->readStringFromClient(dstSocket);
