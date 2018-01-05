@@ -12,11 +12,11 @@ int getPort() {
 	
 	infile.open("serverconfig.txt");
 	if (!infile) {
-		cout << "Error opening file\n";
+		throw "Error opening file\n";
 	}
 	
-	char buffer[20], port[5];
-	infile >> buffer >> port;
+	char port[5];
+	infile >> port;
 	port[4] = '\0';
 	infile.close();
 	
@@ -27,22 +27,7 @@ int getPort() {
 }
 
 int main() {
-
-	ifstream infile;
-	
-	infile.open("serverconfig.txt");
-	if (!infile) {
-		cout << "Error opening file\n";
-	}
-	
-	char buffer[20], port[5];
-	infile >> buffer >> port;
-	port[4] = '\0';
-	infile.close();
-	
-	stringstream s(port);
-	int p = 0;
-	s >> p;
+	int p = getPort();
 	GameCenter gc;
 	CommandsManager cm(&gc);
 	Server server(p, &cm);

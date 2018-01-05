@@ -1,7 +1,7 @@
 #Makefile
 
 a.out: compileAll
-	g++ *.o -pthread
+	g++ *.o
 	rm -f *.o
 
 compileAll: include/*.h src/*.cpp
